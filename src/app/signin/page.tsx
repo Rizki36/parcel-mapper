@@ -1,9 +1,23 @@
 "use client";
 import { Button, Text, TextField } from "@radix-ui/themes";
 import classNames from "classnames";
+import { useForm } from "react-hook-form";
 import { FiUser, FiKey } from "react-icons/fi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import signInSchema from "@/validation/signinSchema";
+
+type SignInForm = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInForm>({
+    resolver: zodResolver(signInSchema),
+  });
+
   return (
     <div
       className={classNames(
@@ -25,49 +39,67 @@ const SignIn = () => {
         )}
       >
         <div className="w-full">
-          <h1
-            className={classNames(
-              "text-3xl mb-14 text-center font-semibold text-primary",
-              "text-4xl"
-            )}
-          >
-            Sign In
-          </h1>
-          <div className="flex flex-col gap-y-6 mb-8">
-            <div>
-              <Text>Email</Text>
-              <TextField.Root>
-                <TextField.Input size="3" placeholder="Enter your email" />
-                <TextField.Slot>
-                  <FiUser />
-                </TextField.Slot>
-              </TextField.Root>
-            </div>
-            <div>
-              <Text>Password</Text>
-              <TextField.Root>
-                <TextField.Input
-                  type="password"
-                  placeholder="Enter your password"
-                  size="3"
-                />
-                <TextField.Slot>
-                  <FiKey />
-                </TextField.Slot>
-              </TextField.Root>
-            </div>
-          </div>
-          <div className="flex justify-center mb-16">
-            <Button
-              size={{
-                initial: "3",
-                lg: "4",
-              }}
-              className="bg-primary"
+          <form onSubmit={handleSubmit((data) => console.log(data))}>
+            <h1
+              className={classNames(
+                "text-3xl mb-14 text-center font-semibold text-primary",
+                "text-4xl"
+              )}
             >
-              Sign in
-            </Button>
-          </div>
+              Sign In
+            </h1>
+            <div className="flex flex-col gap-y-6 mb-8">
+              <div>
+                <Text>Email</Text>
+                <TextField.Root>
+                  <TextField.Input
+                    placeholder="Enter your email"
+                    size="3"
+                    autoComplete="email"
+                    {...register("email", {
+                      required: true,
+                    })}
+                  />
+                  <TextField.Slot>
+                    <FiUser />
+                  </TextField.Slot>
+                </TextField.Root>
+                {errors.email && (
+                  <Text color="red">{errors.email.message}</Text>
+                )}
+              </div>
+              <div>
+                <Text>Password</Text>
+                <TextField.Root>
+                  <TextField.Input
+                    type="password"
+                    placeholder="Enter your password"
+                    size="3"
+                    autoComplete="current-password"
+                    {...register("password")}
+                  />
+                  <TextField.Slot>
+                    <FiKey />
+                  </TextField.Slot>
+                </TextField.Root>
+                {errors.password && (
+                  <Text color="red">{errors.password.message}</Text>
+                )}
+              </div>
+            </div>
+            <div className="flex justify-center mb-16">
+              <Button
+                type="submit"
+                size={{
+                  initial: "3",
+                  lg: "4",
+                }}
+                className="bg-primary"
+              >
+                Sign in
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

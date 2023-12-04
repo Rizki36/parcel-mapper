@@ -21,6 +21,7 @@
     "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
     "jsonwebtoken": "^9.0.2",
+    "mapbox-gl": "^3.0.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
@@ -40,9 +41,9 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "postcss": "^8",
+    "prisma": "^5.6.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5",
-    "prisma": "^5.6.0"
+    "typescript": "^5"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

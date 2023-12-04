@@ -24,7 +24,7 @@ const MenuItem: FC<{
   icon?: React.ReactNode;
 }> = ({ href, children, icon }) => {
   const path = usePathname();
-  const active = path === href;
+  const active = path.startsWith(href);
 
   return (
     <li>

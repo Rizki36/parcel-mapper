@@ -3,11 +3,10 @@ import React from "react";
 import useBranchesTable from "../../branches/hooks/useTable";
 import Table from "@/app/components/Table";
 import Pagination from "@/app/components/Pagination";
-import useBranchesTableStore from "../../branches/hooks/useBranchesTableStore";
+import usePageParams from "../hooks/usePageParams";
 
 const ParcelTable = () => {
-  const search = useBranchesTableStore((state) => state.search);
-  const statuses = useBranchesTableStore((state) => state.statuses);
+  const { search, status: statuses } = usePageParams();
 
   const { table, isLoading } = useBranchesTable({
     search,

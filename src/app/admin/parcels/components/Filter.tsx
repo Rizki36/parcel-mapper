@@ -38,7 +38,7 @@ const StatusFilter = () => {
                   name="status"
                   checked={status?.includes(key) ?? false}
                   color="green"
-                  onCheckedChange={(checked) => {
+                  onCheckedChange={() => {
                     pushToggleFilter("/admin/parcels", "status", key);
                   }}
                 />{" "}

@@ -19,7 +19,16 @@ const Table = <T,>(props: {
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="py-3 px-2 text-neutral-500">
+                <th
+                  key={header.id}
+                  {...{
+                    colSpan: header.colSpan,
+                    style: {
+                      width: header.getSize(),
+                    },
+                  }}
+                  className="py-3 px-2 text-neutral-500"
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -35,7 +44,11 @@ const Table = <T,>(props: {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-2.5 px-2">
+                <td
+                  key={cell.id}
+                  className="py-2.5 px-2"
+                  width={cell.column.getSize()}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

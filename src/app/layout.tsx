@@ -5,6 +5,7 @@ import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import Providers from "./providers";
+import React from "react";
 
 const inter = Inter({
   subsets: ["latin"],

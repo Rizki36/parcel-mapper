@@ -1,4 +1,4 @@
-import { Parcel, ParcelStatus } from "@/types";
+import { Parcel } from "@/types";
 import { faker } from "@faker-js/faker";
 import { useQuery } from "@tanstack/react-query";
 
@@ -31,7 +31,7 @@ const newPerson = (): Parcel => {
 export function makeData(...lens: number[]) {
   const makeDataLevel = (depth = 0): Parcel[] => {
     const len = lens[depth]!;
-    return range(len).map((d): Parcel => {
+    return range(len).map((): Parcel => {
       return newPerson();
     });
   };
@@ -45,14 +45,22 @@ const fetchData = async (options: {
   pageIndex: number;
   pageSize: number;
   search: string;
+  statuses: string[];
 }) => {
   // Simulate some network latency
   await new Promise((r) => setTimeout(r, 500));
 
-  const filteredData = data.filter((row) => {
-    return row.recipientName
-      .toLowerCase()
-      .includes(options.search.toLowerCase());
+  let filteredData = data.filter((row) => {
+    let isStatusMatch = true;
+
+    if (options.statuses?.length > 0) {
+      isStatusMatch = options.statuses.includes(row.status);
+    }
+
+    return (
+      row.recipientName.toLowerCase().includes(options.search.toLowerCase()) &&
+      isStatusMatch
+    );
   });
 
   return {
@@ -68,12 +76,13 @@ const useBranchesQuery = (props: {
   pageIndex: number;
   pageSize: number;
   search: string;
-  statuses: ParcelStatus[];
+  statuses: string[];
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
     pageSize: props.pageSize,
     search: props.search,
+    statuses: props.statuses,
   };
 
   const dataQuery = useQuery({

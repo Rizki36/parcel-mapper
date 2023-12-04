@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id           String         @id @default(uuid())
+  name         String?
+  email        String         @unique
+  password     String
+  role         String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Courier      Courier[]
+  BranchAdmin  BranchAdmin[]
+  CentralAdmin CentralAdmin[]
+}
+
+model Branch {
+  id          String        @id @default(uuid())
+  name        String
+  branchCode  String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Courier     Courier[]
+  BranchAdmin BranchAdmin[]
+}
+
+model Courier {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+  branchId  String
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  branch    Branch   @relation(fields: [branchId], references: [id])
+  Parcel    Parcel[]
+}
+
+model BranchAdmin {
+  id        String   @id @default(uuid())
+  userId    String
+  branchId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  branch    Branch   @relation(fields: [branchId], references: [id])
+}
+
+model CentralAdmin {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Parcel {
+  id               String   @id @default(uuid())
+  recipientName    String
+  recipientAddress String
+  status           String
+  longitude        Float
+  latitude         Float
+  courierId        String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  courier          Courier  @relation(fields: [courierId], references: [id])
+}

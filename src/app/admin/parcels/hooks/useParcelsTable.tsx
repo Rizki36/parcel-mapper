@@ -5,12 +5,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-import useBranchesQuery from "./useBranchesQuery";
-import { Parcel } from "@/types";
+import useParcelsQuery from "./useParcelsQuery";
 import { PARCEL_STATUS } from "@/constants";
 import { IconButton, Tooltip } from "@radix-ui/themes";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
+import { Parcel } from "@prismaorm/generated/client";
 
 const columnHelper = createColumnHelper<Parcel>();
 
@@ -44,17 +44,17 @@ const columns = [
   }),
 ];
 
-const useBranchesTable = (props: { search: string; statuses: string[] }) => {
+const useParcelsTable = (props: { search: string; statuses: string[] }) => {
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: 0,
       pageSize: 10,
     });
 
-  const dataQuery = useBranchesQuery({
+  const dataQuery = useParcelsQuery({
     pageIndex,
     pageSize,
-    search: props.search,
+    search: props.search || undefined,
     statuses: props.statuses,
   });
 
@@ -67,9 +67,9 @@ const useBranchesTable = (props: { search: string; statuses: string[] }) => {
   );
 
   const table = useReactTable({
-    data: dataQuery.data?.rows ?? [],
+    data: dataQuery.data?.data?.docs ?? [],
     columns,
-    pageCount: dataQuery.data?.pageCount ?? -1,
+    pageCount: dataQuery.data?.data?.totalPages ?? 0,
     state: {
       pagination,
     },
@@ -85,4 +85,4 @@ const useBranchesTable = (props: { search: string; statuses: string[] }) => {
   };
 };
 
-export default useBranchesTable;
+export default useParcelsTable;

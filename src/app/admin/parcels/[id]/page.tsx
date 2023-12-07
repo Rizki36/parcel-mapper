@@ -41,8 +41,9 @@ const ParcelDetail = () => {
                     Geser marker untuk mengubah koordinat
                   </div>
                   <Button
-                    className="bg-primary"
-                    variant="soft"
+                    color="gray"
+                    variant="surface"
+                    size="2"
                     onClick={() => setEditCoordinate(false)}
                   >
                     Simpan
@@ -50,8 +51,9 @@ const ParcelDetail = () => {
                 </div>
               ) : (
                 <Button
-                  className="bg-primary"
-                  variant="soft"
+                  color="gray"
+                  variant="surface"
+                  size="2"
                   onClick={() => setEditCoordinate(true)}
                 >
                   Edit koordinat

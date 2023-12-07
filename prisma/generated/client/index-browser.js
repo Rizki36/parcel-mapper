@@ -175,9 +175,9 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.ParcelStatus = exports.$Enums.ParcelStatus = {
+  PENDING: 'PENDING',
   ON_THE_WAY: 'ON_THE_WAY',
-  DELIVERED: 'DELIVERED',
-  PENDING: 'PENDING'
+  DELIVERED: 'DELIVERED'
 };
 
 exports.Prisma.ModelName = {

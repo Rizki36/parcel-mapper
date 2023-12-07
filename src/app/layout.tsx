@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";

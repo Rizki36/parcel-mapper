@@ -1,7 +1,30 @@
-import React from "react";
+"use client";
+import React, { useCallback, useState } from "react";
 import Stepper from "./components/Stepper";
+import Map, { Marker, MarkerDragEvent, NavigationControl } from "react-map-gl";
+import { ENV } from "@/constants";
+import { Button } from "@radix-ui/themes";
 
 const ParcelDetail = () => {
+  const [editCoordinate, setEditCoordinate] = useState(false);
+
+  const [marker, setMarker] = useState({
+    latitude: -7.546839,
+    longitude: 112.226479,
+  });
+
+  const onMarkerDrag = useCallback((event: MarkerDragEvent) => {
+    setMarker({
+      longitude: event.lngLat.lng,
+      latitude: event.lngLat.lat,
+    });
+  }, []);
+
+  const onMarkerDragEnd = useCallback((event: MarkerDragEvent) => {
+    // TODO: save to database
+    console.log(event.lngLat);
+  }, []);
+
   return (
     <div className="h-screen flex flex-col">
       <div className="py-6 flex items-center justify-center bg-white w-[calc(100%+48px)] -ml-6 -mt-8 border-b border-b-neutral-100">
@@ -9,19 +32,66 @@ const ParcelDetail = () => {
       </div>
       <div className="flex -mr-6 -ml-6 flex-1">
         <div className="flex-1">
-          <div className="px-8 py-6 border-b border-b-neutral-100 bg-white">
+          <div className="px-8 py-6 border-b border-b-neutral-100 bg-white flex justify-between items-center">
             <div className="font-semibold text-lg">Lokasi pengiriman</div>
+            <div>
+              {editCoordinate ? (
+                <div className="flex items-center gap-x-2">
+                  <div className="text-sm text-neutral-600">
+                    Geser marker untuk mengubah koordinat
+                  </div>
+                  <Button
+                    className="bg-primary"
+                    variant="soft"
+                    onClick={() => setEditCoordinate(false)}
+                  >
+                    Simpan
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  className="bg-primary"
+                  variant="soft"
+                  onClick={() => setEditCoordinate(true)}
+                >
+                  Edit koordinat
+                </Button>
+              )}
+            </div>
           </div>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.220099531293!2d112.2208823750025!3d-7.550962092462698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e784010c363183b%3A0xee0ca2d0a2f294fa!2sJNE%20JOMBANG!5e0!3m2!1sid!2sid!4v1701271671730!5m2!1sid!2sid"
-            width="100%"
-            height="450"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <div className="relative">
+            <Map
+              reuseMaps
+              mapboxAccessToken={ENV.MAPBOX_ACCESS_TOKEN}
+              initialViewState={{
+                longitude: 112.226479,
+                latitude: -7.546839,
+                zoom: 14,
+              }}
+              style={{ height: 500 }}
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+            >
+              <Marker
+                longitude={marker.longitude}
+                latitude={marker.latitude}
+                anchor="bottom"
+                draggable={editCoordinate}
+                onDrag={onMarkerDrag}
+                onDragEnd={onMarkerDragEnd}
+              >
+                <img src="/marker.png" />
+              </Marker>
+              <NavigationControl />
+            </Map>
+            <div className="absolute top-3 left-3 bg-white rounded-lg">
+              <div className="px-4 py-2 text-sm text-neutral-600">
+                {marker.latitude}, {marker.longitude}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="overflow-hidden bg-white w-[350px] border-l border-l-neutral-100">
-          <div className="text-center mb-4 text-lg font-semibold">Lokasi</div>
+          <div className="text-center mb-4 text-lg font-semibold"></div>
         </div>
       </div>
     </div>

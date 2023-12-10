@@ -1,13 +1,55 @@
 import classNames from "classnames";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { HiCheckCircle } from "react-icons/hi2";
+import useParcelQuery from "../../hooks/useParcelQuery";
+import { useParams } from "next/navigation";
+import { ParcelStatus } from "@prismaorm/generated/client";
 
 const Stepper = () => {
+  const params = useParams<{
+    id: string;
+  }>();
+  const { data } = useParcelQuery({
+    id: params.id,
+  });
+  const parcel = data?.data?.doc;
+
+  const statuses: {
+    title: string;
+    status: ParcelStatus;
+  }[] = [
+    {
+      title: "Menunggu",
+      status: "PENDING",
+    },
+    {
+      title: "Dikirim",
+      status: "ON_THE_WAY",
+    },
+    {
+      title: "Terkirim",
+      status: "DELIVERED",
+    },
+  ];
+
+  const activeIndex = useMemo(() => {
+    return statuses.findIndex((status) => status.status === parcel?.status);
+  }, [parcel?.status]);
+
   return (
     <ol className="max-w-[800px] flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-      <Item number={1} title="Menunggu" active />
-      <Item number={2} title="Dikirim" active={false} />
-      <Item number={3} title="Terkirim" active={false} isLast />
+      {statuses.map((status, index) => {
+        const active = index <= activeIndex;
+        return (
+          <Item
+            key={index}
+            number={index + 1}
+            title={status.title}
+            active={active}
+            isLast={index === statuses.length - 1}
+          />
+        );
+      })}
     </ol>
   );
 };

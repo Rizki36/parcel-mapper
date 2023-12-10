@@ -18,7 +18,6 @@ export async function GET(req: Request) {
   const pageIndex = Number(searchParams.get("pageIndex") ?? "0");
   const search = searchParams.get("search") ?? "";
   const statuses = searchParams.getAll("statuses") ?? [];
-  const id = searchParams.get("id") ?? "";
 
   let whereInput: Prisma.ParcelWhereInput = {};
 
@@ -40,12 +39,6 @@ export async function GET(req: Request) {
       status: {
         in: statuses as ParcelStatus[],
       },
-    };
-  }
-  if (id) {
-    whereInput = {
-      ...whereInput,
-      id,
     };
   }
 

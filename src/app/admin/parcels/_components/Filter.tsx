@@ -4,8 +4,8 @@ import classNames from "classnames";
 import { Checkbox, Flex, Grid, Text } from "@radix-ui/themes";
 import { HiChevronDown } from "react-icons/hi2";
 import { PARCEL_STATUS } from "@/constants";
-import usePageParams from "../hooks/usePageParams";
-import useCustomRouter from "@/app/hooks/useCustomRouter";
+import usePageParams from "../_hooks/usePageParams";
+import useCustomRouter from "@/app/_hooks/useCustomRouter";
 
 const Filter = () => {
   return (

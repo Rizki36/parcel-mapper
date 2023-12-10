@@ -4,11 +4,11 @@ import { HiOutlineCube, HiMagnifyingGlass } from "react-icons/hi2";
 import dynamic from "next/dynamic";
 import { TextField } from "@radix-ui/themes";
 import { useDebounceFn } from "ahooks";
-import useCustomRouter from "@/app/hooks/useCustomRouter";
-import usePageParams from "./hooks/usePageParams";
+import useCustomRouter from "@/app/_hooks/useCustomRouter";
+import usePageParams from "./_hooks/usePageParams";
 
-const ParcelTable = dynamic(() => import("./components/Table"), {});
-const ParcelFilter = dynamic(() => import("./components/Filter"), {});
+const ParcelTable = dynamic(() => import("./_components/Table"), {});
+const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
 
 const ParcelsPage = () => {
   const { search } = usePageParams();

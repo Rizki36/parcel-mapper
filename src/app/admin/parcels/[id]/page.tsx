@@ -1,6 +1,6 @@
 "use client";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import Stepper from "./components/Stepper";
+import Stepper from "./_components/Stepper";
 import Map, {
   MapLayerMouseEvent,
   Marker,
@@ -9,9 +9,9 @@ import Map, {
 } from "react-map-gl";
 import { ENV } from "@/constants";
 import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
-import useParcelQuery from "../hooks/useParcelQuery";
+import useParcelQuery from "../_hooks/useParcelQuery";
 import { useParams } from "next/navigation";
-import usePatchParcelMutation from "../hooks/usePatchParcelMutation";
+import usePatchParcelMutation from "../_hooks/usePatchParcelMutation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

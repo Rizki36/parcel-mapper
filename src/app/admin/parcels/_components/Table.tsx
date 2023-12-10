@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import useParcelsTable from "../hooks/useParcelsTable";
-import Table from "@/app/components/Table";
-import Pagination from "@/app/components/Pagination";
-import usePageParams from "../hooks/usePageParams";
+import useParcelsTable from "../_hooks/useParcelsTable";
+import Table from "@/app/_components/Table";
+import Pagination from "@/app/_components/Pagination";
+import usePageParams from "../_hooks/usePageParams";
 
 const ParcelTable = () => {
   const { search, status: statuses } = usePageParams();

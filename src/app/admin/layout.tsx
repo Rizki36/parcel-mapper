@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./_components/Sidebar";
 import "@radix-ui/themes/styles.css";
 
 const AdminLayout: FC<{

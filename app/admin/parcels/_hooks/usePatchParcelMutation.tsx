@@ -1,4 +1,4 @@
-import axiosInstance from "@/libs/axios";
+import axiosInstance from "../../../_libs/axios";
 import { Parcel } from "@prismaorm/generated/client";
 import { useMutation } from "@tanstack/react-query";
 

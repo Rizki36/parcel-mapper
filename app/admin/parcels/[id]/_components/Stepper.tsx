@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { FC, useMemo } from "react";
 import { HiCheckCircle } from "react-icons/hi2";
-import useParcelQuery from "../../hooks/useParcelQuery";
+import useParcelQuery from "../../_hooks/useParcelQuery";
 import { useParams } from "next/navigation";
 import { ParcelStatus } from "@prismaorm/generated/client";
 

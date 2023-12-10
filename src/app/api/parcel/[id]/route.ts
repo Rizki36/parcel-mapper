@@ -87,6 +87,12 @@ export async function PATCH(
     data: {
       ...(validBody.data.latitude && { latitude: validBody.data.latitude }),
       ...(validBody.data.longitude && { longitude: validBody.data.longitude }),
+      ...(validBody.data.recipientName && {
+        recipientName: validBody.data.recipientName,
+      }),
+      ...(validBody.data.recipientAddress && {
+        recipientAddress: validBody.data.recipientAddress,
+      }),
     },
   });
 

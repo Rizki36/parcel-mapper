@@ -1,4 +1,4 @@
-import ResponseBuilder from "@/app/_utils/responseBuilder";
+import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
 import bcrypt from "bcrypt";
 import { z } from "zod";

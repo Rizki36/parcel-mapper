@@ -1,4 +1,4 @@
-import ResponseBuilder from "@/app/_utils/responseBuilder";
+import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";

@@ -4,7 +4,7 @@ import { HiOutlineCube, HiMagnifyingGlass } from "react-icons/hi2";
 import dynamic from "next/dynamic";
 import { TextField } from "@radix-ui/themes";
 import { useDebounceFn } from "ahooks";
-import useCustomRouter from "@/app/_hooks/useCustomRouter";
+import useCustomRouter from "../../_hooks/useCustomRouter";
 import usePageParams from "./_hooks/usePageParams";
 
 const ParcelTable = dynamic(() => import("./_components/Table"), {});

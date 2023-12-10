@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import useParcelsTable from "../_hooks/useParcelsTable";
-import Table from "@/app/_components/Table";
-import Pagination from "@/app/_components/Pagination";
+import Table from "../../../_components/Table";
+import Pagination from "../../../_components/Pagination";
 import usePageParams from "../_hooks/usePageParams";
 
 const ParcelTable = () => {

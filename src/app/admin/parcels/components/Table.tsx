@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import useBranchesTable from "../../branches/hooks/useTable";
+import useParcelsTable from "../hooks/useParcelsTable";
 import Table from "@/app/components/Table";
 import Pagination from "@/app/components/Pagination";
 import usePageParams from "../hooks/usePageParams";
@@ -8,7 +8,7 @@ import usePageParams from "../hooks/usePageParams";
 const ParcelTable = () => {
   const { search, status: statuses } = usePageParams();
 
-  const { table, isLoading } = useBranchesTable({
+  const { table, isLoading } = useParcelsTable({
     search,
     statuses,
   });

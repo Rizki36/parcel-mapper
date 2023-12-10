@@ -65,14 +65,20 @@ model CentralAdmin {
 }
 
 model Parcel {
-  id               String   @id @default(uuid())
+  id               String       @id @default(uuid())
   recipientName    String
-  recipientAddress String
-  status           String
-  longitude        Float
-  latitude         Float
-  courierId        String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  courier          Courier  @relation(fields: [courierId], references: [id])
+  recipientAddress String?
+  status           ParcelStatus @default(PENDING)
+  longitude        Float?
+  latitude         Float?
+  courierId        String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  courier          Courier?     @relation(fields: [courierId], references: [id])
+}
+
+enum ParcelStatus {
+  PENDING
+  ON_THE_WAY
+  DELIVERED
 }

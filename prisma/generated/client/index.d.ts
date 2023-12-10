@@ -45,6 +45,24 @@ export type CentralAdmin = $Result.DefaultSelection<Prisma.$CentralAdminPayload>
 export type Parcel = $Result.DefaultSelection<Prisma.$ParcelPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const ParcelStatus: {
+  PENDING: 'PENDING',
+  ON_THE_WAY: 'ON_THE_WAY',
+  DELIVERED: 'DELIVERED'
+};
+
+export type ParcelStatus = (typeof ParcelStatus)[keyof typeof ParcelStatus]
+
+}
+
+export type ParcelStatus = $Enums.ParcelStatus
+
+export const ParcelStatus: typeof $Enums.ParcelStatus
+
+/**
  * ##  Prisma Client ʲˢ
  * 
  * Type-safe database client for TypeScript & Node.js
@@ -6186,7 +6204,7 @@ export namespace Prisma {
     id: string | null
     recipientName: string | null
     recipientAddress: string | null
-    status: string | null
+    status: $Enums.ParcelStatus | null
     longitude: number | null
     latitude: number | null
     courierId: string | null
@@ -6198,7 +6216,7 @@ export namespace Prisma {
     id: string | null
     recipientName: string | null
     recipientAddress: string | null
-    status: string | null
+    status: $Enums.ParcelStatus | null
     longitude: number | null
     latitude: number | null
     courierId: string | null
@@ -6356,11 +6374,11 @@ export namespace Prisma {
   export type ParcelGroupByOutputType = {
     id: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
-    courierId: string
+    recipientAddress: string | null
+    status: $Enums.ParcelStatus
+    longitude: number | null
+    latitude: number | null
+    courierId: string | null
     createdAt: Date
     updatedAt: Date
     _count: ParcelCountAggregateOutputType | null
@@ -6394,7 +6412,7 @@ export namespace Prisma {
     courierId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    courier?: boolean | CourierDefaultArgs<ExtArgs>
+    courier?: boolean | Parcel$courierArgs<ExtArgs>
   }, ExtArgs["result"]["parcel"]>
 
   export type ParcelSelectScalar = {
@@ -6410,23 +6428,23 @@ export namespace Prisma {
   }
 
   export type ParcelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    courier?: boolean | CourierDefaultArgs<ExtArgs>
+    courier?: boolean | Parcel$courierArgs<ExtArgs>
   }
 
 
   export type $ParcelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Parcel"
     objects: {
-      courier: Prisma.$CourierPayload<ExtArgs>
+      courier: Prisma.$CourierPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       recipientName: string
-      recipientAddress: string
-      status: string
-      longitude: number
-      latitude: number
-      courierId: string
+      recipientAddress: string | null
+      status: $Enums.ParcelStatus
+      longitude: number | null
+      latitude: number | null
+      courierId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["parcel"]>
@@ -6794,7 +6812,7 @@ export namespace Prisma {
   export interface Prisma__ParcelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    courier<T extends CourierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourierDefaultArgs<ExtArgs>>): Prisma__CourierClient<$Result.GetResult<Prisma.$CourierPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
+    courier<T extends Parcel$courierArgs<ExtArgs> = {}>(args?: Subset<T, Parcel$courierArgs<ExtArgs>>): Prisma__CourierClient<$Result.GetResult<Prisma.$CourierPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6827,7 +6845,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Parcel", 'String'>
     readonly recipientName: FieldRef<"Parcel", 'String'>
     readonly recipientAddress: FieldRef<"Parcel", 'String'>
-    readonly status: FieldRef<"Parcel", 'String'>
+    readonly status: FieldRef<"Parcel", 'ParcelStatus'>
     readonly longitude: FieldRef<"Parcel", 'Float'>
     readonly latitude: FieldRef<"Parcel", 'Float'>
     readonly courierId: FieldRef<"Parcel", 'String'>
@@ -7145,6 +7163,22 @@ export namespace Prisma {
 
 
   /**
+   * Parcel.courier
+   */
+  export type Parcel$courierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Courier
+     */
+    select?: CourierSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CourierInclude<ExtArgs> | null
+    where?: CourierWhereInput
+  }
+
+
+  /**
    * Parcel without action
    */
   export type ParcelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7299,6 +7333,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParcelStatus'
+   */
+  export type EnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParcelStatus[]'
+   */
+  export type ListEnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus[]'>
     
 
 
@@ -7637,24 +7685,24 @@ export namespace Prisma {
     NOT?: ParcelWhereInput | ParcelWhereInput[]
     id?: StringFilter<"Parcel"> | string
     recipientName?: StringFilter<"Parcel"> | string
-    recipientAddress?: StringFilter<"Parcel"> | string
-    status?: StringFilter<"Parcel"> | string
-    longitude?: FloatFilter<"Parcel"> | number
-    latitude?: FloatFilter<"Parcel"> | number
-    courierId?: StringFilter<"Parcel"> | string
+    recipientAddress?: StringNullableFilter<"Parcel"> | string | null
+    status?: EnumParcelStatusFilter<"Parcel"> | $Enums.ParcelStatus
+    longitude?: FloatNullableFilter<"Parcel"> | number | null
+    latitude?: FloatNullableFilter<"Parcel"> | number | null
+    courierId?: StringNullableFilter<"Parcel"> | string | null
     createdAt?: DateTimeFilter<"Parcel"> | Date | string
     updatedAt?: DateTimeFilter<"Parcel"> | Date | string
-    courier?: XOR<CourierRelationFilter, CourierWhereInput>
+    courier?: XOR<CourierNullableRelationFilter, CourierWhereInput> | null
   }
 
   export type ParcelOrderByWithRelationInput = {
     id?: SortOrder
     recipientName?: SortOrder
-    recipientAddress?: SortOrder
+    recipientAddress?: SortOrderInput | SortOrder
     status?: SortOrder
-    longitude?: SortOrder
-    latitude?: SortOrder
-    courierId?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    courierId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     courier?: CourierOrderByWithRelationInput
@@ -7666,24 +7714,24 @@ export namespace Prisma {
     OR?: ParcelWhereInput[]
     NOT?: ParcelWhereInput | ParcelWhereInput[]
     recipientName?: StringFilter<"Parcel"> | string
-    recipientAddress?: StringFilter<"Parcel"> | string
-    status?: StringFilter<"Parcel"> | string
-    longitude?: FloatFilter<"Parcel"> | number
-    latitude?: FloatFilter<"Parcel"> | number
-    courierId?: StringFilter<"Parcel"> | string
+    recipientAddress?: StringNullableFilter<"Parcel"> | string | null
+    status?: EnumParcelStatusFilter<"Parcel"> | $Enums.ParcelStatus
+    longitude?: FloatNullableFilter<"Parcel"> | number | null
+    latitude?: FloatNullableFilter<"Parcel"> | number | null
+    courierId?: StringNullableFilter<"Parcel"> | string | null
     createdAt?: DateTimeFilter<"Parcel"> | Date | string
     updatedAt?: DateTimeFilter<"Parcel"> | Date | string
-    courier?: XOR<CourierRelationFilter, CourierWhereInput>
+    courier?: XOR<CourierNullableRelationFilter, CourierWhereInput> | null
   }, "id">
 
   export type ParcelOrderByWithAggregationInput = {
     id?: SortOrder
     recipientName?: SortOrder
-    recipientAddress?: SortOrder
+    recipientAddress?: SortOrderInput | SortOrder
     status?: SortOrder
-    longitude?: SortOrder
-    latitude?: SortOrder
-    courierId?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    courierId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ParcelCountOrderByAggregateInput
@@ -7699,11 +7747,11 @@ export namespace Prisma {
     NOT?: ParcelScalarWhereWithAggregatesInput | ParcelScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Parcel"> | string
     recipientName?: StringWithAggregatesFilter<"Parcel"> | string
-    recipientAddress?: StringWithAggregatesFilter<"Parcel"> | string
-    status?: StringWithAggregatesFilter<"Parcel"> | string
-    longitude?: FloatWithAggregatesFilter<"Parcel"> | number
-    latitude?: FloatWithAggregatesFilter<"Parcel"> | number
-    courierId?: StringWithAggregatesFilter<"Parcel"> | string
+    recipientAddress?: StringNullableWithAggregatesFilter<"Parcel"> | string | null
+    status?: EnumParcelStatusWithAggregatesFilter<"Parcel"> | $Enums.ParcelStatus
+    longitude?: FloatNullableWithAggregatesFilter<"Parcel"> | number | null
+    latitude?: FloatNullableWithAggregatesFilter<"Parcel"> | number | null
+    courierId?: StringNullableWithAggregatesFilter<"Parcel"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Parcel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Parcel"> | Date | string
   }
@@ -8017,23 +8065,23 @@ export namespace Prisma {
   export type ParcelCreateInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    courier: CourierCreateNestedOneWithoutParcelInput
+    courier?: CourierCreateNestedOneWithoutParcelInput
   }
 
   export type ParcelUncheckedCreateInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
-    courierId: string
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
+    courierId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8041,23 +8089,23 @@ export namespace Prisma {
   export type ParcelUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    courier?: CourierUpdateOneRequiredWithoutParcelNestedInput
+    courier?: CourierUpdateOneWithoutParcelNestedInput
   }
 
   export type ParcelUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
-    courierId?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    courierId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8065,11 +8113,11 @@ export namespace Prisma {
   export type ParcelCreateManyInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
-    courierId: string
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
+    courierId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8077,10 +8125,10 @@ export namespace Prisma {
   export type ParcelUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8088,11 +8136,11 @@ export namespace Prisma {
   export type ParcelUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
-    courierId?: StringFieldUpdateOperationsInput | string
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    courierId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8366,20 +8414,27 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type EnumParcelStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusFilter<$PrismaModel> | $Enums.ParcelStatus
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type CourierRelationFilter = {
-    is?: CourierWhereInput
-    isNot?: CourierWhereInput
+  export type CourierNullableRelationFilter = {
+    is?: CourierWhereInput | null
+    isNot?: CourierWhereInput | null
   }
 
   export type ParcelCountOrderByAggregateInput = {
@@ -8428,20 +8483,30 @@ export namespace Prisma {
     latitude?: SortOrder
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type EnumParcelStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParcelStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParcelStatusFilter<$PrismaModel>
+    _max?: NestedEnumParcelStatusFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type CourierCreateNestedManyWithoutUserInput = {
@@ -8784,18 +8849,24 @@ export namespace Prisma {
     connect?: CourierWhereUniqueInput
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
+  export type EnumParcelStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ParcelStatus
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
   }
 
-  export type CourierUpdateOneRequiredWithoutParcelNestedInput = {
+  export type CourierUpdateOneWithoutParcelNestedInput = {
     create?: XOR<CourierCreateWithoutParcelInput, CourierUncheckedCreateWithoutParcelInput>
     connectOrCreate?: CourierCreateOrConnectWithoutParcelInput
     upsert?: CourierUpsertWithoutParcelInput
+    disconnect?: CourierWhereInput | boolean
+    delete?: CourierWhereInput | boolean
     connect?: CourierWhereUniqueInput
     update?: XOR<XOR<CourierUpdateToOneWithWhereWithoutParcelInput, CourierUpdateWithoutParcelInput>, CourierUncheckedUpdateWithoutParcelInput>
   }
@@ -8909,31 +8980,48 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+  export type NestedEnumParcelStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusFilter<$PrismaModel> | $Enums.ParcelStatus
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParcelStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedEnumParcelStatusFilter<$PrismaModel>
+    _max?: NestedEnumParcelStatusFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type CourierCreateWithoutUserInput = {
@@ -9225,10 +9313,10 @@ export namespace Prisma {
   export type ParcelCreateWithoutCourierInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9236,10 +9324,10 @@ export namespace Prisma {
   export type ParcelUncheckedCreateWithoutCourierInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9340,11 +9428,11 @@ export namespace Prisma {
     NOT?: ParcelScalarWhereInput | ParcelScalarWhereInput[]
     id?: StringFilter<"Parcel"> | string
     recipientName?: StringFilter<"Parcel"> | string
-    recipientAddress?: StringFilter<"Parcel"> | string
-    status?: StringFilter<"Parcel"> | string
-    longitude?: FloatFilter<"Parcel"> | number
-    latitude?: FloatFilter<"Parcel"> | number
-    courierId?: StringFilter<"Parcel"> | string
+    recipientAddress?: StringNullableFilter<"Parcel"> | string | null
+    status?: EnumParcelStatusFilter<"Parcel"> | $Enums.ParcelStatus
+    longitude?: FloatNullableFilter<"Parcel"> | number | null
+    latitude?: FloatNullableFilter<"Parcel"> | number | null
+    courierId?: StringNullableFilter<"Parcel"> | string | null
     createdAt?: DateTimeFilter<"Parcel"> | Date | string
     updatedAt?: DateTimeFilter<"Parcel"> | Date | string
   }
@@ -9720,10 +9808,10 @@ export namespace Prisma {
   export type ParcelCreateManyCourierInput = {
     id?: string
     recipientName: string
-    recipientAddress: string
-    status: string
-    longitude: number
-    latitude: number
+    recipientAddress?: string | null
+    status?: $Enums.ParcelStatus
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9731,10 +9819,10 @@ export namespace Prisma {
   export type ParcelUpdateWithoutCourierInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9742,10 +9830,10 @@ export namespace Prisma {
   export type ParcelUncheckedUpdateWithoutCourierInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9753,10 +9841,10 @@ export namespace Prisma {
   export type ParcelUncheckedUpdateManyWithoutCourierInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipientName?: StringFieldUpdateOperationsInput | string
-    recipientAddress?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    longitude?: FloatFieldUpdateOperationsInput | number
-    latitude?: FloatFieldUpdateOperationsInput | number
+    recipientAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumParcelStatusFieldUpdateOperationsInput | $Enums.ParcelStatus
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

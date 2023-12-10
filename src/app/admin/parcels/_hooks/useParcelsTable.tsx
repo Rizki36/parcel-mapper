@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import useParcelsQuery from "./useParcelsQuery";
-import { PARCEL_STATUS } from "@/constants";
+import { PARCEL_STATUS } from "@/app/_constants";
 import { IconButton, Tooltip } from "@radix-ui/themes";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";

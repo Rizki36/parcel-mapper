@@ -8,7 +8,7 @@ import ReactMapGL, {
 } from "react-map-gl";
 import { Parcel } from "@prismaorm/generated/client";
 import { Button } from "@radix-ui/themes";
-import { ENV } from "@/constants";
+import { ENV } from "@/app/_constants";
 
 const Map: FC<{
   parcel: Parcel | undefined;

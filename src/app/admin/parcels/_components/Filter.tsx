@@ -3,7 +3,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import classNames from "classnames";
 import { Checkbox, Flex, Grid, Text } from "@radix-ui/themes";
 import { HiChevronDown } from "react-icons/hi2";
-import { PARCEL_STATUS } from "@/constants";
+import { PARCEL_STATUS } from "@/app/_constants";
 import usePageParams from "../_hooks/usePageParams";
 import useCustomRouter from "@/app/_hooks/useCustomRouter";
 

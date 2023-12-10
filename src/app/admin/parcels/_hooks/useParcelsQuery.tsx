@@ -1,5 +1,5 @@
-import axiosInstance from "@/libs/axios";
-import { BuildPaginatedResponse } from "@/utils/responseBuilder";
+import axiosInstance from "@/app/_libs/axios";
+import { BuildPaginatedResponse } from "@/app/_utils/responseBuilder";
 import { Parcel } from "@prismaorm/generated/client";
 import { useQuery } from "@tanstack/react-query";
 

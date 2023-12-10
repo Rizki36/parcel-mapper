@@ -1,4 +1,4 @@
-import ResponseBuilder from "@/utils/responseBuilder";
+import ResponseBuilder from "@/app/_utils/responseBuilder";
 import prisma from "@prismaorm/client";
 import { ParcelStatus, Prisma } from "@prismaorm/generated/client";
 import { z } from "zod";

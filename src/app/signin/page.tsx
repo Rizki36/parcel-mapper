@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { FiUser, FiKey } from "react-icons/fi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import signInSchema from "@/validation/signinSchema";
+import signInSchema from "@/app/_validations/signinSchema";
 
 type SignInForm = z.infer<typeof signInSchema>;
 

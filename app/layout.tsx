@@ -5,8 +5,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
-import Providers from "./providers";
 import React from "react";
+import Providers from "./_components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],

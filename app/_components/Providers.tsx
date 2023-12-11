@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FC, ReactNode, useState } from "react";
 
 const theme = extendTheme({
+  fonts: {
+    heading: "var(--font-inter)",
+    body: "var(--font-inter)",
+  },
   colors: {
     primary: "#3bc3be",
   },

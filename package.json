@@ -10,10 +10,12 @@
     "postinstall": "prisma migrate deploy && prisma generate"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.2.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "^5.6.0",
-    "@radix-ui/react-accordion": "^1.1.2",
-    "@radix-ui/themes": "^2.0.1",
     "@tanstack/react-query": "^5.8.7",
     "@tanstack/react-table": "^8.10.7",
     "ahooks": "^3.7.8",
@@ -21,6 +23,7 @@
     "bcrypt": "^5.1.1",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
+    "framer-motion": "^10.16.16",
     "jsonwebtoken": "^9.0.2",
     "mapbox-gl": "^3.0.0",
     "next": "14.0.3",
@@ -45,7 +48,6 @@
     "eslint-config-next": "14.0.3",
     "postcss": "^8",
     "prisma": "^5.6.0",
-    "tailwindcss": "^3.3.0",
     "typescript": "^5"
   },
   "prisma": {

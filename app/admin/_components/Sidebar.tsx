@@ -1,6 +1,5 @@
 "use client";
-import classNames from "classnames";
-import Link from "next/link";
+import { Box, Link, Text } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import React, { FC } from "react";
 import { HiOutlineCube } from "react-icons/hi2";
@@ -27,35 +26,59 @@ const MenuItem: FC<{
   const active = path.startsWith(href);
 
   return (
-    <li>
+    <Box as="li" listStyleType="none">
       <Link
-        className={classNames(
-          "py-3 flex items-center font-semibold gap-x-2 leading-[130%] hover:text-white hover:bg-primary px-2 rounded-lg",
-          {
-            "bg-primary text-white": active,
-          }
-        )}
+        py={2.5}
+        px={2}
+        rounded={4}
+        display="flex"
+        alignItems="center"
+        columnGap={2}
+        bg={active ? "teal.400" : "transparent"}
+        color={active ? "white" : "inherit"}
+        _hover={{
+          bg: "teal.400",
+          color: "white",
+        }}
+        mt={2}
         href={href}
       >
         {icon}
         {children}
       </Link>
-    </li>
+    </Box>
   );
 };
 
 const Sidebar = () => {
   return (
-    <aside className="h-screen border-r border-r-neutral-100">
-      <h1 className="text-2xl font-bold mt-7 text-center mb-7">Admin</h1>
-      <ul className="px-4 space-y-1">
+    <Box
+      as="aside"
+      h="screen"
+      borderRight={1}
+      borderRightStyle="solid"
+      borderRightColor="gray.100"
+    >
+      <Text fontSize="2xl" fontWeight="bold" my={7} textAlign="center">
+        Admin
+      </Text>
+      <Box
+        as="ul"
+        px={4}
+        mt={4}
+        mb={4}
+        _first={{
+          mt: 0,
+          mb: 0,
+        }}
+      >
         {menus.map((menu) => (
           <MenuItem key={menu.href} href={menu.href} icon={menu.icon}>
             {menu.text}
           </MenuItem>
         ))}
-      </ul>
-    </aside>
+      </Box>
+    </Box>
   );
 };
 

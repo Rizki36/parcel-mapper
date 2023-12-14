@@ -1,24 +1,47 @@
 import React from "react";
-import * as Accordion from "@radix-ui/react-accordion";
-import classNames from "classnames";
-import { Checkbox, Flex, Grid, Text } from "@radix-ui/themes";
-import { HiChevronDown } from "react-icons/hi2";
 import { PARCEL_STATUS } from "../../../_constants";
 import usePageParams from "../_hooks/usePageParams";
 import useCustomRouter from "../../../_hooks/useCustomRouter";
+import {
+  AccordionIcon,
+  Box,
+  Checkbox,
+  Flex,
+  Grid,
+  Text,
+} from "@chakra-ui/react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+} from "@chakra-ui/react";
 
 const Filter = () => {
   return (
-    <div className="bg-white rounded-xl px-4 py-6 w-[300px]">
-      <div className="border-b pb-4 font-semibold mb-2">Filter</div>
-      <Accordion.Root
-        className="AccordionRoot"
-        type="multiple"
-        defaultValue={["status"]}
+    <Box
+      as="aside"
+      bg="white"
+      rounded="xl"
+      px={5}
+      py={6}
+      w="300px"
+      minH="700px"
+    >
+      <Box
+        pb={4}
+        mb={2}
+        borderBottom={1}
+        fontWeight="semibold"
+        borderBottomStyle="solid"
+        borderBottomColor="gray.100"
       >
+        Filter
+      </Box>
+      <Accordion defaultIndex={[0]} allowMultiple>
         <StatusFilter />
-      </Accordion.Root>
-    </div>
+      </Accordion>
+    </Box>
   );
 };
 
@@ -27,66 +50,36 @@ const StatusFilter = () => {
   const { pushToggleFilter } = useCustomRouter();
 
   return (
-    <Accordion.Item className="AccordionItem" value="status" data-state="open">
-      <AccordionTrigger>Status</AccordionTrigger>
-      <AccordionContent>
-        <Grid rows="2" gap="2" display="inline-grid" flow="row">
+    <AccordionItem border={0}>
+      <AccordionButton>
+        <Box as="span" flex="1" textAlign="left">
+          Status
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+      <AccordionPanel>
+        <Grid gap="2" display="inline-grid">
           {Object.entries(PARCEL_STATUS).map(([key, value]) => (
             <Text key={key} as="label" size="2">
               <Flex gap="2">
                 <Checkbox
                   name="status"
-                  checked={status?.includes(key) ?? false}
-                  color="green"
-                  onCheckedChange={() => {
+                  isChecked={status?.includes(key) ?? false}
+                  colorScheme="teal"
+                  onChange={() => {
                     pushToggleFilter("/admin/parcels", "status", key);
                   }}
-                />{" "}
-                {value}
+                >
+                  {" "}
+                  {value}
+                </Checkbox>
               </Flex>
             </Text>
           ))}
         </Grid>
-      </AccordionContent>
-    </Accordion.Item>
+      </AccordionPanel>
+    </AccordionItem>
   );
 };
-
-const AccordionTrigger = React.forwardRef<
-  HTMLButtonElement,
-  {
-    className?: string;
-    children: React.ReactNode;
-  }
->(({ children, className, ...props }, forwardedRef) => (
-  <Accordion.Header className="AccordionHeader">
-    <Accordion.Trigger
-      className={classNames("AccordionTrigger", className)}
-      {...props}
-      ref={forwardedRef}
-    >
-      {children}
-      <HiChevronDown className="AccordionChevron" aria-hidden />
-    </Accordion.Trigger>
-  </Accordion.Header>
-));
-AccordionTrigger.displayName = "AccordionTrigger";
-
-const AccordionContent = React.forwardRef<
-  HTMLDivElement,
-  {
-    className?: string;
-    children: React.ReactNode;
-  }
->(({ children, className, ...props }, forwardedRef) => (
-  <Accordion.Content
-    className={classNames("AccordionContent", className)}
-    {...props}
-    ref={forwardedRef}
-  >
-    <div className="AccordionContentText">{children}</div>
-  </Accordion.Content>
-));
-AccordionContent.displayName = "AccordionContent";
 
 export default Filter;

@@ -4,7 +4,16 @@ import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import usePatchParcelMutation from "../../_hooks/usePatchParcelMutation";
-import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Textarea,
+  useToast,
+} from "@chakra-ui/react";
 
 const formSchema = z.object({
   recipientName: z.string(),
@@ -14,6 +23,8 @@ const formSchema = z.object({
 const Form: FC<{
   parcel: Parcel | undefined;
 }> = ({ parcel }) => {
+  const toast = useToast();
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       recipientName: parcel?.recipientName || "",
@@ -33,49 +44,68 @@ const Form: FC<{
         },
       });
 
-      alert("Berhasil menyimpan data");
+      toast({
+        colorScheme: "teal",
+        title: "Berhasil menyimpan data",
+        status: "success",
+        isClosable: true,
+        position: "top",
+      });
     } catch (error) {
-      alert("Gagal menyimpan data");
+      toast({
+        title: "Gagal menyimpan data",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-y-3">
-        <Text as="label" size="2">
-          Nama Penerima
-          <Controller
-            name="recipientName"
-            control={control}
-            render={({ field }) => (
-              <TextField.Input
-                size="2"
+      <Flex direction="column" rowGap={3}>
+        <Controller
+          name="recipientName"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormControl isInvalid={!!fieldState.error}>
+              <FormLabel fontSize="13px">Nama Penerima</FormLabel>
+              <Input
+                size="sm"
+                colorScheme="teal"
                 placeholder="Masukkan nama penerima"
                 {...field}
               />
-            )}
-          />
-        </Text>
-        <Text as="label" size="2">
-          Alamat Penerima
-          <Controller
-            name="recipientAddress"
-            control={control}
-            render={({ field }) => (
-              <TextArea
-                size="2"
+              {fieldState.error ? (
+                <FormErrorMessage>{fieldState.error.message}</FormErrorMessage>
+              ) : null}
+            </FormControl>
+          )}
+        />
+        <Controller
+          name="recipientAddress"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormControl isInvalid={!!fieldState.error}>
+              <FormLabel fontSize="13px">Alamat Penerima</FormLabel>
+              <Textarea
+                size="sm"
+                colorScheme="teal"
                 placeholder="Masukkan alamat penerima"
                 {...field}
               />
-            )}
-          />
-        </Text>
-        <div className="flex justify-center">
-          <Button type="submit" size="2">
+              {fieldState.error ? (
+                <FormErrorMessage>{fieldState.error.message}</FormErrorMessage>
+              ) : null}
+            </FormControl>
+          )}
+        />
+        <Flex justifyContent="center">
+          <Button type="submit" colorScheme="teal" size="sm">
             Simpan
           </Button>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </form>
   );
 };

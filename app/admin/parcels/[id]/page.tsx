@@ -5,6 +5,7 @@ import useParcelQuery from "../_hooks/useParcelQuery";
 import { useParams } from "next/navigation";
 import Form from "./_components/Form";
 import Map from "./_components/Map";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 
 const ParcelDetail = () => {
   const { id } = useParams<{
@@ -16,22 +17,45 @@ const ParcelDetail = () => {
   const parcel = data?.data?.doc;
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="py-6 flex items-center justify-center bg-white w-[calc(100%+48px)] -ml-6 -mt-8 border-b border-b-neutral-100">
+    <Flex h="100vh" flexDir="column">
+      <Flex
+        alignItems="center"
+        py={6}
+        justifyContent="center"
+        bg="white"
+        w="calc(100% + 48px)"
+        ml={-6}
+        mt={-8}
+        borderBottom={1}
+        borderBottomStyle="solid"
+        borderBottomColor="gray.100"
+      >
         <Stepper />
-      </div>
-      <div className="flex -mr-6 -ml-6 flex-1">
-        <div className="flex-1">
-          {!loadingParcel ? <Map parcel={parcel} /> : null}
-        </div>
-        <div className="overflow-hidden bg-white w-[350px] border-l border-l-neutral-100 px-4">
-          <div className="text-center mb-4 mt-5 text-lg font-semibold">
+      </Flex>
+      <Flex mr={-6} ml={-6} flex={1}>
+        <Box flex={1}>{!loadingParcel ? <Map parcel={parcel} /> : null}</Box>
+        <Box
+          bg="white"
+          overflow="hidden"
+          w="350px"
+          borderLeft={1}
+          borderLeftStyle="solid"
+          borderLeftColor="gray.100"
+          px={5}
+        >
+          <Heading
+            fontWeight="semibold"
+            textAlign="center"
+            mb={4}
+            mt={5}
+            fontSize="md"
+          >
             Data Paket
-          </div>
+          </Heading>
           {!loadingParcel ? <Form parcel={parcel} /> : null}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
 

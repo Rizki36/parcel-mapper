@@ -7,8 +7,8 @@ import ReactMapGL, {
   NavigationControl,
 } from "react-map-gl";
 import { Parcel } from "@prismaorm/generated/client";
-import { Button } from "@radix-ui/themes";
 import { ENV } from "../../../../_constants";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 
 const Map: FC<{
   parcel: Parcel | undefined;
@@ -77,26 +77,37 @@ const Map: FC<{
 
   return (
     <>
-      <div className="px-8 py-6 border-b border-b-neutral-100 bg-white flex justify-between items-center">
-        <div className="font-semibold text-lg">Lokasi pengiriman</div>
+      <Flex
+        px={8}
+        py={6}
+        borderBottom={1}
+        borderBottomStyle="solid"
+        borderBottomColor="gray.100"
+        bg="white"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Heading size="sm" fontWeight="semibold">
+          Lokasi pengiriman
+        </Heading>
         <div>
           {editCoordinate ? (
-            <div className="flex items-center gap-x-2">
-              <div className="text-sm text-neutral-600">
+            <Flex alignItems="center" columnGap={2}>
+              <Box fontSize="sm" color="gray.600">
                 Geser marker / klik map untuk mengubah koordinat
-              </div>
+              </Box>
               <Button
-                color="gray"
-                variant="surface"
-                size="2"
+                colorScheme="gray"
+                variant="outline"
+                size="sm"
                 onClick={() => onSaveCoordinate()}
               >
                 Simpan
               </Button>
               <Button
-                color="gray"
-                variant="surface"
-                size="2"
+                colorScheme="gray"
+                variant="outline"
+                size="sm"
                 onClick={() => {
                   setEditCoordinate(false);
                   setMarker({
@@ -107,20 +118,20 @@ const Map: FC<{
               >
                 Batal
               </Button>
-            </div>
+            </Flex>
           ) : (
             <Button
-              color="gray"
-              variant="surface"
-              size="2"
+              colorScheme="gray"
+              variant="ghost"
+              size="sm"
               onClick={() => setEditCoordinate(true)}
             >
               Edit koordinat
             </Button>
           )}
         </div>
-      </div>
-      <div className="relative">
+      </Flex>
+      <Box pos="relative">
         <ReactMapGL
           reuseMaps
           onClick={onClick}
@@ -149,13 +160,13 @@ const Map: FC<{
         </ReactMapGL>
 
         {marker.longitude && marker.latitude && (
-          <div className="absolute top-3 left-3 bg-white rounded-lg">
-            <div className="px-4 py-2 text-sm text-neutral-600">
+          <Box pos="absolute" top={3} left={3} bg="white" rounded="lg">
+            <Box px={4} py={2} fontSize="sm" color="gray.600">
               {marker.latitude}, {marker.longitude}
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
-      </div>
+      </Box>
     </>
   );
 };

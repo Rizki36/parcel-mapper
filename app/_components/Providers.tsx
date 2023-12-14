@@ -9,9 +9,7 @@ const theme = extendTheme({
     heading: "var(--font-inter)",
     body: "var(--font-inter)",
   },
-  colors: {
-    primary: "#3bc3be",
-  },
+  colors: {},
 });
 
 const Providers: FC<{ children: ReactNode }> = ({ children }) => {

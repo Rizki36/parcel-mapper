@@ -1,6 +1,15 @@
 import { Table as TableType, flexRender } from "@tanstack/react-table";
-import classNames from "classnames";
 import React from "react";
+import {
+  Table as ChakraTable,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  CircularProgress,
+} from "@chakra-ui/react";
 
 const Table = <T,>(props: {
   table: TableType<T>;
@@ -11,15 +20,22 @@ const Table = <T,>(props: {
   const { table, isLoading, containerClassName, tableClassName } = props;
 
   return (
-    <div className={classNames("relative", containerClassName)}>
-      <table
-        className={classNames("min-w-full text-left text-sm", tableClassName)}
+    <TableContainer position="relative" className={containerClassName}>
+      <ChakraTable
+        variant="unstyled"
+        className={tableClassName}
+        fontSize="small"
       >
-        <thead className="border-b font-medium">
+        <Thead
+          borderBottom={1}
+          borderBottomStyle="solid"
+          borderBottomColor="gray.100"
+          fontWeight="medium"
+        >
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th
+                <Th
                   key={header.id}
                   {...{
                     colSpan: header.colSpan,
@@ -27,7 +43,11 @@ const Table = <T,>(props: {
                       width: header.getSize(),
                     },
                   }}
-                  className="py-3 px-2 text-neutral-500"
+                  py={3}
+                  px={2}
+                  color="gray.600"
+                  textTransform="unset"
+                  fontSize=""
                 >
                   {header.isPlaceholder
                     ? null
@@ -35,33 +55,59 @@ const Table = <T,>(props: {
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                </th>
+                </Th>
               ))}
-            </tr>
+            </Tr>
           ))}
-        </thead>
-        <tbody>
+        </Thead>
+        <Tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <Tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td
+                <Td
                   key={cell.id}
-                  className="py-2.5 px-2"
+                  py={2}
+                  px={2}
                   width={cell.column.getSize()}
+                  fontSize="small"
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </Td>
               ))}
-            </tr>
+            </Tr>
           ))}
-        </tbody>
-      </table>
-      {isLoading ? (
-        <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : null}
-    </div>
+          {isLoading ? (
+            <Tr>
+              <Td
+                colSpan={1000}
+                py={2}
+                px={2}
+                fontSize="small"
+                textAlign="center"
+                verticalAlign="middle"
+              >
+                <CircularProgress isIndeterminate color="teal.300" size={10} />
+              </Td>
+            </Tr>
+          ) : null}
+
+          {table.getRowModel().rows.length === 0 && !isLoading ? (
+            <Tr>
+              <Td
+                colSpan={1000}
+                py={2}
+                px={2}
+                fontSize="small"
+                textAlign="center"
+                verticalAlign="middle"
+              >
+                Tidak ada data
+              </Td>
+            </Tr>
+          ) : null}
+        </Tbody>
+      </ChakraTable>
+    </TableContainer>
   );
 };
 

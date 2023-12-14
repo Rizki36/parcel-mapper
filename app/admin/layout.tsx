@@ -1,15 +1,17 @@
 import React, { FC } from "react";
 import Sidebar from "./_components/Sidebar";
-import "@radix-ui/themes/styles.css";
+import { Box } from "@chakra-ui/react";
 
 const AdminLayout: FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   return (
-    <main className="grid grid-cols-[250px,1fr]">
+    <Box as="main" display="grid" gridTemplateColumns="250px 1fr" h="100vh">
       <Sidebar />
-      <section className="pt-8 px-6 pb-0 bg-neutral-50">{children}</section>
-    </main>
+      <Box pt={8} px={6} pb={0} bg="gray.50">
+        {children}
+      </Box>
+    </Box>
   );
 };
 

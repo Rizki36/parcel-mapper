@@ -26,7 +26,7 @@ const MenuItem: FC<{
   const active = path.startsWith(href);
 
   return (
-    <li>
+    <Box as="li" listStyleType="none">
       <Link
         py={2.5}
         px={2}
@@ -34,24 +34,31 @@ const MenuItem: FC<{
         display="flex"
         alignItems="center"
         columnGap={2}
-        bg={active ? "primary" : "transparent"}
+        bg={active ? "teal.400" : "transparent"}
         color={active ? "white" : "inherit"}
         _hover={{
-          bg: "primary",
+          bg: "teal.400",
           color: "white",
         }}
+        mt={2}
         href={href}
       >
         {icon}
         {children}
       </Link>
-    </li>
+    </Box>
   );
 };
 
 const Sidebar = () => {
   return (
-    <Box as="aside" h="screen" borderRight={1} borderRightColor="gray.100">
+    <Box
+      as="aside"
+      h="screen"
+      borderRight={1}
+      borderRightStyle="solid"
+      borderRightColor="gray.100"
+    >
       <Text fontSize="2xl" fontWeight="bold" my={7} textAlign="center">
         Admin
       </Text>

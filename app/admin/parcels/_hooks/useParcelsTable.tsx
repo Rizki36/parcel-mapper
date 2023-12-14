@@ -7,10 +7,10 @@ import {
 import React from "react";
 import useParcelsQuery from "./useParcelsQuery";
 import { PARCEL_STATUS } from "../../../_constants";
-import { IconButton, Tooltip } from "@radix-ui/themes";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
 import { Parcel } from "@prismaorm/generated/client";
+import { IconButton, Tooltip } from "@chakra-ui/react";
 
 const columnHelper = createColumnHelper<Parcel>();
 
@@ -30,11 +30,15 @@ const columns = [
       const id = props.row.original.id;
       return (
         <div>
-          <Tooltip content="Detail paket">
+          <Tooltip label="Detail paket">
             <Link href={`/admin/parcels/${id}`}>
-              <IconButton radius="full" variant="soft">
-                <HiEye />
-              </IconButton>
+              <IconButton
+                isRound={true}
+                variant="outline"
+                size="xs"
+                aria-label="Detail paket"
+                icon={<HiEye style="" />}
+              ></IconButton>
             </Link>
           </Tooltip>
         </div>

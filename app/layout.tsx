@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Theme } from "@radix-ui/themes";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
-import "@radix-ui/themes/styles.css";
-import "./theme-config.css";
 import React from "react";
 import Providers from "./_components/Providers";
 
@@ -26,9 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <Providers>
-          <Theme appearance="light">{children}</Theme>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

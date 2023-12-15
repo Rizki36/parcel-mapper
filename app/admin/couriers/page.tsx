@@ -15,7 +15,7 @@ import { useDebounceFn } from "ahooks";
 import dynamic from "next/dynamic";
 
 const CourierTable = dynamic(() => import("./_components/Table"), {});
-// const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
+const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
 
 const CouriersPage = () => {
   const { search } = usePageParams();
@@ -65,6 +65,7 @@ const CouriersPage = () => {
         </Box>
       </Box>
       {/* filter */}
+      <ParcelFilter />
     </Flex>
   );
 };

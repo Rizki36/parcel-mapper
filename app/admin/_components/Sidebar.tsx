@@ -2,7 +2,11 @@
 import { Box, Link, Text } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import React, { FC } from "react";
-import { HiOutlineCube } from "react-icons/hi2";
+import {
+  HiOutlineCube,
+  HiOutlineHomeModern,
+  HiOutlineTruck,
+} from "react-icons/hi2";
 
 const menus: { href: string; text: string; icon: React.ReactNode }[] = [
   {
@@ -11,9 +15,14 @@ const menus: { href: string; text: string; icon: React.ReactNode }[] = [
     icon: <HiOutlineCube />,
   },
   {
+    href: "/admin/couriers",
+    text: "Kurir",
+    icon: <HiOutlineTruck />,
+  },
+  {
     href: "/admin/branches",
     text: "Cabang",
-    icon: <HiOutlineCube />,
+    icon: <HiOutlineHomeModern />,
   },
 ];
 

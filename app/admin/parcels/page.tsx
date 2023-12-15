@@ -46,14 +46,13 @@ const ParcelsPage = () => {
             Paket
           </Heading>
           <Flex alignItems="center" columnGap={4}>
-            <InputGroup>
+            <InputGroup size="sm">
               <InputLeftElement pointerEvents="none">
                 <HiMagnifyingGlass />
               </InputLeftElement>
               <Input
                 colorScheme="teal"
-                type="tel"
-                placeholder="Phone number"
+                placeholder="Cari paket"
                 defaultValue={search}
                 onChange={(e) => run(e.currentTarget.value)}
               />

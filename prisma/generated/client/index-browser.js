@@ -127,9 +127,10 @@ exports.Prisma.BranchScalarFieldEnum = {
 
 exports.Prisma.CourierScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   userId: 'userId',
-  createdAt: 'createdAt',
   branchId: 'branchId',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 

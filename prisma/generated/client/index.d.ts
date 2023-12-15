@@ -3409,25 +3409,28 @@ export namespace Prisma {
 
   export type CourierMinAggregateOutputType = {
     id: string | null
+    name: string | null
     userId: string | null
-    createdAt: Date | null
     branchId: string | null
+    createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type CourierMaxAggregateOutputType = {
     id: string | null
+    name: string | null
     userId: string | null
-    createdAt: Date | null
     branchId: string | null
+    createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type CourierCountAggregateOutputType = {
     id: number
+    name: number
     userId: number
-    createdAt: number
     branchId: number
+    createdAt: number
     updatedAt: number
     _all: number
   }
@@ -3435,25 +3438,28 @@ export namespace Prisma {
 
   export type CourierMinAggregateInputType = {
     id?: true
+    name?: true
     userId?: true
-    createdAt?: true
     branchId?: true
+    createdAt?: true
     updatedAt?: true
   }
 
   export type CourierMaxAggregateInputType = {
     id?: true
+    name?: true
     userId?: true
-    createdAt?: true
     branchId?: true
+    createdAt?: true
     updatedAt?: true
   }
 
   export type CourierCountAggregateInputType = {
     id?: true
+    name?: true
     userId?: true
-    createdAt?: true
     branchId?: true
+    createdAt?: true
     updatedAt?: true
     _all?: true
   }
@@ -3532,9 +3538,10 @@ export namespace Prisma {
 
   export type CourierGroupByOutputType = {
     id: string
-    userId: string
+    name: string
+    userId: string | null
+    branchId: string | null
     createdAt: Date
-    branchId: string
     updatedAt: Date
     _count: CourierCountAggregateOutputType | null
     _min: CourierMinAggregateOutputType | null
@@ -3557,27 +3564,29 @@ export namespace Prisma {
 
   export type CourierSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
     userId?: boolean
-    createdAt?: boolean
     branchId?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    user?: boolean | Courier$userArgs<ExtArgs>
+    branch?: boolean | Courier$branchArgs<ExtArgs>
     Parcel?: boolean | Courier$ParcelArgs<ExtArgs>
     _count?: boolean | CourierCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["courier"]>
 
   export type CourierSelectScalar = {
     id?: boolean
+    name?: boolean
     userId?: boolean
-    createdAt?: boolean
     branchId?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
   }
 
   export type CourierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    branch?: boolean | BranchDefaultArgs<ExtArgs>
+    user?: boolean | Courier$userArgs<ExtArgs>
+    branch?: boolean | Courier$branchArgs<ExtArgs>
     Parcel?: boolean | Courier$ParcelArgs<ExtArgs>
     _count?: boolean | CourierCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -3586,15 +3595,16 @@ export namespace Prisma {
   export type $CourierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Courier"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      branch: Prisma.$BranchPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
+      branch: Prisma.$BranchPayload<ExtArgs> | null
       Parcel: Prisma.$ParcelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      name: string
+      userId: string | null
+      branchId: string | null
       createdAt: Date
-      branchId: string
       updatedAt: Date
     }, ExtArgs["result"]["courier"]>
     composites: {}
@@ -3961,9 +3971,9 @@ export namespace Prisma {
   export interface Prisma__CourierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
+    user<T extends Courier$userArgs<ExtArgs> = {}>(args?: Subset<T, Courier$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
-    branch<T extends BranchDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BranchDefaultArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
+    branch<T extends Courier$branchArgs<ExtArgs> = {}>(args?: Subset<T, Courier$branchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
     Parcel<T extends Courier$ParcelArgs<ExtArgs> = {}>(args?: Subset<T, Courier$ParcelArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ParcelPayload<ExtArgs>, T, 'findMany'> | Null>;
 
@@ -3996,9 +4006,10 @@ export namespace Prisma {
    */ 
   interface CourierFieldRefs {
     readonly id: FieldRef<"Courier", 'String'>
+    readonly name: FieldRef<"Courier", 'String'>
     readonly userId: FieldRef<"Courier", 'String'>
-    readonly createdAt: FieldRef<"Courier", 'DateTime'>
     readonly branchId: FieldRef<"Courier", 'String'>
+    readonly createdAt: FieldRef<"Courier", 'DateTime'>
     readonly updatedAt: FieldRef<"Courier", 'DateTime'>
   }
     
@@ -4308,6 +4319,38 @@ export namespace Prisma {
      * Filter which Couriers to delete
      */
     where?: CourierWhereInput
+  }
+
+
+  /**
+   * Courier.user
+   */
+  export type Courier$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+
+  /**
+   * Courier.branch
+   */
+  export type Courier$branchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Branch
+     */
+    select?: BranchSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: BranchInclude<ExtArgs> | null
+    where?: BranchWhereInput
   }
 
 
@@ -7234,9 +7277,10 @@ export namespace Prisma {
 
   export const CourierScalarFieldEnum: {
     id: 'id',
+    name: 'name',
     userId: 'userId',
-    createdAt: 'createdAt',
     branchId: 'branchId',
+    createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
@@ -7515,20 +7559,22 @@ export namespace Prisma {
     OR?: CourierWhereInput[]
     NOT?: CourierWhereInput | CourierWhereInput[]
     id?: StringFilter<"Courier"> | string
-    userId?: StringFilter<"Courier"> | string
+    name?: StringFilter<"Courier"> | string
+    userId?: StringNullableFilter<"Courier"> | string | null
+    branchId?: StringNullableFilter<"Courier"> | string | null
     createdAt?: DateTimeFilter<"Courier"> | Date | string
-    branchId?: StringFilter<"Courier"> | string
     updatedAt?: DateTimeFilter<"Courier"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    branch?: XOR<BranchRelationFilter, BranchWhereInput>
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
     Parcel?: ParcelListRelationFilter
   }
 
   export type CourierOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    branchId?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     branch?: BranchOrderByWithRelationInput
@@ -7540,20 +7586,22 @@ export namespace Prisma {
     AND?: CourierWhereInput | CourierWhereInput[]
     OR?: CourierWhereInput[]
     NOT?: CourierWhereInput | CourierWhereInput[]
-    userId?: StringFilter<"Courier"> | string
+    name?: StringFilter<"Courier"> | string
+    userId?: StringNullableFilter<"Courier"> | string | null
+    branchId?: StringNullableFilter<"Courier"> | string | null
     createdAt?: DateTimeFilter<"Courier"> | Date | string
-    branchId?: StringFilter<"Courier"> | string
     updatedAt?: DateTimeFilter<"Courier"> | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    branch?: XOR<BranchRelationFilter, BranchWhereInput>
+    user?: XOR<UserNullableRelationFilter, UserWhereInput> | null
+    branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
     Parcel?: ParcelListRelationFilter
   }, "id">
 
   export type CourierOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    name?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    branchId?: SortOrder
     updatedAt?: SortOrder
     _count?: CourierCountOrderByAggregateInput
     _max?: CourierMaxOrderByAggregateInput
@@ -7565,9 +7613,10 @@ export namespace Prisma {
     OR?: CourierScalarWhereWithAggregatesInput[]
     NOT?: CourierScalarWhereWithAggregatesInput | CourierScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Courier"> | string
-    userId?: StringWithAggregatesFilter<"Courier"> | string
+    name?: StringWithAggregatesFilter<"Courier"> | string
+    userId?: StringNullableWithAggregatesFilter<"Courier"> | string | null
+    branchId?: StringNullableWithAggregatesFilter<"Courier"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Courier"> | Date | string
-    branchId?: StringWithAggregatesFilter<"Courier"> | string
     updatedAt?: DateTimeWithAggregatesFilter<"Courier"> | Date | string
   }
 
@@ -7904,59 +7953,66 @@ export namespace Prisma {
 
   export type CourierCreateInput = {
     id?: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCourierInput
-    branch: BranchCreateNestedOneWithoutCourierInput
+    user?: UserCreateNestedOneWithoutCourierInput
+    branch?: BranchCreateNestedOneWithoutCourierInput
     Parcel?: ParcelCreateNestedManyWithoutCourierInput
   }
 
   export type CourierUncheckedCreateInput = {
     id?: string
-    userId: string
+    name: string
+    userId?: string | null
+    branchId?: string | null
     createdAt?: Date | string
-    branchId: string
     updatedAt?: Date | string
     Parcel?: ParcelUncheckedCreateNestedManyWithoutCourierInput
   }
 
   export type CourierUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCourierNestedInput
-    branch?: BranchUpdateOneRequiredWithoutCourierNestedInput
+    user?: UserUpdateOneWithoutCourierNestedInput
+    branch?: BranchUpdateOneWithoutCourierNestedInput
     Parcel?: ParcelUpdateManyWithoutCourierNestedInput
   }
 
   export type CourierUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Parcel?: ParcelUncheckedUpdateManyWithoutCourierNestedInput
   }
 
   export type CourierCreateManyInput = {
     id?: string
-    userId: string
+    name: string
+    userId?: string | null
+    branchId?: string | null
     createdAt?: Date | string
-    branchId: string
     updatedAt?: Date | string
   }
 
   export type CourierUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourierUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8325,14 +8381,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type UserNullableRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
-  export type BranchRelationFilter = {
-    is?: BranchWhereInput
-    isNot?: BranchWhereInput
+  export type BranchNullableRelationFilter = {
+    is?: BranchWhereInput | null
+    isNot?: BranchWhereInput | null
   }
 
   export type ParcelListRelationFilter = {
@@ -8347,26 +8403,39 @@ export namespace Prisma {
 
   export type CourierCountOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     userId?: SortOrder
-    createdAt?: SortOrder
     branchId?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type CourierMaxOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     userId?: SortOrder
-    createdAt?: SortOrder
     branchId?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type CourierMinOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
     userId?: SortOrder
-    createdAt?: SortOrder
     branchId?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type BranchRelationFilter = {
+    is?: BranchWhereInput
+    isNot?: BranchWhereInput
   }
 
   export type BranchAdminCountOrderByAggregateInput = {
@@ -8757,18 +8826,22 @@ export namespace Prisma {
     connect?: ParcelWhereUniqueInput | ParcelWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutCourierNestedInput = {
+  export type UserUpdateOneWithoutCourierNestedInput = {
     create?: XOR<UserCreateWithoutCourierInput, UserUncheckedCreateWithoutCourierInput>
     connectOrCreate?: UserCreateOrConnectWithoutCourierInput
     upsert?: UserUpsertWithoutCourierInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCourierInput, UserUpdateWithoutCourierInput>, UserUncheckedUpdateWithoutCourierInput>
   }
 
-  export type BranchUpdateOneRequiredWithoutCourierNestedInput = {
+  export type BranchUpdateOneWithoutCourierNestedInput = {
     create?: XOR<BranchCreateWithoutCourierInput, BranchUncheckedCreateWithoutCourierInput>
     connectOrCreate?: BranchCreateOrConnectWithoutCourierInput
     upsert?: BranchUpsertWithoutCourierInput
+    disconnect?: BranchWhereInput | boolean
+    delete?: BranchWhereInput | boolean
     connect?: BranchWhereUniqueInput
     update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutCourierInput, BranchUpdateWithoutCourierInput>, BranchUncheckedUpdateWithoutCourierInput>
   }
@@ -9026,16 +9099,18 @@ export namespace Prisma {
 
   export type CourierCreateWithoutUserInput = {
     id?: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    branch: BranchCreateNestedOneWithoutCourierInput
+    branch?: BranchCreateNestedOneWithoutCourierInput
     Parcel?: ParcelCreateNestedManyWithoutCourierInput
   }
 
   export type CourierUncheckedCreateWithoutUserInput = {
     id?: string
+    name: string
+    branchId?: string | null
     createdAt?: Date | string
-    branchId: string
     updatedAt?: Date | string
     Parcel?: ParcelUncheckedCreateNestedManyWithoutCourierInput
   }
@@ -9117,9 +9192,10 @@ export namespace Prisma {
     OR?: CourierScalarWhereInput[]
     NOT?: CourierScalarWhereInput | CourierScalarWhereInput[]
     id?: StringFilter<"Courier"> | string
-    userId?: StringFilter<"Courier"> | string
+    name?: StringFilter<"Courier"> | string
+    userId?: StringNullableFilter<"Courier"> | string | null
+    branchId?: StringNullableFilter<"Courier"> | string | null
     createdAt?: DateTimeFilter<"Courier"> | Date | string
-    branchId?: StringFilter<"Courier"> | string
     updatedAt?: DateTimeFilter<"Courier"> | Date | string
   }
 
@@ -9178,15 +9254,17 @@ export namespace Prisma {
 
   export type CourierCreateWithoutBranchInput = {
     id?: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCourierInput
+    user?: UserCreateNestedOneWithoutCourierInput
     Parcel?: ParcelCreateNestedManyWithoutCourierInput
   }
 
   export type CourierUncheckedCreateWithoutBranchInput = {
     id?: string
-    userId: string
+    name: string
+    userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Parcel?: ParcelUncheckedCreateNestedManyWithoutCourierInput
@@ -9619,17 +9697,19 @@ export namespace Prisma {
 
   export type CourierCreateWithoutParcelInput = {
     id?: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCourierInput
-    branch: BranchCreateNestedOneWithoutCourierInput
+    user?: UserCreateNestedOneWithoutCourierInput
+    branch?: BranchCreateNestedOneWithoutCourierInput
   }
 
   export type CourierUncheckedCreateWithoutParcelInput = {
     id?: string
-    userId: string
+    name: string
+    userId?: string | null
+    branchId?: string | null
     createdAt?: Date | string
-    branchId: string
     updatedAt?: Date | string
   }
 
@@ -9651,24 +9731,27 @@ export namespace Prisma {
 
   export type CourierUpdateWithoutParcelInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCourierNestedInput
-    branch?: BranchUpdateOneRequiredWithoutCourierNestedInput
+    user?: UserUpdateOneWithoutCourierNestedInput
+    branch?: BranchUpdateOneWithoutCourierNestedInput
   }
 
   export type CourierUncheckedUpdateWithoutParcelInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CourierCreateManyUserInput = {
     id?: string
+    name: string
+    branchId?: string | null
     createdAt?: Date | string
-    branchId: string
     updatedAt?: Date | string
   }
 
@@ -9687,24 +9770,27 @@ export namespace Prisma {
 
   export type CourierUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branch?: BranchUpdateOneRequiredWithoutCourierNestedInput
+    branch?: BranchUpdateOneWithoutCourierNestedInput
     Parcel?: ParcelUpdateManyWithoutCourierNestedInput
   }
 
   export type CourierUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Parcel?: ParcelUncheckedUpdateManyWithoutCourierNestedInput
   }
 
   export type CourierUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    branchId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -9749,7 +9835,8 @@ export namespace Prisma {
 
   export type CourierCreateManyBranchInput = {
     id?: string
-    userId: string
+    name: string
+    userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9763,15 +9850,17 @@ export namespace Prisma {
 
   export type CourierUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCourierNestedInput
+    user?: UserUpdateOneWithoutCourierNestedInput
     Parcel?: ParcelUpdateManyWithoutCourierNestedInput
   }
 
   export type CourierUncheckedUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Parcel?: ParcelUncheckedUpdateManyWithoutCourierNestedInput
@@ -9779,7 +9868,8 @@ export namespace Prisma {
 
   export type CourierUncheckedUpdateManyWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

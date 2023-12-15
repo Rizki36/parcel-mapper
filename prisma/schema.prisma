@@ -37,12 +37,13 @@ model Branch {
 
 model Courier {
   id        String   @id @default(uuid())
-  userId    String
+  name      String
+  userId    String?
+  branchId  String?
+  user      User?    @relation(fields: [userId], references: [id])
+  branch    Branch?  @relation(fields: [branchId], references: [id])
   createdAt DateTime @default(now())
-  branchId  String
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  branch    Branch   @relation(fields: [branchId], references: [id])
   Parcel    Parcel[]
 }
 

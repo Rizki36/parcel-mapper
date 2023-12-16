@@ -26,7 +26,7 @@ const columns = [
       return (
         <div>
           <Tooltip label="Detail cabang">
-            <Link href={`/admin/parcels/${id}`}>
+            <Link href={`/admin/branches/${id}`}>
               <IconButton
                 isRound={true}
                 variant="outline"

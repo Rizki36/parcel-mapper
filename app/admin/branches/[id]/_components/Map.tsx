@@ -9,13 +9,15 @@ import { ENV } from "../../../../_constants";
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Branch } from "@prismaorm/generated/client";
 import usePatchBranchMutation from "../../_hooks/usePatchBranchMutation";
+import DrawControl from "@/admin/_components/DrawControl";
 
 const Map: FC<{
   branch: Branch | undefined;
 }> = ({ branch }) => {
-  const { mutateAsync } = usePatchBranchMutation();
-
+  const [features, setFeatures] = useState({});
   const [editCoordinate, setEditCoordinate] = useState(false);
+
+  const { mutateAsync } = usePatchBranchMutation();
 
   const [marker, setMarker] = useState<{
     latitude: number | null;
@@ -74,6 +76,33 @@ const Map: FC<{
       });
     }
   }, [branch?.latitude, branch?.longitude]);
+
+  const onUpdate = useCallback((e: any) => {
+    setFeatures((currFeatures) => {
+      console.log(e);
+      const newFeatures = { ...currFeatures };
+      for (const f of e.features) {
+        // @ts-ignore
+        newFeatures[f.id] = f;
+      }
+      return newFeatures;
+    });
+  }, []);
+
+  const onDelete = useCallback((e: any) => {
+    setFeatures((currFeatures) => {
+      const newFeatures = { ...currFeatures };
+      for (const f of e.features) {
+        // @ts-ignore
+        delete newFeatures[f.id];
+      }
+      return newFeatures;
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(features);
+  }, [features]);
 
   return (
     <>
@@ -157,10 +186,22 @@ const Map: FC<{
             </Marker>
           )}
           <NavigationControl />
+          <DrawControl
+            position="top-left"
+            displayControlsDefault={false}
+            controls={{
+              polygon: true,
+              trash: true,
+            }}
+            defaultMode="draw_polygon"
+            onCreate={onUpdate}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
         </ReactMapGL>
 
         {marker.longitude && marker.latitude && (
-          <Box pos="absolute" top={3} left={3} bg="white" rounded="lg">
+          <Box pos="absolute" bottom={6} right={4} bg="white" rounded="lg">
             <Box px={4} py={2} fontSize="sm" color="gray.600">
               {marker.latitude}, {marker.longitude}
             </Box>

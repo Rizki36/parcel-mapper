@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import ReactMapGL, {
   MapLayerMouseEvent,
   Marker,
@@ -11,10 +11,8 @@ import useMappingQuery from "../_hooks/useMappingQuery";
 import { Branch, Parcel } from "@prismaorm/generated/client";
 import { HiOutlineHomeModern, HiOutlineLink } from "react-icons/hi2";
 import { IoLocation } from "react-icons/io5";
-import DrawControl from "../../_components/DrawControl";
 
 const Map = () => {
-  const [features, setFeatures] = useState({});
   const [parcelInfo, setParcelInfo] = useState<Parcel | null>(null);
   const [branchInfo, setBranchInfo] = useState<Branch | null>(null);
 
@@ -89,32 +87,6 @@ const Map = () => {
     // map
   }, [data?.data?.branches]);
 
-  const onUpdate = useCallback((e: any) => {
-    setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures };
-      for (const f of e.features) {
-        // @ts-ignore
-        newFeatures[f.id] = f;
-      }
-      return newFeatures;
-    });
-  }, []);
-
-  const onDelete = useCallback((e: any) => {
-    setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures };
-      for (const f of e.features) {
-        // @ts-ignore
-        delete newFeatures[f.id];
-      }
-      return newFeatures;
-    });
-  }, []);
-
-  useEffect(() => {
-    console.log(features);
-  }, [features]);
-
   return (
     <>
       <Box pos="relative">
@@ -130,19 +102,6 @@ const Map = () => {
           style={{ height: 500 }}
           mapStyle="mapbox://styles/mapbox/streets-v9"
         >
-          <DrawControl
-            position="top-left"
-            displayControlsDefault={false}
-            controls={{
-              polygon: true,
-              trash: true,
-            }}
-            defaultMode="draw_polygon"
-            onCreate={onUpdate}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-
           {parcels}
           {branches}
 

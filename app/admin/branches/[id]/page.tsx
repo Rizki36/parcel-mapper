@@ -18,7 +18,7 @@ const ParcelDetail = () => {
   return (
     <Flex h="100vh" flexDir="column">
       <Flex mr={-6} ml={-6} flex={1} mt={-8}>
-        <Box flex={1}>{!loadingParcel ? <Map branch={parcel} /> : null}</Box>
+        <Box flex={1}>{<Map branch={parcel} />}</Box>
         <Box
           bg="white"
           overflow="hidden"

@@ -121,6 +121,8 @@ exports.Prisma.BranchScalarFieldEnum = {
   id: 'id',
   name: 'name',
   branchCode: 'branchCode',
+  longitude: 'longitude',
+  latitude: 'latitude',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

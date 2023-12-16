@@ -2436,14 +2436,28 @@ export namespace Prisma {
 
   export type AggregateBranch = {
     _count: BranchCountAggregateOutputType | null
+    _avg: BranchAvgAggregateOutputType | null
+    _sum: BranchSumAggregateOutputType | null
     _min: BranchMinAggregateOutputType | null
     _max: BranchMaxAggregateOutputType | null
+  }
+
+  export type BranchAvgAggregateOutputType = {
+    longitude: number | null
+    latitude: number | null
+  }
+
+  export type BranchSumAggregateOutputType = {
+    longitude: number | null
+    latitude: number | null
   }
 
   export type BranchMinAggregateOutputType = {
     id: string | null
     name: string | null
     branchCode: string | null
+    longitude: number | null
+    latitude: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2452,6 +2466,8 @@ export namespace Prisma {
     id: string | null
     name: string | null
     branchCode: string | null
+    longitude: number | null
+    latitude: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2460,16 +2476,30 @@ export namespace Prisma {
     id: number
     name: number
     branchCode: number
+    longitude: number
+    latitude: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
 
+  export type BranchAvgAggregateInputType = {
+    longitude?: true
+    latitude?: true
+  }
+
+  export type BranchSumAggregateInputType = {
+    longitude?: true
+    latitude?: true
+  }
+
   export type BranchMinAggregateInputType = {
     id?: true
     name?: true
     branchCode?: true
+    longitude?: true
+    latitude?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2478,6 +2508,8 @@ export namespace Prisma {
     id?: true
     name?: true
     branchCode?: true
+    longitude?: true
+    latitude?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2486,6 +2518,8 @@ export namespace Prisma {
     id?: true
     name?: true
     branchCode?: true
+    longitude?: true
+    latitude?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2529,6 +2563,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BranchAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BranchSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BranchMinAggregateInputType
@@ -2559,6 +2605,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BranchCountAggregateInputType | true
+    _avg?: BranchAvgAggregateInputType
+    _sum?: BranchSumAggregateInputType
     _min?: BranchMinAggregateInputType
     _max?: BranchMaxAggregateInputType
   }
@@ -2567,9 +2615,13 @@ export namespace Prisma {
     id: string
     name: string
     branchCode: string
+    longitude: number | null
+    latitude: number | null
     createdAt: Date
     updatedAt: Date
     _count: BranchCountAggregateOutputType | null
+    _avg: BranchAvgAggregateOutputType | null
+    _sum: BranchSumAggregateOutputType | null
     _min: BranchMinAggregateOutputType | null
     _max: BranchMaxAggregateOutputType | null
   }
@@ -2592,6 +2644,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     branchCode?: boolean
+    longitude?: boolean
+    latitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     Courier?: boolean | Branch$CourierArgs<ExtArgs>
@@ -2603,6 +2657,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     branchCode?: boolean
+    longitude?: boolean
+    latitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -2624,6 +2680,8 @@ export namespace Prisma {
       id: string
       name: string
       branchCode: string
+      longitude: number | null
+      latitude: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["branch"]>
@@ -3026,6 +3084,8 @@ export namespace Prisma {
     readonly id: FieldRef<"Branch", 'String'>
     readonly name: FieldRef<"Branch", 'String'>
     readonly branchCode: FieldRef<"Branch", 'String'>
+    readonly longitude: FieldRef<"Branch", 'Float'>
+    readonly latitude: FieldRef<"Branch", 'Float'>
     readonly createdAt: FieldRef<"Branch", 'DateTime'>
     readonly updatedAt: FieldRef<"Branch", 'DateTime'>
   }
@@ -7268,6 +7328,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     branchCode: 'branchCode',
+    longitude: 'longitude',
+    latitude: 'latitude',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -7381,20 +7443,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'ParcelStatus'
-   */
-  export type EnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'ParcelStatus[]'
-   */
-  export type ListEnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7405,6 +7453,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParcelStatus'
+   */
+  export type EnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParcelStatus[]'
+   */
+  export type ListEnumParcelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParcelStatus[]'>
     
 
 
@@ -7503,6 +7565,8 @@ export namespace Prisma {
     id?: StringFilter<"Branch"> | string
     name?: StringFilter<"Branch"> | string
     branchCode?: StringFilter<"Branch"> | string
+    longitude?: FloatNullableFilter<"Branch"> | number | null
+    latitude?: FloatNullableFilter<"Branch"> | number | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
     Courier?: CourierListRelationFilter
@@ -7513,6 +7577,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     branchCode?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     Courier?: CourierOrderByRelationAggregateInput
@@ -7526,6 +7592,8 @@ export namespace Prisma {
     NOT?: BranchWhereInput | BranchWhereInput[]
     name?: StringFilter<"Branch"> | string
     branchCode?: StringFilter<"Branch"> | string
+    longitude?: FloatNullableFilter<"Branch"> | number | null
+    latitude?: FloatNullableFilter<"Branch"> | number | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
     Courier?: CourierListRelationFilter
@@ -7536,11 +7604,15 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     branchCode?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BranchCountOrderByAggregateInput
+    _avg?: BranchAvgOrderByAggregateInput
     _max?: BranchMaxOrderByAggregateInput
     _min?: BranchMinOrderByAggregateInput
+    _sum?: BranchSumOrderByAggregateInput
   }
 
   export type BranchScalarWhereWithAggregatesInput = {
@@ -7550,6 +7622,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Branch"> | string
     name?: StringWithAggregatesFilter<"Branch"> | string
     branchCode?: StringWithAggregatesFilter<"Branch"> | string
+    longitude?: FloatNullableWithAggregatesFilter<"Branch"> | number | null
+    latitude?: FloatNullableWithAggregatesFilter<"Branch"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
   }
@@ -7891,6 +7965,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Courier?: CourierCreateNestedManyWithoutBranchInput
@@ -7901,6 +7977,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Courier?: CourierUncheckedCreateNestedManyWithoutBranchInput
@@ -7911,6 +7989,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Courier?: CourierUpdateManyWithoutBranchNestedInput
@@ -7921,6 +8001,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Courier?: CourierUncheckedUpdateManyWithoutBranchNestedInput
@@ -7931,6 +8013,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7939,6 +8023,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7947,6 +8033,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8357,18 +8445,38 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type BranchCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     branchCode?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BranchAvgOrderByAggregateInput = {
+    longitude?: SortOrder
+    latitude?: SortOrder
   }
 
   export type BranchMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     branchCode?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -8377,8 +8485,31 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     branchCode?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BranchSumOrderByAggregateInput = {
+    longitude?: SortOrder
+    latitude?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type UserNullableRelationFilter = {
@@ -8490,17 +8621,6 @@ export namespace Prisma {
     not?: NestedEnumParcelStatusFilter<$PrismaModel> | $Enums.ParcelStatus
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type CourierNullableRelationFilter = {
     is?: CourierWhereInput | null
     isNot?: CourierWhereInput | null
@@ -8560,22 +8680,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumParcelStatusFilter<$PrismaModel>
     _max?: NestedEnumParcelStatusFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type CourierCreateNestedManyWithoutUserInput = {
@@ -8742,6 +8846,14 @@ export namespace Prisma {
     connectOrCreate?: BranchAdminCreateOrConnectWithoutBranchInput | BranchAdminCreateOrConnectWithoutBranchInput[]
     createMany?: BranchAdminCreateManyBranchInputEnvelope
     connect?: BranchAdminWhereUniqueInput | BranchAdminWhereUniqueInput[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CourierUpdateManyWithoutBranchNestedInput = {
@@ -8926,14 +9038,6 @@ export namespace Prisma {
     set?: $Enums.ParcelStatus
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type CourierUpdateOneWithoutParcelNestedInput = {
     create?: XOR<CourierCreateWithoutParcelInput, CourierUncheckedCreateWithoutParcelInput>
     connectOrCreate?: CourierCreateOrConnectWithoutParcelInput
@@ -9053,13 +9157,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumParcelStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumParcelStatusFilter<$PrismaModel> | $Enums.ParcelStatus
-  }
-
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -9069,16 +9166,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParcelStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumParcelStatusFilter<$PrismaModel>
-    _max?: NestedEnumParcelStatusFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9095,6 +9182,23 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumParcelStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusFilter<$PrismaModel> | $Enums.ParcelStatus
+  }
+
+  export type NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParcelStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParcelStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParcelStatusFilter<$PrismaModel>
+    _max?: NestedEnumParcelStatusFilter<$PrismaModel>
   }
 
   export type CourierCreateWithoutUserInput = {
@@ -9369,6 +9473,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     BranchAdmin?: BranchAdminCreateNestedManyWithoutBranchInput
@@ -9378,6 +9484,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     BranchAdmin?: BranchAdminUncheckedCreateNestedManyWithoutBranchInput
@@ -9470,6 +9578,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     BranchAdmin?: BranchAdminUpdateManyWithoutBranchNestedInput
@@ -9479,6 +9589,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     BranchAdmin?: BranchAdminUncheckedUpdateManyWithoutBranchNestedInput
@@ -9548,6 +9660,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Courier?: CourierCreateNestedManyWithoutBranchInput
@@ -9557,6 +9671,8 @@ export namespace Prisma {
     id?: string
     name: string
     branchCode: string
+    longitude?: number | null
+    latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Courier?: CourierUncheckedCreateNestedManyWithoutBranchInput
@@ -9617,6 +9733,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Courier?: CourierUpdateManyWithoutBranchNestedInput
@@ -9626,6 +9744,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Courier?: CourierUncheckedUpdateManyWithoutBranchNestedInput

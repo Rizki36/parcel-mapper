@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Branch = $Result.DefaultSelection<Prisma.$BranchPayload>
 /**
+ * Model Area
+ * 
+ */
+export type Area = $Result.DefaultSelection<Prisma.$AreaPayload>
+/**
  * Model Courier
  * 
  */
@@ -203,6 +208,16 @@ export class PrismaClient<
     * ```
     */
   get branch(): Prisma.BranchDelegate<ExtArgs>;
+
+  /**
+   * `prisma.area`: Exposes CRUD operations for the **Area** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Areas
+    * const areas = await prisma.area.findMany()
+    * ```
+    */
+  get area(): Prisma.AreaDelegate<ExtArgs>;
 
   /**
    * `prisma.courier`: Exposes CRUD operations for the **Courier** model.
@@ -715,6 +730,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Branch: 'Branch',
+    Area: 'Area',
     Courier: 'Courier',
     BranchAdmin: 'BranchAdmin',
     CentralAdmin: 'CentralAdmin',
@@ -735,7 +751,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'branch' | 'courier' | 'branchAdmin' | 'centralAdmin' | 'parcel'
+      modelProps: 'user' | 'branch' | 'area' | 'courier' | 'branchAdmin' | 'centralAdmin' | 'parcel'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -868,6 +884,72 @@ export namespace Prisma {
           count: {
             args: Prisma.BranchCountArgs<ExtArgs>,
             result: $Utils.Optional<BranchCountAggregateOutputType> | number
+          }
+        }
+      }
+      Area: {
+        payload: Prisma.$AreaPayload<ExtArgs>
+        fields: Prisma.AreaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AreaFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AreaFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          findFirst: {
+            args: Prisma.AreaFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AreaFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          findMany: {
+            args: Prisma.AreaFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>[]
+          }
+          create: {
+            args: Prisma.AreaCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          createMany: {
+            args: Prisma.AreaCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.AreaDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          update: {
+            args: Prisma.AreaUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          deleteMany: {
+            args: Prisma.AreaDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AreaUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.AreaUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$AreaPayload>
+          }
+          aggregate: {
+            args: Prisma.AreaAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateArea>
+          }
+          groupBy: {
+            args: Prisma.AreaGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<AreaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AreaCountArgs<ExtArgs>,
+            result: $Utils.Optional<AreaCountAggregateOutputType> | number
           }
         }
       }
@@ -1338,11 +1420,13 @@ export namespace Prisma {
    */
 
   export type BranchCountOutputType = {
+    area: number
     Courier: number
     BranchAdmin: number
   }
 
   export type BranchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    area?: boolean | BranchCountOutputTypeCountAreaArgs
     Courier?: boolean | BranchCountOutputTypeCountCourierArgs
     BranchAdmin?: boolean | BranchCountOutputTypeCountBranchAdminArgs
   }
@@ -1357,6 +1441,14 @@ export namespace Prisma {
      * Select specific fields to fetch from the BranchCountOutputType
      */
     select?: BranchCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * BranchCountOutputType without action
+   */
+  export type BranchCountOutputTypeCountAreaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AreaWhereInput
   }
 
 
@@ -2648,6 +2740,7 @@ export namespace Prisma {
     latitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    area?: boolean | Branch$areaArgs<ExtArgs>
     Courier?: boolean | Branch$CourierArgs<ExtArgs>
     BranchAdmin?: boolean | Branch$BranchAdminArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
@@ -2664,6 +2757,7 @@ export namespace Prisma {
   }
 
   export type BranchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    area?: boolean | Branch$areaArgs<ExtArgs>
     Courier?: boolean | Branch$CourierArgs<ExtArgs>
     BranchAdmin?: boolean | Branch$BranchAdminArgs<ExtArgs>
     _count?: boolean | BranchCountOutputTypeDefaultArgs<ExtArgs>
@@ -2673,6 +2767,7 @@ export namespace Prisma {
   export type $BranchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Branch"
     objects: {
+      area: Prisma.$AreaPayload<ExtArgs>[]
       Courier: Prisma.$CourierPayload<ExtArgs>[]
       BranchAdmin: Prisma.$BranchAdminPayload<ExtArgs>[]
     }
@@ -3049,6 +3144,8 @@ export namespace Prisma {
   export interface Prisma__BranchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
+    area<T extends Branch$areaArgs<ExtArgs> = {}>(args?: Subset<T, Branch$areaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findMany'> | Null>;
+
     Courier<T extends Branch$CourierArgs<ExtArgs> = {}>(args?: Subset<T, Branch$CourierArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourierPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     BranchAdmin<T extends Branch$BranchAdminArgs<ExtArgs> = {}>(args?: Subset<T, Branch$BranchAdminArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BranchAdminPayload<ExtArgs>, T, 'findMany'> | Null>;
@@ -3400,6 +3497,27 @@ export namespace Prisma {
 
 
   /**
+   * Branch.area
+   */
+  export type Branch$areaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    where?: AreaWhereInput
+    orderBy?: AreaOrderByWithRelationInput | AreaOrderByWithRelationInput[]
+    cursor?: AreaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AreaScalarFieldEnum | AreaScalarFieldEnum[]
+  }
+
+
+  /**
    * Branch.Courier
    */
   export type Branch$CourierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3453,6 +3571,967 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: BranchInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Area
+   */
+
+  export type AggregateArea = {
+    _count: AreaCountAggregateOutputType | null
+    _avg: AreaAvgAggregateOutputType | null
+    _sum: AreaSumAggregateOutputType | null
+    _min: AreaMinAggregateOutputType | null
+    _max: AreaMaxAggregateOutputType | null
+  }
+
+  export type AreaAvgAggregateOutputType = {
+    longitude: number | null
+    latitude: number | null
+  }
+
+  export type AreaSumAggregateOutputType = {
+    longitude: number | null
+    latitude: number | null
+  }
+
+  export type AreaMinAggregateOutputType = {
+    id: string | null
+    longitude: number | null
+    latitude: number | null
+    branchId: string | null
+  }
+
+  export type AreaMaxAggregateOutputType = {
+    id: string | null
+    longitude: number | null
+    latitude: number | null
+    branchId: string | null
+  }
+
+  export type AreaCountAggregateOutputType = {
+    id: number
+    longitude: number
+    latitude: number
+    branchId: number
+    _all: number
+  }
+
+
+  export type AreaAvgAggregateInputType = {
+    longitude?: true
+    latitude?: true
+  }
+
+  export type AreaSumAggregateInputType = {
+    longitude?: true
+    latitude?: true
+  }
+
+  export type AreaMinAggregateInputType = {
+    id?: true
+    longitude?: true
+    latitude?: true
+    branchId?: true
+  }
+
+  export type AreaMaxAggregateInputType = {
+    id?: true
+    longitude?: true
+    latitude?: true
+    branchId?: true
+  }
+
+  export type AreaCountAggregateInputType = {
+    id?: true
+    longitude?: true
+    latitude?: true
+    branchId?: true
+    _all?: true
+  }
+
+  export type AreaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Area to aggregate.
+     */
+    where?: AreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Areas to fetch.
+     */
+    orderBy?: AreaOrderByWithRelationInput | AreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Areas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Areas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Areas
+    **/
+    _count?: true | AreaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AreaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AreaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AreaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AreaMaxAggregateInputType
+  }
+
+  export type GetAreaAggregateType<T extends AreaAggregateArgs> = {
+        [P in keyof T & keyof AggregateArea]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArea[P]>
+      : GetScalarType<T[P], AggregateArea[P]>
+  }
+
+
+
+
+  export type AreaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AreaWhereInput
+    orderBy?: AreaOrderByWithAggregationInput | AreaOrderByWithAggregationInput[]
+    by: AreaScalarFieldEnum[] | AreaScalarFieldEnum
+    having?: AreaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AreaCountAggregateInputType | true
+    _avg?: AreaAvgAggregateInputType
+    _sum?: AreaSumAggregateInputType
+    _min?: AreaMinAggregateInputType
+    _max?: AreaMaxAggregateInputType
+  }
+
+  export type AreaGroupByOutputType = {
+    id: string
+    longitude: number | null
+    latitude: number | null
+    branchId: string | null
+    _count: AreaCountAggregateOutputType | null
+    _avg: AreaAvgAggregateOutputType | null
+    _sum: AreaSumAggregateOutputType | null
+    _min: AreaMinAggregateOutputType | null
+    _max: AreaMaxAggregateOutputType | null
+  }
+
+  type GetAreaGroupByPayload<T extends AreaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AreaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AreaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AreaGroupByOutputType[P]>
+            : GetScalarType<T[P], AreaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AreaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    longitude?: boolean
+    latitude?: boolean
+    branchId?: boolean
+    Branch?: boolean | Area$BranchArgs<ExtArgs>
+  }, ExtArgs["result"]["area"]>
+
+  export type AreaSelectScalar = {
+    id?: boolean
+    longitude?: boolean
+    latitude?: boolean
+    branchId?: boolean
+  }
+
+  export type AreaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Branch?: boolean | Area$BranchArgs<ExtArgs>
+  }
+
+
+  export type $AreaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Area"
+    objects: {
+      Branch: Prisma.$BranchPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      longitude: number | null
+      latitude: number | null
+      branchId: string | null
+    }, ExtArgs["result"]["area"]>
+    composites: {}
+  }
+
+
+  type AreaGetPayload<S extends boolean | null | undefined | AreaDefaultArgs> = $Result.GetResult<Prisma.$AreaPayload, S>
+
+  type AreaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AreaFindManyArgs, 'select' | 'include' | 'distinct' > & {
+      select?: AreaCountAggregateInputType | true
+    }
+
+  export interface AreaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Area'], meta: { name: 'Area' } }
+    /**
+     * Find zero or one Area that matches the filter.
+     * @param {AreaFindUniqueArgs} args - Arguments to find a Area
+     * @example
+     * // Get one Area
+     * const area = await prisma.area.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends AreaFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaFindUniqueArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Area that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {AreaFindUniqueOrThrowArgs} args - Arguments to find a Area
+     * @example
+     * // Get one Area
+     * const area = await prisma.area.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends AreaFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Area that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaFindFirstArgs} args - Arguments to find a Area
+     * @example
+     * // Get one Area
+     * const area = await prisma.area.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends AreaFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaFindFirstArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Area that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaFindFirstOrThrowArgs} args - Arguments to find a Area
+     * @example
+     * // Get one Area
+     * const area = await prisma.area.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends AreaFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Areas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Areas
+     * const areas = await prisma.area.findMany()
+     * 
+     * // Get first 10 Areas
+     * const areas = await prisma.area.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const areaWithIdOnly = await prisma.area.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends AreaFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Area.
+     * @param {AreaCreateArgs} args - Arguments to create a Area.
+     * @example
+     * // Create one Area
+     * const Area = await prisma.area.create({
+     *   data: {
+     *     // ... data to create a Area
+     *   }
+     * })
+     * 
+    **/
+    create<T extends AreaCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaCreateArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Areas.
+     *     @param {AreaCreateManyArgs} args - Arguments to create many Areas.
+     *     @example
+     *     // Create many Areas
+     *     const area = await prisma.area.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends AreaCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Area.
+     * @param {AreaDeleteArgs} args - Arguments to delete one Area.
+     * @example
+     * // Delete one Area
+     * const Area = await prisma.area.delete({
+     *   where: {
+     *     // ... filter to delete one Area
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends AreaDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaDeleteArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Area.
+     * @param {AreaUpdateArgs} args - Arguments to update one Area.
+     * @example
+     * // Update one Area
+     * const area = await prisma.area.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends AreaUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaUpdateArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Areas.
+     * @param {AreaDeleteManyArgs} args - Arguments to filter Areas to delete.
+     * @example
+     * // Delete a few Areas
+     * const { count } = await prisma.area.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends AreaDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, AreaDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Areas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Areas
+     * const area = await prisma.area.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends AreaUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Area.
+     * @param {AreaUpsertArgs} args - Arguments to update or create a Area.
+     * @example
+     * // Update or create a Area
+     * const area = await prisma.area.upsert({
+     *   create: {
+     *     // ... data to create a Area
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Area we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends AreaUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, AreaUpsertArgs<ExtArgs>>
+    ): Prisma__AreaClient<$Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Areas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaCountArgs} args - Arguments to filter Areas to count.
+     * @example
+     * // Count the number of Areas
+     * const count = await prisma.area.count({
+     *   where: {
+     *     // ... the filter for the Areas we want to count
+     *   }
+     * })
+    **/
+    count<T extends AreaCountArgs>(
+      args?: Subset<T, AreaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AreaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Area.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AreaAggregateArgs>(args: Subset<T, AreaAggregateArgs>): Prisma.PrismaPromise<GetAreaAggregateType<T>>
+
+    /**
+     * Group by Area.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AreaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AreaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AreaGroupByArgs['orderBy'] }
+        : { orderBy?: AreaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AreaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAreaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Area model
+   */
+  readonly fields: AreaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Area.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AreaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+    Branch<T extends Area$BranchArgs<ExtArgs> = {}>(args?: Subset<T, Area$BranchArgs<ExtArgs>>): Prisma__BranchClient<$Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Area model
+   */ 
+  interface AreaFieldRefs {
+    readonly id: FieldRef<"Area", 'String'>
+    readonly longitude: FieldRef<"Area", 'Float'>
+    readonly latitude: FieldRef<"Area", 'Float'>
+    readonly branchId: FieldRef<"Area", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * Area findUnique
+   */
+  export type AreaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter, which Area to fetch.
+     */
+    where: AreaWhereUniqueInput
+  }
+
+
+  /**
+   * Area findUniqueOrThrow
+   */
+  export type AreaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter, which Area to fetch.
+     */
+    where: AreaWhereUniqueInput
+  }
+
+
+  /**
+   * Area findFirst
+   */
+  export type AreaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter, which Area to fetch.
+     */
+    where?: AreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Areas to fetch.
+     */
+    orderBy?: AreaOrderByWithRelationInput | AreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Areas.
+     */
+    cursor?: AreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Areas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Areas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Areas.
+     */
+    distinct?: AreaScalarFieldEnum | AreaScalarFieldEnum[]
+  }
+
+
+  /**
+   * Area findFirstOrThrow
+   */
+  export type AreaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter, which Area to fetch.
+     */
+    where?: AreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Areas to fetch.
+     */
+    orderBy?: AreaOrderByWithRelationInput | AreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Areas.
+     */
+    cursor?: AreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Areas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Areas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Areas.
+     */
+    distinct?: AreaScalarFieldEnum | AreaScalarFieldEnum[]
+  }
+
+
+  /**
+   * Area findMany
+   */
+  export type AreaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter, which Areas to fetch.
+     */
+    where?: AreaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Areas to fetch.
+     */
+    orderBy?: AreaOrderByWithRelationInput | AreaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Areas.
+     */
+    cursor?: AreaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Areas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Areas.
+     */
+    skip?: number
+    distinct?: AreaScalarFieldEnum | AreaScalarFieldEnum[]
+  }
+
+
+  /**
+   * Area create
+   */
+  export type AreaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Area.
+     */
+    data?: XOR<AreaCreateInput, AreaUncheckedCreateInput>
+  }
+
+
+  /**
+   * Area createMany
+   */
+  export type AreaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Areas.
+     */
+    data: AreaCreateManyInput | AreaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Area update
+   */
+  export type AreaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Area.
+     */
+    data: XOR<AreaUpdateInput, AreaUncheckedUpdateInput>
+    /**
+     * Choose, which Area to update.
+     */
+    where: AreaWhereUniqueInput
+  }
+
+
+  /**
+   * Area updateMany
+   */
+  export type AreaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Areas.
+     */
+    data: XOR<AreaUpdateManyMutationInput, AreaUncheckedUpdateManyInput>
+    /**
+     * Filter which Areas to update
+     */
+    where?: AreaWhereInput
+  }
+
+
+  /**
+   * Area upsert
+   */
+  export type AreaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Area to update in case it exists.
+     */
+    where: AreaWhereUniqueInput
+    /**
+     * In case the Area found by the `where` argument doesn't exist, create a new Area with this data.
+     */
+    create: XOR<AreaCreateInput, AreaUncheckedCreateInput>
+    /**
+     * In case the Area was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AreaUpdateInput, AreaUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Area delete
+   */
+  export type AreaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
+    /**
+     * Filter which Area to delete.
+     */
+    where: AreaWhereUniqueInput
+  }
+
+
+  /**
+   * Area deleteMany
+   */
+  export type AreaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Areas to delete
+     */
+    where?: AreaWhereInput
+  }
+
+
+  /**
+   * Area.Branch
+   */
+  export type Area$BranchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Branch
+     */
+    select?: BranchSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: BranchInclude<ExtArgs> | null
+    where?: BranchWhereInput
+  }
+
+
+  /**
+   * Area without action
+   */
+  export type AreaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Area
+     */
+    select?: AreaSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AreaInclude<ExtArgs> | null
   }
 
 
@@ -7337,6 +8416,16 @@ export namespace Prisma {
   export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
 
 
+  export const AreaScalarFieldEnum: {
+    id: 'id',
+    longitude: 'longitude',
+    latitude: 'latitude',
+    branchId: 'branchId'
+  };
+
+  export type AreaScalarFieldEnum = (typeof AreaScalarFieldEnum)[keyof typeof AreaScalarFieldEnum]
+
+
   export const CourierScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -7569,6 +8658,7 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Branch"> | number | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    area?: AreaListRelationFilter
     Courier?: CourierListRelationFilter
     BranchAdmin?: BranchAdminListRelationFilter
   }
@@ -7581,6 +8671,7 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    area?: AreaOrderByRelationAggregateInput
     Courier?: CourierOrderByRelationAggregateInput
     BranchAdmin?: BranchAdminOrderByRelationAggregateInput
   }
@@ -7596,6 +8687,7 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Branch"> | number | null
     createdAt?: DateTimeFilter<"Branch"> | Date | string
     updatedAt?: DateTimeFilter<"Branch"> | Date | string
+    area?: AreaListRelationFilter
     Courier?: CourierListRelationFilter
     BranchAdmin?: BranchAdminListRelationFilter
   }, "id">
@@ -7626,6 +8718,58 @@ export namespace Prisma {
     latitude?: FloatNullableWithAggregatesFilter<"Branch"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Branch"> | Date | string
+  }
+
+  export type AreaWhereInput = {
+    AND?: AreaWhereInput | AreaWhereInput[]
+    OR?: AreaWhereInput[]
+    NOT?: AreaWhereInput | AreaWhereInput[]
+    id?: StringFilter<"Area"> | string
+    longitude?: FloatNullableFilter<"Area"> | number | null
+    latitude?: FloatNullableFilter<"Area"> | number | null
+    branchId?: StringNullableFilter<"Area"> | string | null
+    Branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
+  }
+
+  export type AreaOrderByWithRelationInput = {
+    id?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    Branch?: BranchOrderByWithRelationInput
+  }
+
+  export type AreaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AreaWhereInput | AreaWhereInput[]
+    OR?: AreaWhereInput[]
+    NOT?: AreaWhereInput | AreaWhereInput[]
+    longitude?: FloatNullableFilter<"Area"> | number | null
+    latitude?: FloatNullableFilter<"Area"> | number | null
+    branchId?: StringNullableFilter<"Area"> | string | null
+    Branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
+  }, "id">
+
+  export type AreaOrderByWithAggregationInput = {
+    id?: SortOrder
+    longitude?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    branchId?: SortOrderInput | SortOrder
+    _count?: AreaCountOrderByAggregateInput
+    _avg?: AreaAvgOrderByAggregateInput
+    _max?: AreaMaxOrderByAggregateInput
+    _min?: AreaMinOrderByAggregateInput
+    _sum?: AreaSumOrderByAggregateInput
+  }
+
+  export type AreaScalarWhereWithAggregatesInput = {
+    AND?: AreaScalarWhereWithAggregatesInput | AreaScalarWhereWithAggregatesInput[]
+    OR?: AreaScalarWhereWithAggregatesInput[]
+    NOT?: AreaScalarWhereWithAggregatesInput | AreaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Area"> | string
+    longitude?: FloatNullableWithAggregatesFilter<"Area"> | number | null
+    latitude?: FloatNullableWithAggregatesFilter<"Area"> | number | null
+    branchId?: StringNullableWithAggregatesFilter<"Area"> | string | null
   }
 
   export type CourierWhereInput = {
@@ -7969,6 +9113,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaCreateNestedManyWithoutBranchInput
     Courier?: CourierCreateNestedManyWithoutBranchInput
     BranchAdmin?: BranchAdminCreateNestedManyWithoutBranchInput
   }
@@ -7981,6 +9126,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaUncheckedCreateNestedManyWithoutBranchInput
     Courier?: CourierUncheckedCreateNestedManyWithoutBranchInput
     BranchAdmin?: BranchAdminUncheckedCreateNestedManyWithoutBranchInput
   }
@@ -7993,6 +9139,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUpdateManyWithoutBranchNestedInput
     Courier?: CourierUpdateManyWithoutBranchNestedInput
     BranchAdmin?: BranchAdminUpdateManyWithoutBranchNestedInput
   }
@@ -8005,6 +9152,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUncheckedUpdateManyWithoutBranchNestedInput
     Courier?: CourierUncheckedUpdateManyWithoutBranchNestedInput
     BranchAdmin?: BranchAdminUncheckedUpdateManyWithoutBranchNestedInput
   }
@@ -8037,6 +9185,54 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AreaCreateInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+    Branch?: BranchCreateNestedOneWithoutAreaInput
+  }
+
+  export type AreaUncheckedCreateInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+    branchId?: string | null
+  }
+
+  export type AreaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    Branch?: BranchUpdateOneWithoutAreaNestedInput
+  }
+
+  export type AreaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AreaCreateManyInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+    branchId?: string | null
+  }
+
+  export type AreaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type AreaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    branchId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourierCreateInput = {
@@ -8456,6 +9652,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type AreaListRelationFilter = {
+    every?: AreaWhereInput
+    some?: AreaWhereInput
+    none?: AreaWhereInput
+  }
+
+  export type AreaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type BranchCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -8512,14 +9718,45 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type UserNullableRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
   export type BranchNullableRelationFilter = {
     is?: BranchWhereInput | null
     isNot?: BranchWhereInput | null
+  }
+
+  export type AreaCountOrderByAggregateInput = {
+    id?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
+    branchId?: SortOrder
+  }
+
+  export type AreaAvgOrderByAggregateInput = {
+    longitude?: SortOrder
+    latitude?: SortOrder
+  }
+
+  export type AreaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
+    branchId?: SortOrder
+  }
+
+  export type AreaMinOrderByAggregateInput = {
+    id?: SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
+    branchId?: SortOrder
+  }
+
+  export type AreaSumOrderByAggregateInput = {
+    longitude?: SortOrder
+    latitude?: SortOrder
+  }
+
+  export type UserNullableRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
   }
 
   export type ParcelListRelationFilter = {
@@ -8820,6 +10057,13 @@ export namespace Prisma {
     deleteMany?: CentralAdminScalarWhereInput | CentralAdminScalarWhereInput[]
   }
 
+  export type AreaCreateNestedManyWithoutBranchInput = {
+    create?: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput> | AreaCreateWithoutBranchInput[] | AreaUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AreaCreateOrConnectWithoutBranchInput | AreaCreateOrConnectWithoutBranchInput[]
+    createMany?: AreaCreateManyBranchInputEnvelope
+    connect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+  }
+
   export type CourierCreateNestedManyWithoutBranchInput = {
     create?: XOR<CourierCreateWithoutBranchInput, CourierUncheckedCreateWithoutBranchInput> | CourierCreateWithoutBranchInput[] | CourierUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourierCreateOrConnectWithoutBranchInput | CourierCreateOrConnectWithoutBranchInput[]
@@ -8832,6 +10076,13 @@ export namespace Prisma {
     connectOrCreate?: BranchAdminCreateOrConnectWithoutBranchInput | BranchAdminCreateOrConnectWithoutBranchInput[]
     createMany?: BranchAdminCreateManyBranchInputEnvelope
     connect?: BranchAdminWhereUniqueInput | BranchAdminWhereUniqueInput[]
+  }
+
+  export type AreaUncheckedCreateNestedManyWithoutBranchInput = {
+    create?: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput> | AreaCreateWithoutBranchInput[] | AreaUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AreaCreateOrConnectWithoutBranchInput | AreaCreateOrConnectWithoutBranchInput[]
+    createMany?: AreaCreateManyBranchInputEnvelope
+    connect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
   }
 
   export type CourierUncheckedCreateNestedManyWithoutBranchInput = {
@@ -8854,6 +10105,20 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type AreaUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput> | AreaCreateWithoutBranchInput[] | AreaUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AreaCreateOrConnectWithoutBranchInput | AreaCreateOrConnectWithoutBranchInput[]
+    upsert?: AreaUpsertWithWhereUniqueWithoutBranchInput | AreaUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: AreaCreateManyBranchInputEnvelope
+    set?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    disconnect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    delete?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    connect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    update?: AreaUpdateWithWhereUniqueWithoutBranchInput | AreaUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: AreaUpdateManyWithWhereWithoutBranchInput | AreaUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: AreaScalarWhereInput | AreaScalarWhereInput[]
   }
 
   export type CourierUpdateManyWithoutBranchNestedInput = {
@@ -8884,6 +10149,20 @@ export namespace Prisma {
     deleteMany?: BranchAdminScalarWhereInput | BranchAdminScalarWhereInput[]
   }
 
+  export type AreaUncheckedUpdateManyWithoutBranchNestedInput = {
+    create?: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput> | AreaCreateWithoutBranchInput[] | AreaUncheckedCreateWithoutBranchInput[]
+    connectOrCreate?: AreaCreateOrConnectWithoutBranchInput | AreaCreateOrConnectWithoutBranchInput[]
+    upsert?: AreaUpsertWithWhereUniqueWithoutBranchInput | AreaUpsertWithWhereUniqueWithoutBranchInput[]
+    createMany?: AreaCreateManyBranchInputEnvelope
+    set?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    disconnect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    delete?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    connect?: AreaWhereUniqueInput | AreaWhereUniqueInput[]
+    update?: AreaUpdateWithWhereUniqueWithoutBranchInput | AreaUpdateWithWhereUniqueWithoutBranchInput[]
+    updateMany?: AreaUpdateManyWithWhereWithoutBranchInput | AreaUpdateManyWithWhereWithoutBranchInput[]
+    deleteMany?: AreaScalarWhereInput | AreaScalarWhereInput[]
+  }
+
   export type CourierUncheckedUpdateManyWithoutBranchNestedInput = {
     create?: XOR<CourierCreateWithoutBranchInput, CourierUncheckedCreateWithoutBranchInput> | CourierCreateWithoutBranchInput[] | CourierUncheckedCreateWithoutBranchInput[]
     connectOrCreate?: CourierCreateOrConnectWithoutBranchInput | CourierCreateOrConnectWithoutBranchInput[]
@@ -8910,6 +10189,22 @@ export namespace Prisma {
     update?: BranchAdminUpdateWithWhereUniqueWithoutBranchInput | BranchAdminUpdateWithWhereUniqueWithoutBranchInput[]
     updateMany?: BranchAdminUpdateManyWithWhereWithoutBranchInput | BranchAdminUpdateManyWithWhereWithoutBranchInput[]
     deleteMany?: BranchAdminScalarWhereInput | BranchAdminScalarWhereInput[]
+  }
+
+  export type BranchCreateNestedOneWithoutAreaInput = {
+    create?: XOR<BranchCreateWithoutAreaInput, BranchUncheckedCreateWithoutAreaInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAreaInput
+    connect?: BranchWhereUniqueInput
+  }
+
+  export type BranchUpdateOneWithoutAreaNestedInput = {
+    create?: XOR<BranchCreateWithoutAreaInput, BranchUncheckedCreateWithoutAreaInput>
+    connectOrCreate?: BranchCreateOrConnectWithoutAreaInput
+    upsert?: BranchUpsertWithoutAreaInput
+    disconnect?: BranchWhereInput | boolean
+    delete?: BranchWhereInput | boolean
+    connect?: BranchWhereUniqueInput
+    update?: XOR<XOR<BranchUpdateToOneWithWhereWithoutAreaInput, BranchUpdateWithoutAreaInput>, BranchUncheckedUpdateWithoutAreaInput>
   }
 
   export type UserCreateNestedOneWithoutCourierInput = {
@@ -9356,6 +10651,28 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CentralAdmin"> | Date | string
   }
 
+  export type AreaCreateWithoutBranchInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+  }
+
+  export type AreaUncheckedCreateWithoutBranchInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+  }
+
+  export type AreaCreateOrConnectWithoutBranchInput = {
+    where: AreaWhereUniqueInput
+    create: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput>
+  }
+
+  export type AreaCreateManyBranchInputEnvelope = {
+    data: AreaCreateManyBranchInput | AreaCreateManyBranchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CourierCreateWithoutBranchInput = {
     id?: string
     name: string
@@ -9408,6 +10725,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AreaUpsertWithWhereUniqueWithoutBranchInput = {
+    where: AreaWhereUniqueInput
+    update: XOR<AreaUpdateWithoutBranchInput, AreaUncheckedUpdateWithoutBranchInput>
+    create: XOR<AreaCreateWithoutBranchInput, AreaUncheckedCreateWithoutBranchInput>
+  }
+
+  export type AreaUpdateWithWhereUniqueWithoutBranchInput = {
+    where: AreaWhereUniqueInput
+    data: XOR<AreaUpdateWithoutBranchInput, AreaUncheckedUpdateWithoutBranchInput>
+  }
+
+  export type AreaUpdateManyWithWhereWithoutBranchInput = {
+    where: AreaScalarWhereInput
+    data: XOR<AreaUpdateManyMutationInput, AreaUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type AreaScalarWhereInput = {
+    AND?: AreaScalarWhereInput | AreaScalarWhereInput[]
+    OR?: AreaScalarWhereInput[]
+    NOT?: AreaScalarWhereInput | AreaScalarWhereInput[]
+    id?: StringFilter<"Area"> | string
+    longitude?: FloatNullableFilter<"Area"> | number | null
+    latitude?: FloatNullableFilter<"Area"> | number | null
+    branchId?: StringNullableFilter<"Area"> | string | null
+  }
+
   export type CourierUpsertWithWhereUniqueWithoutBranchInput = {
     where: CourierWhereUniqueInput
     update: XOR<CourierUpdateWithoutBranchInput, CourierUncheckedUpdateWithoutBranchInput>
@@ -9438,6 +10781,70 @@ export namespace Prisma {
   export type BranchAdminUpdateManyWithWhereWithoutBranchInput = {
     where: BranchAdminScalarWhereInput
     data: XOR<BranchAdminUpdateManyMutationInput, BranchAdminUncheckedUpdateManyWithoutBranchInput>
+  }
+
+  export type BranchCreateWithoutAreaInput = {
+    id?: string
+    name: string
+    branchCode: string
+    longitude?: number | null
+    latitude?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Courier?: CourierCreateNestedManyWithoutBranchInput
+    BranchAdmin?: BranchAdminCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchUncheckedCreateWithoutAreaInput = {
+    id?: string
+    name: string
+    branchCode: string
+    longitude?: number | null
+    latitude?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Courier?: CourierUncheckedCreateNestedManyWithoutBranchInput
+    BranchAdmin?: BranchAdminUncheckedCreateNestedManyWithoutBranchInput
+  }
+
+  export type BranchCreateOrConnectWithoutAreaInput = {
+    where: BranchWhereUniqueInput
+    create: XOR<BranchCreateWithoutAreaInput, BranchUncheckedCreateWithoutAreaInput>
+  }
+
+  export type BranchUpsertWithoutAreaInput = {
+    update: XOR<BranchUpdateWithoutAreaInput, BranchUncheckedUpdateWithoutAreaInput>
+    create: XOR<BranchCreateWithoutAreaInput, BranchUncheckedCreateWithoutAreaInput>
+    where?: BranchWhereInput
+  }
+
+  export type BranchUpdateToOneWithWhereWithoutAreaInput = {
+    where?: BranchWhereInput
+    data: XOR<BranchUpdateWithoutAreaInput, BranchUncheckedUpdateWithoutAreaInput>
+  }
+
+  export type BranchUpdateWithoutAreaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Courier?: CourierUpdateManyWithoutBranchNestedInput
+    BranchAdmin?: BranchAdminUpdateManyWithoutBranchNestedInput
+  }
+
+  export type BranchUncheckedUpdateWithoutAreaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    branchCode?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Courier?: CourierUncheckedUpdateManyWithoutBranchNestedInput
+    BranchAdmin?: BranchAdminUncheckedUpdateManyWithoutBranchNestedInput
   }
 
   export type UserCreateWithoutCourierInput = {
@@ -9477,6 +10884,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaCreateNestedManyWithoutBranchInput
     BranchAdmin?: BranchAdminCreateNestedManyWithoutBranchInput
   }
 
@@ -9488,6 +10896,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaUncheckedCreateNestedManyWithoutBranchInput
     BranchAdmin?: BranchAdminUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -9582,6 +10991,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUpdateManyWithoutBranchNestedInput
     BranchAdmin?: BranchAdminUpdateManyWithoutBranchNestedInput
   }
 
@@ -9593,6 +11003,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUncheckedUpdateManyWithoutBranchNestedInput
     BranchAdmin?: BranchAdminUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -9664,6 +11075,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaCreateNestedManyWithoutBranchInput
     Courier?: CourierCreateNestedManyWithoutBranchInput
   }
 
@@ -9675,6 +11087,7 @@ export namespace Prisma {
     latitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    area?: AreaUncheckedCreateNestedManyWithoutBranchInput
     Courier?: CourierUncheckedCreateNestedManyWithoutBranchInput
   }
 
@@ -9737,6 +11150,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUpdateManyWithoutBranchNestedInput
     Courier?: CourierUpdateManyWithoutBranchNestedInput
   }
 
@@ -9748,6 +11162,7 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    area?: AreaUncheckedUpdateManyWithoutBranchNestedInput
     Courier?: CourierUncheckedUpdateManyWithoutBranchNestedInput
   }
 
@@ -9953,6 +11368,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AreaCreateManyBranchInput = {
+    id?: string
+    longitude?: number | null
+    latitude?: number | null
+  }
+
   export type CourierCreateManyBranchInput = {
     id?: string
     name: string
@@ -9966,6 +11387,24 @@ export namespace Prisma {
     userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type AreaUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type AreaUncheckedUpdateWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type AreaUncheckedUpdateManyWithoutBranchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type CourierUpdateWithoutBranchInput = {
@@ -10084,6 +11523,10 @@ export namespace Prisma {
      * @deprecated Use BranchDefaultArgs instead
      */
     export type BranchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = BranchDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AreaDefaultArgs instead
+     */
+    export type AreaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AreaDefaultArgs<ExtArgs>
     /**
      * @deprecated Use CourierDefaultArgs instead
      */

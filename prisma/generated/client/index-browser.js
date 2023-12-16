@@ -127,6 +127,13 @@ exports.Prisma.BranchScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AreaScalarFieldEnum = {
+  id: 'id',
+  longitude: 'longitude',
+  latitude: 'latitude',
+  branchId: 'branchId'
+};
+
 exports.Prisma.CourierScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -186,6 +193,7 @@ exports.ParcelStatus = exports.$Enums.ParcelStatus = {
 exports.Prisma.ModelName = {
   User: 'User',
   Branch: 'Branch',
+  Area: 'Area',
   Courier: 'Courier',
   BranchAdmin: 'BranchAdmin',
   CentralAdmin: 'CentralAdmin',

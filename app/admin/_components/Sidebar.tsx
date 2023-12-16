@@ -5,6 +5,7 @@ import React, { FC } from "react";
 import {
   HiOutlineCube,
   HiOutlineHomeModern,
+  HiOutlineMap,
   HiOutlineTruck,
 } from "react-icons/hi2";
 
@@ -23,6 +24,11 @@ const menus: { href: string; text: string; icon: React.ReactNode }[] = [
     href: "/admin/branches",
     text: "Cabang",
     icon: <HiOutlineHomeModern />,
+  },
+  {
+    href: "/admin/mapping",
+    text: "Pemetaan",
+    icon: <HiOutlineMap />,
   },
 ];
 

@@ -1,6 +1,6 @@
 import axiosInstance from "@/_libs/axios";
 import { BuildResponse } from "@/_utils/responseBuilder";
-import { Branch } from "@prismaorm/generated/client";
+import { GetOneBranchData } from "@/api/branch/[id]/route";
 import { useQuery } from "@tanstack/react-query";
 
 const useBranchQuery = (props: { id: string }) => {
@@ -9,7 +9,7 @@ const useBranchQuery = (props: { id: string }) => {
     queryFn: async () => {
       const res = await axiosInstance.get<
         BuildResponse<{
-          doc: Branch;
+          doc: GetOneBranchData;
         }>
       >(`/api/branch/${props.id}`);
 

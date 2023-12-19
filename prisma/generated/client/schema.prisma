@@ -40,8 +40,8 @@ model Branch {
 
 model Area {
   id        String  @id @default(uuid())
-  longitude Float?
-  latitude  Float?
+  longitude Float
+  latitude  Float
   branchId  String?
   Branch    Branch? @relation(fields: [branchId], references: [id])
 }

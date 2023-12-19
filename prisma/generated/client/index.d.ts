@@ -3740,8 +3740,8 @@ export namespace Prisma {
 
   export type AreaGroupByOutputType = {
     id: string
-    longitude: number | null
-    latitude: number | null
+    longitude: number
+    latitude: number
     branchId: string | null
     _count: AreaCountAggregateOutputType | null
     _avg: AreaAvgAggregateOutputType | null
@@ -3791,8 +3791,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      longitude: number | null
-      latitude: number | null
+      longitude: number
+      latitude: number
       branchId: string | null
     }, ExtArgs["result"]["area"]>
     composites: {}
@@ -4393,7 +4393,7 @@ export namespace Prisma {
     /**
      * The data needed to create a Area.
      */
-    data?: XOR<AreaCreateInput, AreaUncheckedCreateInput>
+    data: XOR<AreaCreateInput, AreaUncheckedCreateInput>
   }
 
 
@@ -8725,16 +8725,16 @@ export namespace Prisma {
     OR?: AreaWhereInput[]
     NOT?: AreaWhereInput | AreaWhereInput[]
     id?: StringFilter<"Area"> | string
-    longitude?: FloatNullableFilter<"Area"> | number | null
-    latitude?: FloatNullableFilter<"Area"> | number | null
+    longitude?: FloatFilter<"Area"> | number
+    latitude?: FloatFilter<"Area"> | number
     branchId?: StringNullableFilter<"Area"> | string | null
     Branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
   }
 
   export type AreaOrderByWithRelationInput = {
     id?: SortOrder
-    longitude?: SortOrderInput | SortOrder
-    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
     branchId?: SortOrderInput | SortOrder
     Branch?: BranchOrderByWithRelationInput
   }
@@ -8744,16 +8744,16 @@ export namespace Prisma {
     AND?: AreaWhereInput | AreaWhereInput[]
     OR?: AreaWhereInput[]
     NOT?: AreaWhereInput | AreaWhereInput[]
-    longitude?: FloatNullableFilter<"Area"> | number | null
-    latitude?: FloatNullableFilter<"Area"> | number | null
+    longitude?: FloatFilter<"Area"> | number
+    latitude?: FloatFilter<"Area"> | number
     branchId?: StringNullableFilter<"Area"> | string | null
     Branch?: XOR<BranchNullableRelationFilter, BranchWhereInput> | null
   }, "id">
 
   export type AreaOrderByWithAggregationInput = {
     id?: SortOrder
-    longitude?: SortOrderInput | SortOrder
-    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrder
+    latitude?: SortOrder
     branchId?: SortOrderInput | SortOrder
     _count?: AreaCountOrderByAggregateInput
     _avg?: AreaAvgOrderByAggregateInput
@@ -8767,8 +8767,8 @@ export namespace Prisma {
     OR?: AreaScalarWhereWithAggregatesInput[]
     NOT?: AreaScalarWhereWithAggregatesInput | AreaScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Area"> | string
-    longitude?: FloatNullableWithAggregatesFilter<"Area"> | number | null
-    latitude?: FloatNullableWithAggregatesFilter<"Area"> | number | null
+    longitude?: FloatWithAggregatesFilter<"Area"> | number
+    latitude?: FloatWithAggregatesFilter<"Area"> | number
     branchId?: StringNullableWithAggregatesFilter<"Area"> | string | null
   }
 
@@ -9189,49 +9189,49 @@ export namespace Prisma {
 
   export type AreaCreateInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
     Branch?: BranchCreateNestedOneWithoutAreaInput
   }
 
   export type AreaUncheckedCreateInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
     branchId?: string | null
   }
 
   export type AreaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
     Branch?: BranchUpdateOneWithoutAreaNestedInput
   }
 
   export type AreaUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AreaCreateManyInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
     branchId?: string | null
   }
 
   export type AreaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
   }
 
   export type AreaUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
     branchId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -9718,6 +9718,17 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type BranchNullableRelationFilter = {
     is?: BranchWhereInput | null
     isNot?: BranchWhereInput | null
@@ -9752,6 +9763,22 @@ export namespace Prisma {
   export type AreaSumOrderByAggregateInput = {
     longitude?: SortOrder
     latitude?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type UserNullableRelationFilter = {
@@ -10197,6 +10224,14 @@ export namespace Prisma {
     connect?: BranchWhereUniqueInput
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type BranchUpdateOneWithoutAreaNestedInput = {
     create?: XOR<BranchCreateWithoutAreaInput, BranchUncheckedCreateWithoutAreaInput>
     connectOrCreate?: BranchCreateOrConnectWithoutAreaInput
@@ -10479,6 +10514,33 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedEnumParcelStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ParcelStatus | EnumParcelStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ParcelStatus[] | ListEnumParcelStatusFieldRefInput<$PrismaModel>
@@ -10653,14 +10715,14 @@ export namespace Prisma {
 
   export type AreaCreateWithoutBranchInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
   }
 
   export type AreaUncheckedCreateWithoutBranchInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
   }
 
   export type AreaCreateOrConnectWithoutBranchInput = {
@@ -10746,8 +10808,8 @@ export namespace Prisma {
     OR?: AreaScalarWhereInput[]
     NOT?: AreaScalarWhereInput | AreaScalarWhereInput[]
     id?: StringFilter<"Area"> | string
-    longitude?: FloatNullableFilter<"Area"> | number | null
-    latitude?: FloatNullableFilter<"Area"> | number | null
+    longitude?: FloatFilter<"Area"> | number
+    latitude?: FloatFilter<"Area"> | number
     branchId?: StringNullableFilter<"Area"> | string | null
   }
 
@@ -11370,8 +11432,8 @@ export namespace Prisma {
 
   export type AreaCreateManyBranchInput = {
     id?: string
-    longitude?: number | null
-    latitude?: number | null
+    longitude: number
+    latitude: number
   }
 
   export type CourierCreateManyBranchInput = {
@@ -11391,20 +11453,20 @@ export namespace Prisma {
 
   export type AreaUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
   }
 
   export type AreaUncheckedUpdateWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
   }
 
   export type AreaUncheckedUpdateManyWithoutBranchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: FloatFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
   }
 
   export type CourierUpdateWithoutBranchInput = {

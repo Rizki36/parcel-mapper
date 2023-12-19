@@ -1,11 +1,16 @@
 import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
+import { Area, Branch } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
 
 const getSchema = z.object({
   id: z.string(),
 });
+
+export type GetOneBranchData = Branch & {
+  area: Area[];
+};
 
 export async function GET(
   _req: NextRequest,
@@ -24,9 +29,12 @@ export async function GET(
     });
   }
 
-  const branch = await prisma.branch.findFirst({
+  const branch: GetOneBranchData | null = await prisma.branch.findFirst({
     where: {
       id: valid.data.id,
+    },
+    include: {
+      area: true,
     },
   });
 
@@ -42,19 +50,6 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const valid = getSchema.safeParse(params);
-
-  if (!valid.success) {
-    return ResponseBuilder.build({
-      status: 400,
-      error: {
-        id: "bad-request",
-        message: "Id is required",
-        detail: valid.error.flatten(),
-      },
-    });
-  }
-
   const body = await req.json();
 
   const validBody = z
@@ -80,7 +75,7 @@ export async function PATCH(
   // remove fields that have undefined values
   const branch = await prisma.branch.update({
     where: {
-      id: valid.data.id,
+      id: params.id,
     },
     data: {
       ...(validBody.data.latitude && { latitude: validBody.data.latitude }),

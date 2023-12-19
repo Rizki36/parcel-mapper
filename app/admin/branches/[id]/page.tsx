@@ -1,24 +1,17 @@
 "use client";
 import React from "react";
-import useBranchQuery from "../_hooks/useBranchQuery";
-import { useParams } from "next/navigation";
 import Form from "./_components/Form";
-import Map from "./_components/Map";
+import BranchMap from "./_components/Map";
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import useBranchData from "../_hooks/useBranchData";
 
-const ParcelDetail = () => {
-  const { id } = useParams<{
-    id: string;
-  }>();
-  const { data, isLoading: loadingParcel } = useBranchQuery({
-    id,
-  });
-  const parcel = data?.data?.doc;
+const BranchDetail = () => {
+  const { branch, loadingBranch } = useBranchData();
 
   return (
     <Flex h="100vh" flexDir="column">
       <Flex mr={-6} ml={-6} flex={1} mt={-8}>
-        <Box flex={1}>{<Map branch={parcel} />}</Box>
+        <Box flex={1}>{<BranchMap />}</Box>
         <Box
           bg="white"
           overflow="hidden"
@@ -37,11 +30,11 @@ const ParcelDetail = () => {
           >
             Data Paket
           </Heading>
-          {!loadingParcel ? <Form branch={parcel} /> : null}
+          {!loadingBranch ? <Form branch={branch} /> : null}
         </Box>
       </Flex>
     </Flex>
   );
 };
 
-export default ParcelDetail;
+export default BranchDetail;

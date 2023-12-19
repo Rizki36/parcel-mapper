@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Branch } from "@prismaorm/generated/client";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,6 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import usePatchBranchMutation from "../../_hooks/usePatchBranchMutation";
+import { GetOneBranchData } from "@/api/branch/[id]/route";
 
 const formSchema = z.object({
   name: z.string(),
@@ -20,7 +20,7 @@ const formSchema = z.object({
 });
 
 const Form: FC<{
-  branch: Branch | undefined;
+  branch: GetOneBranchData | undefined;
 }> = ({ branch }) => {
   const toast = useToast();
 

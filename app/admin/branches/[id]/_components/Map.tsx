@@ -6,18 +6,24 @@ import ReactMapGL, {
   NavigationControl,
 } from "react-map-gl";
 import { ENV } from "../../../../_constants";
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { Branch } from "@prismaorm/generated/client";
+import { Box, Button, Flex, Heading, useToast } from "@chakra-ui/react";
 import usePatchBranchMutation from "../../_hooks/usePatchBranchMutation";
-import DrawControl from "@/admin/_components/DrawControl";
+import DrawControl from "@/admin/branches/[id]/_components/DrawControl";
+import usePostBranchAreaMutation from "../../_hooks/usePostBranchAreaMutation";
+import { Feature, GeoJsonProperties, Geometry } from "geojson";
+import useBranchData from "../../_hooks/useBranchData";
 
-const Map: FC<{
-  branch: Branch | undefined;
-}> = ({ branch }) => {
-  const [features, setFeatures] = useState({});
+type MapProps = {};
+
+const BranchMap: FC<MapProps> = () => {
+  const [randomId, setRandomId] = useState<string>(crypto.randomUUID());
   const [editCoordinate, setEditCoordinate] = useState(false);
 
-  const { mutateAsync } = usePatchBranchMutation();
+  const { branch, refetchBranch } = useBranchData();
+
+  const toast = useToast();
+  const { mutateAsync: updateCoordinate } = usePatchBranchMutation();
+  const { mutateAsync: updateBranchAreas } = usePostBranchAreaMutation();
 
   const [marker, setMarker] = useState<{
     latitude: number | null;
@@ -32,11 +38,6 @@ const Map: FC<{
       longitude: event.lngLat.lng,
       latitude: event.lngLat.lat,
     });
-  }, []);
-
-  const onMarkerDragEnd = useCallback((event: MarkerDragEvent) => {
-    // TODO: save to database
-    console.log(event.lngLat);
   }, []);
 
   const onClick = useCallback(
@@ -54,16 +55,30 @@ const Map: FC<{
   const onSaveCoordinate = async () => {
     if (branch?.id && marker.longitude && marker.latitude) {
       try {
-        await mutateAsync({
+        await updateCoordinate({
           id: branch.id,
           data: {
             longitude: marker.longitude,
             latitude: marker.latitude,
           },
         });
+
+        toast({
+          colorScheme: "teal",
+          title: "Berhasil update koordinat",
+          status: "success",
+          isClosable: true,
+          position: "top",
+        });
+
         setEditCoordinate(false);
       } catch (error) {
-        alert("Gagal menyimpan koordinat");
+        toast({
+          title: "Gagal update koordinat",
+          status: "error",
+          isClosable: true,
+          position: "top",
+        });
       }
     }
   };
@@ -77,32 +92,57 @@ const Map: FC<{
     }
   }, [branch?.latitude, branch?.longitude]);
 
-  const onUpdate = useCallback((e: any) => {
-    setFeatures((currFeatures) => {
-      console.log(e);
-      const newFeatures = { ...currFeatures };
-      for (const f of e.features) {
-        // @ts-ignore
-        newFeatures[f.id] = f;
-      }
-      return newFeatures;
-    });
-  }, []);
+  const onChangeArea = useCallback(
+    async (e: {
+      type: string;
+      features: Feature<Geometry, GeoJsonProperties>[];
+    }) => {
+      try {
+        const geometry = e.features[0].geometry;
+        if (geometry.type !== "Polygon") return;
 
-  const onDelete = useCallback((e: any) => {
-    setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures };
-      for (const f of e.features) {
-        // @ts-ignore
-        delete newFeatures[f.id];
-      }
-      return newFeatures;
-    });
-  }, []);
+        const getArea = () => {
+          if (e.type === "draw.delete") return [];
 
-  useEffect(() => {
-    console.log(features);
-  }, [features]);
+          return geometry.coordinates[0].map((coordinate) => {
+            return {
+              longitude: coordinate[0],
+              latitude: coordinate[1],
+            };
+          });
+        };
+
+        const area = getArea();
+
+        await updateBranchAreas({
+          id: branch?.id || "",
+          data: {
+            area,
+          },
+        });
+
+        toast({
+          colorScheme: "teal",
+          title: "Berhasil update area",
+          status: "success",
+          isClosable: true,
+          position: "top",
+        });
+
+        await refetchBranch();
+      } catch (error) {
+        toast({
+          title: "Gagal update area",
+          status: "error",
+          isClosable: true,
+          position: "top",
+        });
+      } finally {
+        setRandomId(crypto.randomUUID());
+      }
+    },
+    [branch]
+  );
 
   return (
     <>
@@ -180,24 +220,27 @@ const Map: FC<{
               anchor="bottom"
               draggable={editCoordinate}
               onDrag={onMarkerDrag}
-              onDragEnd={onMarkerDragEnd}
             >
               <img src="/marker.png" />
             </Marker>
           )}
           <NavigationControl />
-          <DrawControl
-            position="top-left"
-            displayControlsDefault={false}
-            controls={{
-              polygon: true,
-              trash: true,
-            }}
-            defaultMode="draw_polygon"
-            onCreate={onUpdate}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
+          {!editCoordinate && (
+            <DrawControl
+              key={`${randomId}-${branch?.id}`}
+              position="top-left"
+              displayControlsDefault={false}
+              controls={{
+                polygon: !editCoordinate,
+                trash: !editCoordinate,
+              }}
+              defaultMode="simple_select"
+              onCreate={onChangeArea}
+              onUpdate={onChangeArea}
+              onDelete={onChangeArea}
+              branch={branch}
+            />
+          )}
         </ReactMapGL>
 
         {marker.longitude && marker.latitude && (
@@ -212,4 +255,4 @@ const Map: FC<{
   );
 };
 
-export default Map;
+export default BranchMap;

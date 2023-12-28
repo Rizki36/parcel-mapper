@@ -7,11 +7,15 @@ const useCouriersQuery = (props: {
   pageSize: number;
   pageIndex: number;
   search?: string;
+  with?: "branch"[];
+  branchId?: string;
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
     pageSize: props.pageSize,
-    search: props.search,
+    search: props.search || undefined,
+    with: props.with || undefined,
+    branchId: props.branchId || undefined,
   };
 
   const dataQuery = useQuery({

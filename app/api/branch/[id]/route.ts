@@ -1,41 +1,63 @@
 import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
-import { Area, Branch } from "@prismaorm/generated/client";
+import { Area, Branch, Prisma } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
 
-const getSchema = z.object({
+const withSchema = z.enum(["area"]);
+
+const paramsSchema = z.object({
   id: z.string(),
 });
 
+const querySchema = z.object({
+  with: withSchema.optional(),
+});
+
 export type GetOneBranchData = Branch & {
-  area: Area[];
+  area?: Area[]; // with area
 };
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const valid = getSchema.safeParse(params);
+  const validParams = paramsSchema.safeParse(params);
 
-  if (!valid.success) {
+  if (!validParams.success) {
     return ResponseBuilder.build({
       status: 400,
       error: {
         id: "bad-request",
-        message: "Id is required",
-        detail: valid.error.flatten(),
+        message: "Invalid params",
+        detail: validParams.error.flatten(),
       },
     });
   }
 
+  const { searchParams } = new URL(req.url);
+  const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
+
+  if (!validQuery.success) {
+    return ResponseBuilder.build({
+      status: 400,
+      error: {
+        id: "bad-request",
+        message: "Invalid query",
+        detail: validQuery.error.flatten(),
+      },
+    });
+  }
+
+  let withRelations: Prisma.BranchInclude = {};
+
+  if (validQuery.data.with === "area") withRelations.area = true;
+
   const branch: GetOneBranchData | null = await prisma.branch.findFirst({
     where: {
-      id: valid.data.id,
+      id: validParams.data.id,
     },
-    include: {
-      area: true,
-    },
+    include: withRelations,
   });
 
   return ResponseBuilder.build({

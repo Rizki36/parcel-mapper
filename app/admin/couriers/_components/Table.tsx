@@ -3,14 +3,9 @@ import React from "react";
 import useCouriersTable from "../_hooks/useCouriersTable";
 import Table from "../../../_components/Table";
 import Pagination from "../../../_components/Pagination";
-import usePageParams from "../_hooks/usePageParams";
 
 const CourierTable = () => {
-  const { search } = usePageParams();
-
-  const { table, isLoading } = useCouriersTable({
-    search,
-  });
+  const { table, isLoading } = useCouriersTable();
 
   return (
     <div>

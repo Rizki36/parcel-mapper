@@ -3,7 +3,7 @@ import { BuildResponse } from "@/_utils/responseBuilder";
 import { GetOneBranchData } from "@/api/branch/[id]/route";
 import { useQuery } from "@tanstack/react-query";
 
-const useBranchQuery = (props: { id: string }) => {
+const useBranchQuery = (props: { id: string; with?: "area"[] }) => {
   const dataQuery = useQuery({
     queryKey: ["/api/branch", { id: props.id }],
     queryFn: async () => {
@@ -11,7 +11,11 @@ const useBranchQuery = (props: { id: string }) => {
         BuildResponse<{
           doc: GetOneBranchData;
         }>
-      >(`/api/branch/${props.id}`);
+      >(`/api/branch/${props.id}`, {
+        params: {
+          with: props.with || [],
+        },
+      });
 
       return res.data;
     },

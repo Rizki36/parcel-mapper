@@ -13,6 +13,7 @@ import usePageParams from "./_hooks/usePageParams";
 import useCustomRouter from "@/_hooks/useCustomRouter";
 import { useDebounceFn } from "ahooks";
 import dynamic from "next/dynamic";
+import SelectBranch from "./_components/SelectBranch";
 
 const CourierTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
@@ -47,6 +48,9 @@ const CouriersPage = () => {
             Kurir
           </Heading>
           <Flex alignItems="center" columnGap={4}>
+            <Box minW="250px">
+              <SelectBranch />
+            </Box>
             <InputGroup size="sm">
               <InputLeftElement pointerEvents="none">
                 <HiMagnifyingGlass />

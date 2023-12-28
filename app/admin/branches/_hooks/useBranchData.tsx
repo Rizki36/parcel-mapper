@@ -12,6 +12,7 @@ const useBranchData = () => {
     refetch: refetchBranch,
   } = useBranchQuery({
     id,
+    with: ["area"],
   });
   const branch = data?.data?.doc;
 

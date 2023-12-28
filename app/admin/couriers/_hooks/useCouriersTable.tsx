@@ -8,15 +8,32 @@ import React from "react";
 import useCouriersQuery from "./useCouriersQuery";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
-import { Courier } from "@prismaorm/generated/client";
+import { Branch, Courier } from "@prismaorm/generated/client";
 import { IconButton, Tooltip } from "@chakra-ui/react";
+import usePageParams from "./usePageParams";
 
-const columnHelper = createColumnHelper<Courier>();
+const columnHelper = createColumnHelper<
+  Courier & {
+    branch?: Branch;
+  }
+>();
 
 const columns = [
   columnHelper.accessor("name", {
-    header: "Nama Penerima",
+    header: "Nama Kurir",
     cell: (info) => info.getValue(),
+  }),
+  columnHelper.display({
+    id: "branch",
+    header: "Cabang",
+    cell: (props) => {
+      return (
+        <>
+          {props.row.original.branch?.name} - (
+          {props.row.original.branch?.branchCode})
+        </>
+      );
+    },
   }),
   columnHelper.display({
     id: "actions",
@@ -43,7 +60,9 @@ const columns = [
   }),
 ];
 
-const useCouriersTable = (props: { search: string }) => {
+const useCouriersTable = () => {
+  const { search, branchId } = usePageParams();
+
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: 0,
@@ -53,7 +72,9 @@ const useCouriersTable = (props: { search: string }) => {
   const dataQuery = useCouriersQuery({
     pageIndex,
     pageSize,
-    search: props.search || undefined,
+    search,
+    with: ["branch"],
+    branchId,
   });
 
   const pagination = React.useMemo(

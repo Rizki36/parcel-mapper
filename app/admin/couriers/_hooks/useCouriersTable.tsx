@@ -27,10 +27,20 @@ const columns = [
     id: "branch",
     header: "Cabang",
     cell: (props) => {
+      const data = props.row.original;
       return (
         <>
-          {props.row.original.branch?.name} - (
-          {props.row.original.branch?.branchCode})
+          {data.branch ? (
+            <>
+              {data.branch?.name} - (
+              <Link href={`/admin/branches/${data.branch.id}`} target="_blank">
+                {data.branch?.branchCode}
+              </Link>
+              )
+            </>
+          ) : (
+            "-"
+          )}
         </>
       );
     },

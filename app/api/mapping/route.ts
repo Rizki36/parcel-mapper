@@ -1,15 +1,19 @@
 import ResponseBuilder from "@/_utils/responseBuilder";
 import prisma from "@prismaorm/client";
-import { Branch, Parcel } from "@prismaorm/generated/client";
+import { Area, Branch, Parcel } from "@prismaorm/generated/client";
 
 export type MappingResponseData = {
   parcels: Parcel[];
-  branches: Branch[];
+  branches: (Branch & { area: Area[] })[];
 };
 
 export async function GET() {
   const parcels = await prisma.parcel.findMany();
-  const branches = await prisma.branch.findMany();
+  const branches = await prisma.branch.findMany({
+    include: {
+      area: true,
+    },
+  });
 
   const data: MappingResponseData = {
     parcels,

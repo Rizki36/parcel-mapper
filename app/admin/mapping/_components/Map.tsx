@@ -1,9 +1,13 @@
 import React, { useCallback, useMemo, useState } from "react";
 import ReactMapGL, {
+  Layer,
+  LayerProps,
   MapLayerMouseEvent,
+  MapboxGeoJSONFeature,
   Marker,
   NavigationControl,
   Popup,
+  Source,
 } from "react-map-gl";
 import { Box, Flex, Link } from "@chakra-ui/react";
 import { ENV } from "@/_constants";
@@ -11,8 +15,36 @@ import useMappingQuery from "../_hooks/useMappingQuery";
 import { Branch, Parcel } from "@prismaorm/generated/client";
 import { HiOutlineHomeModern, HiOutlineLink } from "react-icons/hi2";
 import { IoLocation } from "react-icons/io5";
+import { generateBranchAreaGeoJson } from "../_utils";
+
+const dataLayer: LayerProps = {
+  id: "data",
+  type: "fill",
+  paint: {
+    "fill-opacity": 0,
+  },
+};
+
+const lineLayer: LayerProps = {
+  type: "line",
+  paint: {
+    "line-color": "#d41c1c",
+    "line-width": 2,
+    "line-opacity": 1,
+    "line-dasharray": [2, 2],
+  },
+};
+
+const hoverLayer: LayerProps = {
+  type: "fill",
+  paint: {
+    "fill-color": "#555555",
+    "fill-opacity": 0.5,
+  },
+};
 
 const Map = () => {
+  useState<MapboxGeoJSONFeature | null>(null);
   const [parcelInfo, setParcelInfo] = useState<Parcel | null>(null);
   const [branchInfo, setBranchInfo] = useState<Branch | null>(null);
 
@@ -20,6 +52,13 @@ const Map = () => {
 
   const onClick = useCallback((event: MapLayerMouseEvent) => {
     console.log(event.lngLat);
+  }, []);
+
+  const onHover = useCallback((event: MapLayerMouseEvent) => {
+    const { features } = event;
+    const hoveredFeature = features && features[0];
+
+    console.log(hoveredFeature);
   }, []);
 
   const parcels = useMemo(() => {
@@ -52,6 +91,11 @@ const Map = () => {
     ));
     // map
   }, [data?.data?.parcels]);
+
+  const branchAreasGeojson = useMemo(() => {
+    const output = generateBranchAreaGeoJson(data?.data?.branches || []);
+    return output;
+  }, [data?.data?.branches]);
 
   const branches = useMemo(() => {
     // filter
@@ -101,7 +145,17 @@ const Map = () => {
           }}
           style={{ height: 500 }}
           mapStyle="mapbox://styles/mapbox/streets-v9"
+          onMouseMove={onHover}
+          interactiveLayerIds={["data"]}
         >
+          <Source type="geojson" data={branchAreasGeojson}>
+            <Layer {...dataLayer} />
+            <Layer {...lineLayer} />
+            <Layer
+              {...hoverLayer}
+              filter={["in", "id", branchInfo?.id ?? ""]}
+            />
+          </Source>
           {parcels}
           {branches}
 

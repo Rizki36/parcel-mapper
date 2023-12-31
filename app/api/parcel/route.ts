@@ -6,11 +6,13 @@ import { z } from "zod";
 const createSchema = z.object({
   recipientName: z.string(),
   recipientAddress: z.string(),
-  status: z.nativeEnum(ParcelStatus).nullable(),
+  status: z.nativeEnum(ParcelStatus).nullable().optional(),
   longitude: z.number().nullable(),
   latitude: z.number().nullable(),
-  courierId: z.string().nullable(),
+  courierId: z.string().nullable().optional(),
 });
+
+export type CreateBody = z.infer<typeof createSchema>;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

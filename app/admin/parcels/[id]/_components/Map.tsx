@@ -32,11 +32,6 @@ const Map: FC<{
     });
   }, []);
 
-  const onMarkerDragEnd = useCallback((event: MarkerDragEvent) => {
-    // TODO: save to database
-    console.log(event.lngLat);
-  }, []);
-
   const onClick = useCallback(
     (event: MapLayerMouseEvent) => {
       if (editCoordinate) {
@@ -151,7 +146,6 @@ const Map: FC<{
               anchor="bottom"
               draggable={editCoordinate}
               onDrag={onMarkerDrag}
-              onDragEnd={onMarkerDragEnd}
             >
               <img src="/marker.png" />
             </Marker>

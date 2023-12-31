@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
-import { HiOutlineCube, HiMagnifyingGlass } from "react-icons/hi2";
+import {
+  HiOutlineCube,
+  HiMagnifyingGlass,
+  HiMiniPlusSmall,
+} from "react-icons/hi2";
 import dynamic from "next/dynamic";
 import { useDebounceFn } from "ahooks";
 import useCustomRouter from "../../_hooks/useCustomRouter";
@@ -9,9 +13,12 @@ import {
   Box,
   Flex,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
+  Tooltip,
 } from "@chakra-ui/react";
 
 const ParcelTable = dynamic(() => import("./_components/Table"), {});
@@ -57,6 +64,16 @@ const ParcelsPage = () => {
                 onChange={(e) => run(e.currentTarget.value)}
               />
             </InputGroup>
+            <Tooltip label="Tambah paket">
+              <Link href="/admin/parcels/add">
+                <IconButton
+                  aria-label="Tambah paket"
+                  icon={<HiMiniPlusSmall />}
+                  size="sm"
+                  colorScheme="teal"
+                />
+              </Link>
+            </Tooltip>
           </Flex>
         </Flex>
         <Box>

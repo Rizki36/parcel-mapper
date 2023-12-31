@@ -3,12 +3,19 @@ import {
   Box,
   Flex,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
+  Tooltip,
 } from "@chakra-ui/react";
 import React from "react";
-import { HiMagnifyingGlass, HiOutlineTruck } from "react-icons/hi2";
+import {
+  HiMagnifyingGlass,
+  HiMiniPlusSmall,
+  HiOutlineTruck,
+} from "react-icons/hi2";
 import usePageParams from "./_hooks/usePageParams";
 import useCustomRouter from "@/_hooks/useCustomRouter";
 import { useDebounceFn } from "ahooks";
@@ -62,6 +69,16 @@ const CouriersPage = () => {
                 onChange={(e) => run(e.currentTarget.value)}
               />
             </InputGroup>
+            <Tooltip label="Tambah kurir">
+              <Link href="/admin/couriers/add">
+                <IconButton
+                  aria-label="Tambah kurir"
+                  icon={<HiMiniPlusSmall />}
+                  size="sm"
+                  colorScheme="teal"
+                />
+              </Link>
+            </Tooltip>
           </Flex>
         </Flex>
         <Box>

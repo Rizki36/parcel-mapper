@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import BranchMap from "./_components/Map";
+import Form from "./_components/Form";
 
 export type AreaLocation = {
   latitude: number;
@@ -33,7 +34,7 @@ const AddBranchPage = () => {
           >
             Data Paket
           </Heading>
-          {<></>}
+          <Form areas={areas} />
         </Box>
       </Flex>
     </Flex>

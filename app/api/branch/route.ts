@@ -6,7 +6,17 @@ import { z } from "zod";
 const createSchema = z.object({
   name: z.string(),
   branchCode: z.string(),
+  areas: z
+    .array(
+      z.object({
+        longitude: z.number(),
+        latitude: z.number(),
+      })
+    )
+    .optional(),
 });
+
+export type CrateBranchBody = z.infer<typeof createSchema>;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -72,6 +82,11 @@ export async function POST(req: Request) {
     data: {
       name: valid.data.name,
       branchCode: valid.data.branchCode,
+      area: {
+        createMany: {
+          data: valid.data.areas ?? [],
+        },
+      },
     },
     select: {
       id: true,

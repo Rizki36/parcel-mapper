@@ -1,15 +1,22 @@
 "use client";
 import React from "react";
-import { HiMagnifyingGlass, HiOutlineHomeModern } from "react-icons/hi2";
+import {
+  HiMagnifyingGlass,
+  HiMiniPlusSmall,
+  HiOutlineHomeModern,
+} from "react-icons/hi2";
 import { useDebounceFn } from "ahooks";
 import useCustomRouter from "../../_hooks/useCustomRouter";
 import {
   Box,
   Flex,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Link,
+  Tooltip,
 } from "@chakra-ui/react";
 import usePageParams from "./_hooks/usePageParams";
 import dynamic from "next/dynamic";
@@ -52,11 +59,21 @@ const BranchesPage = () => {
               </InputLeftElement>
               <Input
                 colorScheme="teal"
-                placeholder="Cari branch"
+                placeholder="Cari cabang"
                 defaultValue={search}
                 onChange={(e) => run(e.currentTarget.value)}
               />
             </InputGroup>
+            <Tooltip label="Tambah cabang">
+              <Link href="/admin/branches/add">
+                <IconButton
+                  aria-label="Tambah cabang"
+                  icon={<HiMiniPlusSmall />}
+                  size="sm"
+                  colorScheme="teal"
+                />
+              </Link>
+            </Tooltip>
           </Flex>
         </Flex>
         <Box>

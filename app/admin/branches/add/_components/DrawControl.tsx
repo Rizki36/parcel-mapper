@@ -1,25 +1,24 @@
-import { GetOneBranchData } from "@/api/branch/[id]/route";
 import MapboxDraw, {
   DrawCreateEvent,
   DrawDeleteEvent,
   DrawUpdateEvent,
 } from "@mapbox/mapbox-gl-draw";
-import { Branch } from "@prismaorm/generated/client";
 import { FC, useEffect, useState } from "react";
 import { useControl } from "react-map-gl";
 
 import type { ControlPosition } from "react-map-gl";
+import { AreaLocation } from "../page";
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
+  areas: AreaLocation[];
   position?: ControlPosition;
   onCreate: (_evt: DrawCreateEvent) => void;
   onUpdate: (_evt: DrawUpdateEvent) => void;
   onDelete: (_evt: DrawDeleteEvent) => void;
-  branch: GetOneBranchData | undefined;
 };
 
-const DrawControl: FC<DrawControlProps> = ({ branch, ...props }) => {
-  const [tempBranch, setTempBranch] = useState<Branch | undefined>();
+const DrawControl: FC<DrawControlProps> = ({ areas, ...props }) => {
+  const [tempAreas, setTempAreas] = useState<AreaLocation[]>();
 
   const draw = useControl<MapboxDraw>(
     () => new MapboxDraw(props),
@@ -38,21 +37,17 @@ const DrawControl: FC<DrawControlProps> = ({ branch, ...props }) => {
     }
   );
 
-  // draw only once when branch is set
+  // draw only once when areas is set
   useEffect(() => {
-    if (branch && !tempBranch) {
-      setTempBranch(branch);
-      const coordinate =
-        branch?.area?.map?.((area) => {
-          return [area.longitude, area.latitude];
-        }) || [];
+    if (areas.length && !tempAreas?.length) {
+      setTempAreas(areas);
 
       draw.add({
         type: "Polygon",
-        coordinates: [coordinate],
+        coordinates: [areas.map((area) => [area.longitude, area.latitude])],
       });
     }
-  }, [branch, draw, tempBranch]);
+  }, [areas, draw, tempAreas]);
 
   return null;
 };

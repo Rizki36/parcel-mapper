@@ -1,5 +1,5 @@
 import React from "react";
-import { PARCEL_STATUS } from "../../../_constants";
+import { PARCEL_STATUS_LABEL } from "../../../_constants";
 import usePageParams from "../_hooks/usePageParams";
 import useCustomRouter from "../../../_hooks/useCustomRouter";
 import {
@@ -59,7 +59,7 @@ const StatusFilter = () => {
       </AccordionButton>
       <AccordionPanel>
         <Grid gap="2" display="inline-grid">
-          {Object.entries(PARCEL_STATUS).map(([key, value]) => (
+          {Object.entries(PARCEL_STATUS_LABEL).map(([key, value]) => (
             <Text key={key} as="label" size="2">
               <Flex gap="2">
                 <Checkbox

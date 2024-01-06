@@ -5,7 +5,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-import useCouriersQuery from "./useCouriersQuery";
+import useCouriersQuery from "../../../_hooks/queries/useCouriersQuery";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
 import { Branch, Courier } from "@prismaorm/generated/client";

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Stepper from "./_components/Stepper";
-import useParcelQuery from "../_hooks/useParcelQuery";
+import useParcelQuery from "../../../_hooks/queries/useParcelQuery";
 import { useParams } from "next/navigation";
 import Form from "./_components/Form";
 import Map from "./_components/Map";

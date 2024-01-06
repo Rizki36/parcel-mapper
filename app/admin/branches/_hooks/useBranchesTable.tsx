@@ -9,7 +9,7 @@ import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
 import { Branch } from "@prismaorm/generated/client";
 import { IconButton, Tooltip } from "@chakra-ui/react";
-import useBranchesQuery from "./useBranchesQuery";
+import useBranchesQuery from "../../../_hooks/queries/useBranchesQuery";
 
 const columnHelper = createColumnHelper<Branch>();
 

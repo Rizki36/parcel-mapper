@@ -1,4 +1,4 @@
-import useBranchesQuery from "@/admin/branches/_hooks/useBranchesQuery";
+import useBranchesQuery from "@/_hooks/queries/useBranchesQuery";
 import { useMemo } from "react";
 
 // TODO: create infinite scroll

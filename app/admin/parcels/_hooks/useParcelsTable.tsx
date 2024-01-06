@@ -5,8 +5,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-import useParcelsQuery from "./useParcelsQuery";
-import { PARCEL_STATUS } from "../../../_constants";
+import useParcelsQuery from "../../../_hooks/queries/useParcelsQuery";
+import { PARCEL_STATUS_LABEL } from "../../../_constants";
 import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
 import { Parcel } from "@prismaorm/generated/client";
@@ -21,7 +21,7 @@ const columns = [
   }),
   columnHelper.accessor("status", {
     header: "Status",
-    cell: (info) => PARCEL_STATUS[info.getValue()],
+    cell: (info) => PARCEL_STATUS_LABEL[info.getValue()],
   }),
   columnHelper.display({
     id: "actions",

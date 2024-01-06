@@ -1,4 +1,4 @@
-import useBranchQuery from "@/admin/branches/_hooks/useBranchQuery";
+import useBranchQuery from "@/_hooks/queries/useBranchQuery";
 import usePageParams from "./usePageParams";
 
 const useSelectBranchData = () => {

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import useParcelQuery from "../../_hooks/useParcelQuery";
+import useParcelQuery from "../../../../_hooks/queries/useParcelQuery";
 import { useParams } from "next/navigation";
 import { ParcelStatus } from "@prismaorm/generated/client";
 

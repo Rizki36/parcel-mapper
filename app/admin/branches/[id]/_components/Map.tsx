@@ -7,9 +7,9 @@ import ReactMapGL, {
 } from "react-map-gl";
 import { ENV } from "../../../../_constants";
 import { Box, Button, Flex, Heading, useToast } from "@chakra-ui/react";
-import usePatchBranchMutation from "../../_hooks/usePatchBranchMutation";
+import usePatchBranchMutation from "../../../../_hooks/mutations/usePatchBranchMutation";
 import DrawControl from "@/admin/branches/[id]/_components/DrawControl";
-import usePostBranchAreaMutation from "../../_hooks/usePostBranchAreaMutation";
+import usePostBranchAreaMutation from "../../../../_hooks/mutations/usePostBranchAreaMutation";
 import { Feature, GeoJsonProperties, Geometry } from "geojson";
 import useBranchData from "../../_hooks/useBranchData";
 
@@ -57,10 +57,8 @@ const BranchMap: FC<MapProps> = () => {
       try {
         await updateCoordinate({
           id: branch.id,
-          data: {
-            longitude: marker.longitude,
-            latitude: marker.latitude,
-          },
+          longitude: marker.longitude,
+          latitude: marker.latitude,
         });
 
         toast({
@@ -116,9 +114,7 @@ const BranchMap: FC<MapProps> = () => {
 
         await updateBranchAreas({
           id: branch?.id || "",
-          data: {
-            area,
-          },
+          area,
         });
 
         toast({

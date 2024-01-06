@@ -8,8 +8,9 @@ import {
   HiOutlineMap,
   HiOutlineTruck,
 } from "react-icons/hi2";
+import { SidebarMenu, SidebarMenuProps } from "./Sidebar.type";
 
-const menus: { href: string; text: string; icon: React.ReactNode }[] = [
+const menu: SidebarMenu[] = [
   {
     href: "/admin/parcels",
     text: "Paket",
@@ -32,11 +33,7 @@ const menus: { href: string; text: string; icon: React.ReactNode }[] = [
   },
 ];
 
-const MenuItem: FC<{
-  href: string;
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-}> = ({ href, children, icon }) => {
+const MenuItem: FC<SidebarMenuProps> = ({ href, children, icon }) => {
   const path = usePathname();
   const active = path.startsWith(href);
 
@@ -87,7 +84,7 @@ const Sidebar = () => {
           mb: 0,
         }}
       >
-        {menus.map((menu) => (
+        {menu.map((menu) => (
           <MenuItem key={menu.href} href={menu.href} icon={menu.icon}>
             {menu.text}
           </MenuItem>

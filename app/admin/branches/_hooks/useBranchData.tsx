@@ -1,5 +1,5 @@
 import { useParams } from "next/navigation";
-import useBranchQuery from "./useBranchQuery";
+import useBranchQuery from "../../../_hooks/queries/useBranchQuery";
 
 const useBranchData = () => {
   const { id } = useParams<{

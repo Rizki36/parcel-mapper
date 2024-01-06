@@ -1,14 +1,13 @@
-import axiosInstance from "../../../_libs/axios";
+import axiosInstance from "../../_libs/axios";
 import { Parcel } from "@prismaorm/generated/client";
 import { useMutation } from "@tanstack/react-query";
 
+type Data = Partial<Parcel> & { id: string };
+
 const usePatchParcelMutation = () => {
   return useMutation({
-    mutationFn: async (props: { id: string; data: Partial<Parcel> }) => {
-      const res = await axiosInstance.patch(
-        `/api/parcel/${props.id}`,
-        props.data
-      );
+    mutationFn: async ({ id, ...data }: Data) => {
+      const res = await axiosInstance.patch(`/api/parcel/${id}`, data);
 
       return res.data;
     },

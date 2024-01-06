@@ -1,3 +1,4 @@
+import { ParcelKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
 import { BuildPaginatedResponse } from "../../_utils/responseBuilder";
 import { Parcel } from "@prismaorm/generated/client";
@@ -17,7 +18,7 @@ const useParcelsQuery = (props: {
   };
 
   const dataQuery = useQuery({
-    queryKey: ["/api/parcel", fetchDataOptions],
+    queryKey: [...ParcelKeyGenerator.list(), fetchDataOptions],
     queryFn: async () => {
       const res = await axiosInstance.get<BuildPaginatedResponse<Parcel>>(
         "/api/parcel",

@@ -1,4 +1,5 @@
 import axiosInstance from "@/_libs/axios";
+import { BranchKeyGenerator } from "@/_utils/keyGenerator";
 import { BuildResponse } from "@/_utils/responseBuilder";
 import { GetOneBranchData } from "@/api/branch/[id]/route";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ const useBranchQuery = (props: UseBranchQueryProps) => {
   };
 
   const dataQuery = useQuery({
-    queryKey: ["/api/branch", fetchDataOptions],
+    queryKey: [...BranchKeyGenerator.one(props.id), fetchDataOptions],
     queryFn: async () => {
       const { id, ...params } = fetchDataOptions;
       const res = await axiosInstance.get<GetOneBranchResponse>(

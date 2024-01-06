@@ -1,3 +1,4 @@
+import { BranchKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
 import { BuildPaginatedResponse } from "../../_utils/responseBuilder";
 import { Branch } from "@prismaorm/generated/client";
@@ -19,7 +20,7 @@ const useBranchesQuery = (props: UseBranchesQueryProps) => {
   };
 
   const dataQuery = useQuery({
-    queryKey: ["/api/branch", fetchDataOptions],
+    queryKey: [...BranchKeyGenerator.list(), fetchDataOptions],
     queryFn: async () => {
       const res = await axiosInstance.get<GetBranchesResponse>("/api/branch", {
         params: fetchDataOptions,

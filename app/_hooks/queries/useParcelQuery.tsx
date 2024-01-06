@@ -1,3 +1,4 @@
+import { ParcelKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
 import { BuildResponse } from "../../_utils/responseBuilder";
 import { Parcel } from "@prismaorm/generated/client";
@@ -15,7 +16,7 @@ const useParcelQuery = (props: UseParcelQueryProps) => {
   const fetchDataOptions = { id: props.id };
 
   const dataQuery = useQuery({
-    queryKey: ["/api/parcel", fetchDataOptions],
+    queryKey: [...ParcelKeyGenerator.one(props.id), fetchDataOptions],
     queryFn: async () => {
       const res = await axiosInstance.get<GetOneParcelResponse>(
         `/api/parcel/${props.id}`

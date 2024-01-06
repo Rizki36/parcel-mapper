@@ -1,3 +1,4 @@
+import { CourierKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
 import { BuildPaginatedResponse } from "../../_utils/responseBuilder";
 import { Courier } from "@prismaorm/generated/client";
@@ -23,7 +24,7 @@ const useCouriersQuery = (props: UseCouriersQueryProps) => {
   };
 
   const dataQuery = useQuery({
-    queryKey: ["/api/courier", fetchDataOptions],
+    queryKey: [...CourierKeyGenerator.list(), fetchDataOptions],
     queryFn: async () => {
       const res = await axiosInstance.get<GetCouriersResponse>("/api/courier", {
         params: fetchDataOptions,

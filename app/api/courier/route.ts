@@ -15,7 +15,10 @@ const querySchema = z.object({
 
 const createSchema = z.object({
   name: z.string(),
+  branchId: z.string(),
 });
+
+export type CrateCourierBody = z.infer<typeof createSchema>;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -98,6 +101,7 @@ export async function POST(req: Request) {
   const newCourier = await prisma.courier.create({
     data: {
       name: valid.data.name,
+      branchId: valid.data.branchId,
     },
     select: {
       id: true,

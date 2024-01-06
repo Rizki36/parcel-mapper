@@ -10,7 +10,7 @@ import { HiEye } from "react-icons/hi2";
 import Link from "next/link";
 import { Branch, Courier } from "@prismaorm/generated/client";
 import { IconButton, Tooltip } from "@chakra-ui/react";
-import usePageParams from "./usePageParams";
+import useCouriersPageSearchParams from "./useCouriersPageSearchParams";
 
 const columnHelper = createColumnHelper<
   Courier & {
@@ -71,7 +71,7 @@ const columns = [
 ];
 
 const useCouriersTable = () => {
-  const { search, branchId } = usePageParams();
+  const { search, branchId } = useCouriersPageSearchParams();
 
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({

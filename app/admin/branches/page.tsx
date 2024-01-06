@@ -18,14 +18,14 @@ import {
   Link,
   Tooltip,
 } from "@chakra-ui/react";
-import usePageParams from "./_hooks/usePageParams";
+import useBranchesPageSearchParams from "./_hooks/useBranchesPageSearchParams";
 import dynamic from "next/dynamic";
 
 const BranchTable = dynamic(() => import("./_components/Table"), {});
 // const BranchFilter = dynamic(() => import("./_components/Filter"), {});
 
 const BranchesPage = () => {
-  const { search } = usePageParams();
+  const { search } = useBranchesPageSearchParams();
   const { pushReplaceFilter, pushRemoveFilter } = useCustomRouter();
 
   const { run } = useDebounceFn(

@@ -2,11 +2,11 @@
 import React from "react";
 import Table from "../../../_components/Table";
 import Pagination from "../../../_components/Pagination";
-import usePageParams from "../_hooks/usePageParams";
+import useBranchesPageSearchParams from "../_hooks/useBranchesPageSearchParams";
 import useBranchesTable from "../_hooks/useBranchesTable";
 
 const BranchTable = () => {
-  const { search } = usePageParams();
+  const { search } = useBranchesPageSearchParams();
 
   const { table, isLoading } = useBranchesTable({
     search,

@@ -1,13 +1,11 @@
 import { useSearchParams } from "next/navigation";
 
-const usePageParams = () => {
+const useBranchesPageSearchParams = () => {
   const searchParams = useSearchParams();
 
   return {
-    status: searchParams.getAll("status") || [],
     search: searchParams.get("search") || "",
-    branchId: searchParams.get("branchId") || "",
   };
 };
 
-export default usePageParams;
+export default useBranchesPageSearchParams;

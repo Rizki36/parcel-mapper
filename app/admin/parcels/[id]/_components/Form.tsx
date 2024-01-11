@@ -3,7 +3,7 @@ import { Parcel } from "@prismaorm/generated/client";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import usePatchParcelMutation from "../../_hooks/usePatchParcelMutation";
+import usePatchParcelMutation from "../../../../_hooks/mutations/usePatchParcelMutation";
 import {
   Button,
   Flex,
@@ -38,10 +38,8 @@ const Form: FC<{
     try {
       await mutateAsync({
         id: parcel?.id || "",
-        data: {
-          recipientName: data.recipientName,
-          recipientAddress: data.recipientAddress,
-        },
+        recipientName: data.recipientName,
+        recipientAddress: data.recipientAddress,
       });
 
       toast({

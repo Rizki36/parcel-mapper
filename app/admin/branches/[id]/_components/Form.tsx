@@ -11,7 +11,7 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import usePatchBranchMutation from "../../_hooks/usePatchBranchMutation";
+import usePatchBranchMutation from "../../../../_hooks/mutations/usePatchBranchMutation";
 import { GetOneBranchData } from "@/api/branch/[id]/route";
 
 const formSchema = z.object({
@@ -37,10 +37,8 @@ const Form: FC<{
     try {
       await mutateAsync({
         id: branch?.id || "",
-        data: {
-          name: data.name,
-          branchCode: data?.branchCode,
-        },
+        name: data.name,
+        branchCode: data?.branchCode,
       });
 
       toast({

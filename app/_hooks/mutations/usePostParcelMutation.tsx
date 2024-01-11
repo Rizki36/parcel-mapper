@@ -1,5 +1,5 @@
 import { CreateBody } from "@/api/parcel/route";
-import axiosInstance from "../../../_libs/axios";
+import axiosInstance from "../../_libs/axios";
 import { useMutation } from "@tanstack/react-query";
 
 const usePostParcelMutation = () => {

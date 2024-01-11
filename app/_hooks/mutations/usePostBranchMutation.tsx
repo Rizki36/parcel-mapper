@@ -1,5 +1,5 @@
 import { CrateBranchBody } from "@/api/branch/route";
-import axiosInstance from "../../../_libs/axios";
+import axiosInstance from "../../_libs/axios";
 import { useMutation } from "@tanstack/react-query";
 
 const usePostBranchMutation = () => {

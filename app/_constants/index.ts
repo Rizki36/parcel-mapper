@@ -5,7 +5,7 @@ export const ENV = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
 };
 
-export const PARCEL_STATUS: Record<ParcelStatus, string> = {
+export const PARCEL_STATUS_LABEL: Record<ParcelStatus, string> = {
   PENDING: "Menunggu",
   ON_THE_WAY: "Sedang Dikirim",
   DELIVERED: "Terkirim",

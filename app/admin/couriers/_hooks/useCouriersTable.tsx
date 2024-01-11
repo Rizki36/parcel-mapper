@@ -1,77 +1,16 @@
 import {
   PaginationState,
-  createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import React from "react";
-import useCouriersQuery from "./useCouriersQuery";
-import { HiEye } from "react-icons/hi2";
-import Link from "next/link";
-import { Branch, Courier } from "@prismaorm/generated/client";
-import { IconButton, Tooltip } from "@chakra-ui/react";
-import usePageParams from "./usePageParams";
-
-const columnHelper = createColumnHelper<
-  Courier & {
-    branch?: Branch;
-  }
->();
-
-const columns = [
-  columnHelper.accessor("name", {
-    header: "Nama Kurir",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.display({
-    id: "branch",
-    header: "Cabang",
-    cell: (props) => {
-      const data = props.row.original;
-      return (
-        <>
-          {data.branch ? (
-            <>
-              {data.branch?.name} - (
-              <Link href={`/admin/branches/${data.branch.id}`} target="_blank">
-                {data.branch?.branchCode}
-              </Link>
-              )
-            </>
-          ) : (
-            "-"
-          )}
-        </>
-      );
-    },
-  }),
-  columnHelper.display({
-    id: "actions",
-    header: "Actions",
-    cell: (props) => {
-      const id = props.row.original.id;
-      return (
-        <div>
-          <Tooltip label="Detail kurir">
-            <Link href={`/admin/couriers/${id}`}>
-              <IconButton
-                isRound={true}
-                variant="outline"
-                size="xs"
-                aria-label="Detail kurir"
-                icon={<HiEye style="" />}
-              ></IconButton>
-            </Link>
-          </Tooltip>
-        </div>
-      );
-    },
-    size: 20,
-  }),
-];
+import useCouriersQuery from "../../../_hooks/queries/useCouriersQuery";
+import useCouriersPageSearchParams from "./useCouriersPageSearchParams";
+import useCouriersTableColumns from "./useCouriersTableColumns";
 
 const useCouriersTable = () => {
-  const { search, branchId } = usePageParams();
+  const { search, branchId } = useCouriersPageSearchParams();
+  const { columns } = useCouriersTableColumns();
 
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
@@ -86,19 +25,17 @@ const useCouriersTable = () => {
     with: ["branch"],
     branchId,
   });
+  const couriersData = dataQuery.data?.data;
 
-  const pagination = React.useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  );
+  const pagination = {
+    pageIndex,
+    pageSize,
+  };
 
   const table = useReactTable({
-    data: dataQuery.data?.data?.docs ?? [],
+    data: couriersData?.docs ?? [],
     columns,
-    pageCount: dataQuery.data?.data?.totalPages ?? 0,
+    pageCount: couriersData?.totalPages ?? 0,
     state: {
       pagination,
     },

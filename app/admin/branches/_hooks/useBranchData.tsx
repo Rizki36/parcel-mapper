@@ -1,10 +1,8 @@
-import { useParams } from "next/navigation";
-import useBranchQuery from "./useBranchQuery";
+import useBranchQuery from "../../../_hooks/queries/useBranchQuery";
+import useBranchPageSearchParams from "./useBranchPageSearchParams";
 
 const useBranchData = () => {
-  const { id } = useParams<{
-    id: string;
-  }>();
+  const { id } = useBranchPageSearchParams();
 
   const {
     data,

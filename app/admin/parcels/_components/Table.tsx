@@ -3,10 +3,10 @@ import React from "react";
 import useParcelsTable from "../_hooks/useParcelsTable";
 import Table from "../../../_components/Table";
 import Pagination from "../../../_components/Pagination";
-import usePageParams from "../_hooks/usePageParams";
+import useParcelsPageSearchParams from "../_hooks/useParcelsPageSearchParams";
 
 const ParcelTable = () => {
-  const { search, status: statuses } = usePageParams();
+  const { search, status: statuses } = useParcelsPageSearchParams();
 
   const { table, isLoading } = useParcelsTable({
     search,

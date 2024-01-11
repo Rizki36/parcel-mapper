@@ -8,7 +8,7 @@ import {
 import dynamic from "next/dynamic";
 import { useDebounceFn } from "ahooks";
 import useCustomRouter from "../../_hooks/useCustomRouter";
-import usePageParams from "./_hooks/usePageParams";
+import useParcelsPageSearchParams from "./_hooks/useParcelsPageSearchParams";
 import {
   Box,
   Flex,
@@ -25,7 +25,7 @@ const ParcelTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
 
 const ParcelsPage = () => {
-  const { search } = usePageParams();
+  const { search } = useParcelsPageSearchParams();
   const { pushReplaceFilter, pushRemoveFilter } = useCustomRouter();
 
   const { run } = useDebounceFn(

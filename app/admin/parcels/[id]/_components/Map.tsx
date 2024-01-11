@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import usePatchParcelMutation from "../../_hooks/usePatchParcelMutation";
+import usePatchParcelMutation from "../../../../_hooks/mutations/usePatchParcelMutation";
 import ReactMapGL, {
   MapLayerMouseEvent,
   Marker,
@@ -49,10 +49,8 @@ const Map: FC<{
       try {
         await mutateAsync({
           id: parcel.id,
-          data: {
-            longitude: marker.longitude,
-            latitude: marker.latitude,
-          },
+          longitude: marker.longitude,
+          latitude: marker.latitude,
         });
         setEditCoordinate(false);
       } catch (error) {

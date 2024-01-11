@@ -1,8 +1,8 @@
-import useBranchQuery from "@/admin/branches/_hooks/useBranchQuery";
-import usePageParams from "./usePageParams";
+import useBranchQuery from "@/_hooks/queries/useBranchQuery";
+import useCouriersPageSearchParams from "./useCouriersPageSearchParams";
 
 const useSelectBranchData = () => {
-  const { branchId } = usePageParams();
+  const { branchId } = useCouriersPageSearchParams();
 
   const { data, isLoading: loadingBranch } = useBranchQuery({
     id: branchId,

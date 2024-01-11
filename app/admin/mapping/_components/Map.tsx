@@ -11,7 +11,7 @@ import ReactMapGL, {
 } from "react-map-gl";
 import { Box, Flex, Link } from "@chakra-ui/react";
 import { ENV } from "@/_constants";
-import useMappingQuery from "../_hooks/useMappingQuery";
+import useMappingQuery from "../../../_hooks/queries/useMappingQuery";
 import { Branch, Parcel } from "@prismaorm/generated/client";
 import { HiOutlineHomeModern, HiOutlineLink } from "react-icons/hi2";
 import { IoLocation } from "react-icons/io5";

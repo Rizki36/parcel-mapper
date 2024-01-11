@@ -12,7 +12,7 @@ import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AreaLocation } from "../page";
-import usePostBranchMutation from "../../_hooks/usePostBranch";
+import usePostBranchMutation from "../../../../_hooks/mutations/usePostBranchMutation";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({

@@ -12,7 +12,6 @@ const postBranchAreasSchema = z.object({
   ),
 });
 
-// infer from the schema
 export type PostBranchAreasBody = z.infer<typeof postBranchAreasSchema>;
 
 export async function POST(

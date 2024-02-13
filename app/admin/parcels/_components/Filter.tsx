@@ -1,6 +1,6 @@
 import React from "react";
 import { PARCEL_STATUS_LABEL } from "../../../_constants";
-import useParcelsPageSearchParams from "../_hooks/useParcelsPageSearchParams";
+import useParcelsPageQuery from "../_hooks/useParcelsPageQuery";
 import useCustomRouter from "../../../_hooks/useCustomRouter";
 import {
   AccordionIcon,
@@ -46,7 +46,7 @@ const Filter = () => {
 };
 
 const StatusFilter = () => {
-  const { status } = useParcelsPageSearchParams();
+  const { status } = useParcelsPageQuery();
   const { pushToggleFilter } = useCustomRouter();
 
   return (

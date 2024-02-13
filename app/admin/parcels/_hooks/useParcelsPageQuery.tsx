@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 
-const useParcelsPageSearchParams = () => {
+const useParcelsPageQuery = () => {
   const searchParams = useSearchParams();
 
   return {
@@ -9,4 +9,4 @@ const useParcelsPageSearchParams = () => {
   };
 };
 
-export default useParcelsPageSearchParams;
+export default useParcelsPageQuery;

@@ -19,10 +19,16 @@ export async function GET(req: Request) {
   const pageSize = Number(searchParams.get("pageSize") ?? "10");
   const pageIndex = Number(searchParams.get("pageIndex") ?? "0");
   const search = searchParams.get("search") ?? "";
+  const courierId = searchParams.get("courierId") ?? "";
   const statuses = searchParams.getAll("statuses") ?? [];
 
   let whereInput: Prisma.ParcelWhereInput = {};
 
+  if (courierId) {
+    whereInput = {
+      courierId,
+    };
+  }
   if (search) {
     whereInput = {
       OR: [

@@ -8,13 +8,15 @@ const useParcelsQuery = (props: {
   pageSize: number;
   pageIndex: number;
   search?: string;
-  statuses: string[];
+  statuses?: string[];
+  courierId?: string;
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
     pageSize: props.pageSize,
     search: props.search,
     statuses: props.statuses,
+    courierId: props.courierId,
   };
 
   const dataQuery = useQuery({

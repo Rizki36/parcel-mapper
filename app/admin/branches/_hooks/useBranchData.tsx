@@ -1,8 +1,8 @@
-import useBranchQuery from "../../../_hooks/queries/useBranchQuery";
-import useBranchPageSearchParams from "./useBranchPageSearchParams";
+import useBranchQuery from "@/_hooks/queries/useBranchQuery";
+import useBranchPageQuery from "./useBranchPageQuery";
 
 const useBranchData = () => {
-  const { id } = useBranchPageSearchParams();
+  const { id } = useBranchPageQuery();
 
   const {
     data,

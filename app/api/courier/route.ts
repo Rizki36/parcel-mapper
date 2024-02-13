@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const withSchema = z.enum(["branch"]);
 
-const querySchema = z.object({
+const getAllQuerySchema = z.object({
   pageSize: z.coerce.number().optional(),
   pageIndex: z.coerce.number().optional(),
   with: withSchema.optional(),
@@ -23,7 +23,9 @@ export type CrateCourierBody = z.infer<typeof createSchema>;
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
-  const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
+  const validQuery = getAllQuerySchema.safeParse(
+    Object.fromEntries(searchParams)
+  );
 
   if (!validQuery.success) {
     return ResponseBuilder.build({

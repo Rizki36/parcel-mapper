@@ -14,6 +14,12 @@ const querySchema = z.object({
   with: withSchema.optional(),
 });
 
+const updateSchema = z.object({
+  name: z.string().optional(),
+  branchId: z.string().optional().nullable(),
+});
+export type UpdateCourierBody = z.infer<typeof updateSchema>;
+
 export type GetOneCourierData = Courier & {
   branch?: Branch | null; // with branch
 };
@@ -74,14 +80,7 @@ export async function PATCH(
 ) {
   const body = await req.json();
 
-  const validBody = z
-    .object({
-      name: z.string().optional(),
-      longitude: z.number().optional(),
-      latitude: z.number().optional(),
-      branchCode: z.string().optional(),
-    })
-    .safeParse(body);
+  const validBody = updateSchema.safeParse(body);
 
   if (!validBody.success) {
     return ResponseBuilder.build({
@@ -95,18 +94,16 @@ export async function PATCH(
   }
 
   // remove fields that have undefined values
-  const branch = await prisma.branch.update({
+  const courier = await prisma.courier.update({
     where: {
       id: params.id,
     },
     data: {
-      ...(validBody.data.latitude && { latitude: validBody.data.latitude }),
-      ...(validBody.data.longitude && { longitude: validBody.data.longitude }),
-      ...(validBody.data.name && {
+      ...(validBody.data.name !== "undefined" && {
         name: validBody.data.name,
       }),
-      ...(validBody.data.branchCode && {
-        branchCode: validBody.data.branchCode,
+      ...(validBody.data.branchId !== "undefined" && {
+        branchId: validBody.data.branchId,
       }),
     },
   });
@@ -114,7 +111,7 @@ export async function PATCH(
   return ResponseBuilder.build({
     status: 200,
     data: {
-      doc: branch,
+      doc: courier,
     },
   });
 }

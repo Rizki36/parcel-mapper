@@ -18,7 +18,7 @@ import {
   Link,
   Tooltip,
 } from "@chakra-ui/react";
-import useBranchesPageSearchParams from "./_hooks/useBranchesPageSearchParams";
+import useBranchesPageSearchParams from "./_hooks/useBranchesPageQuery";
 import dynamic from "next/dynamic";
 
 const BranchTable = dynamic(() => import("./_components/Table"), {});

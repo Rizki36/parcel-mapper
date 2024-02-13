@@ -16,7 +16,7 @@ import {
   HiMiniPlusSmall,
   HiOutlineTruck,
 } from "react-icons/hi2";
-import useCouriersPageSearchParams from "./_hooks/useCouriersPageSearchParams";
+import useCouriersPageQuery from "./_hooks/useCouriersPageQuery";
 import useCustomRouter from "@/_hooks/useCustomRouter";
 import { useDebounceFn } from "ahooks";
 import dynamic from "next/dynamic";
@@ -26,7 +26,7 @@ const CourierTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
 
 const CouriersPage = () => {
-  const { search } = useCouriersPageSearchParams();
+  const { search } = useCouriersPageQuery();
 
   const { pushReplaceFilter, pushRemoveFilter } = useCustomRouter();
 

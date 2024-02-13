@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 
-const useCouriersPageSearchParams = () => {
+const useCouriersPageQuery = () => {
   const searchParams = useSearchParams();
 
   return {
@@ -10,4 +10,4 @@ const useCouriersPageSearchParams = () => {
   };
 };
 
-export default useCouriersPageSearchParams;
+export default useCouriersPageQuery;

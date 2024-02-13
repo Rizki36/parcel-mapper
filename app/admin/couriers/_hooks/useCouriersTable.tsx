@@ -5,11 +5,11 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import useCouriersQuery from "../../../_hooks/queries/useCouriersQuery";
-import useCouriersPageSearchParams from "./useCouriersPageSearchParams";
+import useCouriersPageQuery from "./useCouriersPageQuery";
 import useCouriersTableColumns from "./useCouriersTableColumns";
 
 const useCouriersTable = () => {
-  const { search, branchId } = useCouriersPageSearchParams();
+  const { search, branchId } = useCouriersPageQuery();
   const { columns } = useCouriersTableColumns();
 
   const [{ pageIndex, pageSize }, setPagination] =

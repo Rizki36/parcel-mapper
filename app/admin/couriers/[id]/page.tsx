@@ -1,13 +1,6 @@
 "use client";
 import React from "react";
-import {
-  Box,
-  Card,
-  CardBody,
-  CardHeader,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Flex, Heading } from "@chakra-ui/react";
 import CourierParcelsTable from "./_components/Table";
 import useCourierData from "./_hooks/useCourierData";
 import CourierForm from "./_components/Form";

@@ -1,5 +1,5 @@
 import { Flex, IconButton } from "@chakra-ui/react";
-import { useState } from "react";
+import { useDeliveryStore } from "../_providers/DeliveryProviders";
 
 const StepperItem = ({
   active,
@@ -25,25 +25,13 @@ const StepperItem = ({
 };
 
 const Stepper = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const { step, setStep } = useDeliveryStore((state) => state);
 
   return (
     <Flex justify="space-between">
-      <StepperItem
-        step={1}
-        active={activeStep >= 1}
-        onClick={() => setActiveStep(1)}
-      />
-      <StepperItem
-        step={2}
-        active={activeStep >= 2}
-        onClick={() => setActiveStep(2)}
-      />
-      <StepperItem
-        step={3}
-        active={activeStep >= 3}
-        onClick={() => setActiveStep(3)}
-      />
+      <StepperItem step={1} active={step >= 1} onClick={() => setStep(1)} />
+      <StepperItem step={2} active={step >= 2} onClick={() => setStep(2)} />
+      <StepperItem step={3} active={step >= 3} onClick={() => setStep(3)} />
     </Flex>
   );
 };

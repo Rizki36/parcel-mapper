@@ -14,7 +14,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <Flex direction="column" height="100vh">
+    <Flex direction="column" height="100dvh">
       <Flex flex={1} id="main-content">
         {children}
       </Flex>

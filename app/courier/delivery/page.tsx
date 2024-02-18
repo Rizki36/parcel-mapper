@@ -18,7 +18,7 @@ const DeliveryPage = () => {
             latitude: -7.546839,
             zoom: 14,
           }}
-          style={{ height: "100dvh" }}
+          style={{ height: "100dvh", maxHeight: "100dvh" }}
           mapStyle="mapbox://styles/mapbox/streets-v9"
         ></ReactMapGL>
         <Drawer />

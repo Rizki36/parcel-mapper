@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import Stepper from "./Stepper";
+import Steps from "./Steps";
 
 const MIN_HEIGHT = 200;
 
@@ -20,7 +21,7 @@ const Drawer = () => {
   };
 
   return (
-    <Box
+    <Flex
       background="white"
       position="absolute"
       bottom={0}
@@ -33,6 +34,8 @@ const Drawer = () => {
       ref={ref}
       p={2}
       pt={8}
+      overflow="hidden"
+      direction="column"
     >
       <Flex
         justifyContent="center"
@@ -53,7 +56,18 @@ const Drawer = () => {
       <Box mx="auto" width="80%" mt={3}>
         <Stepper />
       </Box>
-    </Box>
+
+      <Flex
+        direction="column"
+        mt="5"
+        px="4"
+        flex={1}
+        flexWrap="nowrap"
+        overflow="hidden"
+      >
+        <Steps />
+      </Flex>
+    </Flex>
   );
 };
 

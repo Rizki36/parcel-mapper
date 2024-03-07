@@ -5,7 +5,7 @@ import { type StoreApi, useStore } from "zustand";
 import {
   DeliveryStore,
   createDeliveryStore,
-  initDeliveryStore,
+  defaultInitState,
 } from "../_stores/delivery-store";
 
 export const DeliveryStoreContext =
@@ -20,7 +20,7 @@ export const DeliveryStoreProvider = ({
 }: DeliveryStoreProviderProps) => {
   const storeRef = useRef<StoreApi<DeliveryStore>>();
   if (!storeRef.current) {
-    storeRef.current = createDeliveryStore(initDeliveryStore());
+    storeRef.current = createDeliveryStore(defaultInitState);
   }
 
   return (

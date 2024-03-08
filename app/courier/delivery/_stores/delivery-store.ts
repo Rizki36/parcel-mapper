@@ -1,4 +1,3 @@
-// src/stores/counter-store.ts
 import { createStore } from "zustand/vanilla";
 
 export type Node = {
@@ -6,6 +5,15 @@ export type Node = {
   lat: number;
   lng: number;
   type: "branch" | "customer";
+  recipientName: string;
+  recipientNumber: string;
+  recipientAddress: string;
+  visited: boolean;
+};
+
+export type RouteItem = {
+  id: number;
+  visited: boolean;
 };
 
 export type DeliveryState = {
@@ -19,6 +27,8 @@ export type DeliveryState = {
     ants: number;
     iterations: number;
   };
+  route: RouteItem[];
+  nodeDetailId: number | null;
 };
 
 export type DeliveryActions = {
@@ -26,6 +36,8 @@ export type DeliveryActions = {
   setDistances: (_distances: number[][]) => void;
   setNodes: (_nodes: Node[]) => void;
   setConfig: (_config: DeliveryState["config"]) => void;
+  setRoute: (_route: RouteItem[]) => void;
+  setNodeDetailId: (_nodeDetailId: DeliveryState["nodeDetailId"]) => void;
 };
 
 export type DeliveryStore = DeliveryState & DeliveryActions;
@@ -41,6 +53,8 @@ export const defaultInitState: DeliveryState = {
     ants: 10,
     iterations: 100,
   },
+  route: [],
+  nodeDetailId: null,
 };
 
 export const createDeliveryStore = (
@@ -49,8 +63,10 @@ export const createDeliveryStore = (
   return createStore<DeliveryStore>()((set) => ({
     ...initState,
     setStep: (step) => set({ step }),
-    setDistances: (distances) => set({ distances }),
+    setDistances: (distances) => set({ distances, route: [] }),
     setNodes: (nodes) => set({ nodes }),
     setConfig: (config) => set({ config }),
+    setRoute: (route) => set({ route }),
+    setNodeDetailId: (nodeDetailId) => set({ nodeDetailId }),
   }));
 };

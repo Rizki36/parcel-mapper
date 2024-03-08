@@ -17,8 +17,11 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useDeliveryStore } from "../../_providers/DeliveryProviders";
+import useStepWithValidation from "../../_hooks/useStepWithValidation";
 
 const Step1 = () => {
+  const { setStep } = useStepWithValidation();
+
   const { distances, setDistances } = useDeliveryStore((state) => state);
 
   return (
@@ -29,21 +32,29 @@ const Step1 = () => {
       overflowY="auto"
       flexWrap="nowrap"
     >
-      <Button
-        colorScheme="teal"
-        size="md"
-        onClick={() => {
-          setDistances([
-            [0, 1, 2, 3, 4], // 0
-            [1, 0, 5, 6, 7], // 1
-            [2, 5, 0, 8, 9], // 2
-            [3, 6, 8, 0, 10], // 3
-            [4, 7, 9, 10, 0], // 4
-          ]);
-        }}
-      >
-        Dapatkan Jarak Paket
-      </Button>
+      <Flex columnGap="4px">
+        <Button
+          flex={1}
+          colorScheme={distances.length ? undefined : "teal"}
+          size="sm"
+          onClick={() => {
+            setDistances([
+              [0, 1, 2, 3, 4], // 0
+              [1, 0, 5, 6, 7], // 1
+              [2, 5, 0, 8, 9], // 2
+              [3, 6, 8, 0, 10], // 3
+              [4, 7, 9, 10, 0], // 4
+            ]);
+          }}
+        >
+          {distances.length ? "Perbarui Jarak Paket" : "Dapatkan Jarak Paket"}
+        </Button>
+        {!!distances.length && (
+          <Button colorScheme="teal" size="sm" onClick={() => setStep(2)}>
+            Lanjut
+          </Button>
+        )}
+      </Flex>
 
       <Flex
         direction="column"

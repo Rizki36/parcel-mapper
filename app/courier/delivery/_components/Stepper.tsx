@@ -1,6 +1,5 @@
 import { Flex, IconButton } from "@chakra-ui/react";
-import { useDeliveryStore } from "../_providers/DeliveryProviders";
-import { useToast } from "@chakra-ui/react";
+import useStepWithValidation from "../_hooks/useStepWithValidation";
 
 const StepperItem = ({
   active,
@@ -26,39 +25,13 @@ const StepperItem = ({
 };
 
 const Stepper = () => {
-  const toast = useToast();
-  const { step, setStep, distances } = useDeliveryStore((state) => state);
-
-  const setStepWithValidation = (step: number) => {
-    if (step > 1 && !distances.length) {
-      toast({
-        title: `Dapatkan jarak terlebih dahulu !`,
-        status: "warning",
-        isClosable: true,
-      });
-      return;
-    }
-
-    setStep(step);
-  };
+  const { step, setStep } = useStepWithValidation();
 
   return (
     <Flex justify="space-between">
-      <StepperItem
-        step={1}
-        active={step >= 1}
-        onClick={() => setStepWithValidation(1)}
-      />
-      <StepperItem
-        step={2}
-        active={step >= 2}
-        onClick={() => setStepWithValidation(2)}
-      />
-      <StepperItem
-        step={3}
-        active={step >= 3}
-        onClick={() => setStepWithValidation(3)}
-      />
+      <StepperItem step={1} active={step >= 1} onClick={() => setStep(1)} />
+      <StepperItem step={2} active={step >= 2} onClick={() => setStep(2)} />
+      <StepperItem step={3} active={step >= 3} onClick={() => setStep(3)} />
     </Flex>
   );
 };

@@ -25,6 +25,9 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useDeliveryStore } from "../../_providers/DeliveryProviders";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
+import useStepWithValidation from "../../_hooks/useStepWithValidation";
+import { RouteItems } from "../RouteItems";
 
 const formSchema = z.object({
   alpha: z.number().min(0.1),
@@ -46,12 +49,10 @@ const ConfigurationsModal = ({
   const { config, setConfig } = useDeliveryStore((state) => state);
   const toast = useToast();
 
-  const { control, handleSubmit, reset, watch } = useForm<FormValues>({
+  const { control, handleSubmit, reset } = useForm<FormValues>({
     defaultValues: config,
     resolver: zodResolver(formSchema),
   });
-
-  console.log(typeof watch("alpha"));
 
   useEffect(() => {
     if (!isOpen) return;
@@ -297,20 +298,80 @@ const ConfigurationsModal = ({
 const Step2 = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { route, setRoute } = useDeliveryStore((state) => state);
+  const { setStep } = useStepWithValidation();
+
   return (
-    <div>
-      <Flex justifyContent="center">
-        <Button
-          onClick={() => setIsOpen(true)}
-          type="button"
-          colorScheme="teal"
-          size="sm"
-        >
-          Konfigurasi Lanjut
-        </Button>
-      </Flex>
+    <>
       <ConfigurationsModal isOpen={isOpen} setIsOpen={setIsOpen} />
-    </div>
+
+      <Flex
+        justify="center"
+        direction="column"
+        flex={1}
+        overflowY="auto"
+        flexWrap="nowrap"
+      >
+        <Flex columnGap="4px">
+          <Button
+            onClick={() => setIsOpen(true)}
+            type="button"
+            colorScheme={route.length ? undefined : "teal"}
+            size="sm"
+          >
+            <HiOutlineCog6Tooth />
+          </Button>
+          <Button
+            flex={1}
+            type="button"
+            colorScheme={route.length ? undefined : "teal"}
+            size="sm"
+            onClick={() =>
+              setRoute([
+                {
+                  id: 1,
+                  visited: true,
+                },
+                {
+                  id: 2,
+                  visited: false,
+                },
+                {
+                  id: 3,
+                  visited: false,
+                },
+                {
+                  id: 4,
+                  visited: false,
+                },
+                {
+                  id: 5,
+                  visited: false,
+                },
+                {
+                  id: 1,
+                  visited: false,
+                },
+              ])
+            }
+          >
+            {route.length ? "Perbarui Rute" : "Dapatkan Rute"}
+          </Button>
+          {!!route.length && (
+            <Button
+              type="button"
+              colorScheme="teal"
+              size="sm"
+              onClick={() => setStep(3)}
+            >
+              Lanjut
+            </Button>
+          )}
+        </Flex>
+
+        <RouteItems />
+      </Flex>
+    </>
   );
 };
 

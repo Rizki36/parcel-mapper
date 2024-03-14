@@ -20,6 +20,8 @@ import {
 } from "@chakra-ui/react";
 import useBranchesPageSearchParams from "./_hooks/useBranchesPageQuery";
 import dynamic from "next/dynamic";
+import { DeleteBranchProvider } from "./_providers/DeleteBranchProvider";
+import DeleteBranchAlertDialog from "./_components/DeleteAlertDialog";
 
 const BranchTable = dynamic(() => import("./_components/Table"), {});
 // const BranchFilter = dynamic(() => import("./_components/Filter"), {});
@@ -39,49 +41,52 @@ const BranchesPage = () => {
   );
 
   return (
-    <Flex columnGap={4}>
-      <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
-        <Flex justifyContent="space-between" alignItems="center" mb={6}>
-          <Heading
-            fontSize="2xl"
-            fontWeight="semibold"
-            display="flex"
-            alignItems="center"
-            columnGap={2}
-          >
-            <HiOutlineHomeModern />
-            Cabang
-          </Heading>
-          <Flex alignItems="center" columnGap={4}>
-            <InputGroup size="sm">
-              <InputLeftElement pointerEvents="none">
-                <HiMagnifyingGlass />
-              </InputLeftElement>
-              <Input
-                colorScheme="teal"
-                placeholder="Cari cabang"
-                defaultValue={search}
-                onChange={(e) => run(e.currentTarget.value)}
-              />
-            </InputGroup>
-            <Tooltip label="Tambah cabang">
-              <Link href="/admin/branches/add">
-                <IconButton
-                  aria-label="Tambah cabang"
-                  icon={<HiMiniPlusSmall />}
-                  size="sm"
+    <DeleteBranchProvider>
+      <Flex columnGap={4}>
+        <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
+          <Flex justifyContent="space-between" alignItems="center" mb={6}>
+            <Heading
+              fontSize="2xl"
+              fontWeight="semibold"
+              display="flex"
+              alignItems="center"
+              columnGap={2}
+            >
+              <HiOutlineHomeModern />
+              Cabang
+            </Heading>
+            <Flex alignItems="center" columnGap={4}>
+              <InputGroup size="sm">
+                <InputLeftElement pointerEvents="none">
+                  <HiMagnifyingGlass />
+                </InputLeftElement>
+                <Input
                   colorScheme="teal"
+                  placeholder="Cari cabang"
+                  defaultValue={search}
+                  onChange={(e) => run(e.currentTarget.value)}
                 />
-              </Link>
-            </Tooltip>
+              </InputGroup>
+              <Tooltip label="Tambah cabang">
+                <Link href="/admin/branches/add">
+                  <IconButton
+                    aria-label="Tambah cabang"
+                    icon={<HiMiniPlusSmall />}
+                    size="sm"
+                    colorScheme="teal"
+                  />
+                </Link>
+              </Tooltip>
+            </Flex>
           </Flex>
-        </Flex>
-        <Box>
-          <BranchTable />
+          <Box>
+            <BranchTable />
+          </Box>
         </Box>
-      </Box>
-      {/* <BranchFilter /> */}
-    </Flex>
+        {/* <BranchFilter /> */}
+      </Flex>
+      <DeleteBranchAlertDialog />
+    </DeleteBranchProvider>
   );
 };
 

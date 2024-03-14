@@ -6,10 +6,6 @@ import { z } from "zod";
 
 const withSchema = z.enum(["area"]);
 
-const paramsSchema = z.object({
-  id: z.string(),
-});
-
 const querySchema = z.object({
   with: withSchema.optional(),
 });
@@ -22,19 +18,6 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const validParams = paramsSchema.safeParse(params);
-
-  if (!validParams.success) {
-    return ResponseBuilder.build({
-      status: 400,
-      error: {
-        id: "bad-request",
-        message: "Invalid params",
-        detail: validParams.error.flatten(),
-      },
-    });
-  }
-
   const { searchParams } = new URL(req.url);
   const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
 
@@ -55,7 +38,7 @@ export async function GET(
 
   const branch: GetOneBranchData | null = await prisma.branch.findFirst({
     where: {
-      id: validParams.data.id,
+      id: params.id,
     },
     include: withRelations,
   });
@@ -116,5 +99,20 @@ export async function PATCH(
     data: {
       doc: branch,
     },
+  });
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await prisma.branch.delete({
+    where: {
+      id: params.id,
+    },
+  });
+
+  return ResponseBuilder.build({
+    status: 200,
   });
 }

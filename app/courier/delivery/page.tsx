@@ -2,13 +2,14 @@
 import { ENV } from "@/_constants";
 import { Box } from "@chakra-ui/react";
 import React, { useEffect, useMemo, useRef } from "react";
-import ReactMapGL, { MapRef, Marker } from "react-map-gl";
+import ReactMapGL, { Layer, MapRef, Marker, Source } from "react-map-gl";
 import Drawer from "./_components/Drawer";
 import {
   DeliveryStoreProvider,
   useDeliveryStore,
 } from "./_providers/DeliveryProviders";
 import { IoLocation } from "react-icons/io5";
+import GeoJSON from "geojson";
 
 const DeliveryPage = () => {
   return (
@@ -20,7 +21,7 @@ const DeliveryPage = () => {
 
 const Content = () => {
   const mapRef = useRef<MapRef>(null);
-  const { nodes, setNodes } = useDeliveryStore((state) => state);
+  const { directions, nodes, setNodes } = useDeliveryStore((state) => state);
 
   const availableNodes = useMemo(() => {
     return nodes?.filter((item) => item.lat && item.lng) || [];
@@ -127,6 +128,27 @@ const Content = () => {
   //   );
   // }, [availableNodes, mapRef]);
 
+  const directionData = useMemo(() => {
+    const temp = Object.values(directions);
+    if (!temp.length) return;
+
+    const geojson: GeoJSON.FeatureCollection = {
+      type: "FeatureCollection",
+      features: temp.map((item) => {
+        return {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: item.routes[0].geometry.coordinates,
+          },
+          properties: {},
+        };
+      }),
+    };
+
+    return geojson;
+  }, [directions]);
+
   return (
     <Box position="relative">
       <ReactMapGL
@@ -141,6 +163,20 @@ const Content = () => {
         style={{ height: "100dvh", maxHeight: "100dvh" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
+        <Source id="routeSource" type="geojson" data={directionData}>
+          <Layer
+            type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+            paint={{
+              "line-color": "blue",
+              "line-width": 3,
+              "line-opacity": 0.4,
+            }}
+          ></Layer>
+        </Source>
         {nodesMarker}
       </ReactMapGL>
       <Drawer />

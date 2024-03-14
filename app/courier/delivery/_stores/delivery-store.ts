@@ -1,4 +1,5 @@
 import { createStore } from "zustand/vanilla";
+import { DirectionData } from "../_hooks";
 
 export type Node = {
   id: number;
@@ -29,6 +30,7 @@ export type DeliveryState = {
   };
   route: RouteItem[];
   nodeDetailId: number | null;
+  directions: Record<string, DirectionData>;
 };
 
 export type DeliveryActions = {
@@ -38,6 +40,7 @@ export type DeliveryActions = {
   setConfig: (_config: DeliveryState["config"]) => void;
   setRoute: (_route: RouteItem[]) => void;
   setNodeDetailId: (_nodeDetailId: DeliveryState["nodeDetailId"]) => void;
+  setDirections: (_directions: DeliveryState["directions"]) => void;
 };
 
 export type DeliveryStore = DeliveryState & DeliveryActions;
@@ -55,6 +58,7 @@ export const defaultInitState: DeliveryState = {
   },
   route: [],
   nodeDetailId: null,
+  directions: {},
 };
 
 export const createDeliveryStore = (
@@ -68,5 +72,6 @@ export const createDeliveryStore = (
     setConfig: (config) => set({ config }),
     setRoute: (route) => set({ route }),
     setNodeDetailId: (nodeDetailId) => set({ nodeDetailId }),
+    setDirections: (directions) => set({ directions }),
   }));
 };

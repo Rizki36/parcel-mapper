@@ -21,6 +21,8 @@ import useCustomRouter from "@/_hooks/useCustomRouter";
 import { useDebounceFn } from "ahooks";
 import dynamic from "next/dynamic";
 import SelectBranch from "./_components/SelectBranch";
+import { DeleteCourierProvider } from "./_providers/DeleteCourierProvider";
+import DeleteCourierAlertDialog from "./_components/DeleteAlertDialog";
 
 const CourierTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
@@ -41,53 +43,56 @@ const CouriersPage = () => {
   );
 
   return (
-    <Flex columnGap={4}>
-      <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
-        <Flex justifyContent="space-between" alignItems="center" mb={6}>
-          <Heading
-            fontSize="2xl"
-            fontWeight="semibold"
-            display="flex"
-            alignItems="center"
-            columnGap={2}
-          >
-            <HiOutlineTruck />
-            Kurir
-          </Heading>
-          <Flex alignItems="center" columnGap={4}>
-            <Box minW="250px">
-              <SelectBranch />
-            </Box>
-            <InputGroup size="sm">
-              <InputLeftElement pointerEvents="none">
-                <HiMagnifyingGlass />
-              </InputLeftElement>
-              <Input
-                colorScheme="teal"
-                placeholder="Cari kurir"
-                defaultValue={search}
-                onChange={(e) => run(e.currentTarget.value)}
-              />
-            </InputGroup>
-            <Tooltip label="Tambah kurir">
-              <Link href="/admin/couriers/add">
-                <IconButton
-                  aria-label="Tambah kurir"
-                  icon={<HiMiniPlusSmall />}
-                  size="sm"
+    <DeleteCourierProvider>
+      <Flex columnGap={4}>
+        <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
+          <Flex justifyContent="space-between" alignItems="center" mb={6}>
+            <Heading
+              fontSize="2xl"
+              fontWeight="semibold"
+              display="flex"
+              alignItems="center"
+              columnGap={2}
+            >
+              <HiOutlineTruck />
+              Kurir
+            </Heading>
+            <Flex alignItems="center" columnGap={4}>
+              <Box minW="250px">
+                <SelectBranch />
+              </Box>
+              <InputGroup size="sm">
+                <InputLeftElement pointerEvents="none">
+                  <HiMagnifyingGlass />
+                </InputLeftElement>
+                <Input
                   colorScheme="teal"
+                  placeholder="Cari kurir"
+                  defaultValue={search}
+                  onChange={(e) => run(e.currentTarget.value)}
                 />
-              </Link>
-            </Tooltip>
+              </InputGroup>
+              <Tooltip label="Tambah kurir">
+                <Link href="/admin/couriers/add">
+                  <IconButton
+                    aria-label="Tambah kurir"
+                    icon={<HiMiniPlusSmall />}
+                    size="sm"
+                    colorScheme="teal"
+                  />
+                </Link>
+              </Tooltip>
+            </Flex>
           </Flex>
-        </Flex>
-        <Box>
-          <CourierTable />
+          <Box>
+            <CourierTable />
+          </Box>
         </Box>
-      </Box>
-      {/* filter */}
-      <ParcelFilter />
-    </Flex>
+        {/* filter */}
+        <ParcelFilter />
+      </Flex>
+      <DeleteCourierAlertDialog />
+    </DeleteCourierProvider>
   );
 };
 

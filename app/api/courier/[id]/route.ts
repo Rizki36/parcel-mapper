@@ -6,10 +6,6 @@ import { z } from "zod";
 
 const withSchema = z.enum(["branch"]);
 
-const paramsSchema = z.object({
-  id: z.string(),
-});
-
 const querySchema = z.object({
   with: withSchema.optional(),
 });
@@ -28,19 +24,6 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const validParams = paramsSchema.safeParse(params);
-
-  if (!validParams.success) {
-    return ResponseBuilder.build({
-      status: 400,
-      error: {
-        id: "bad-request",
-        message: "Invalid params",
-        detail: validParams.error.flatten(),
-      },
-    });
-  }
-
   const { searchParams } = new URL(req.url);
   const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
 
@@ -61,7 +44,7 @@ export async function GET(
 
   const courier: GetOneCourierData | null = await prisma.courier.findFirst({
     where: {
-      id: validParams.data.id,
+      id: params.id,
     },
     include: withRelations,
   });
@@ -113,5 +96,20 @@ export async function PATCH(
     data: {
       doc: courier,
     },
+  });
+}
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await prisma.courier.delete({
+    where: {
+      id: params.id,
+    },
+  });
+
+  return ResponseBuilder.build({
+    status: 200,
   });
 }

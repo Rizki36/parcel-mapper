@@ -20,6 +20,8 @@ import {
   Link,
   Tooltip,
 } from "@chakra-ui/react";
+import { DeleteParcelProvider } from "./_providers/DeleteParcelProvider";
+import DeleteParcelAlertDialog from "./_components/DeleteAlertDialog";
 
 const ParcelTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
@@ -39,49 +41,52 @@ const ParcelsPage = () => {
   );
 
   return (
-    <Flex columnGap={4}>
-      <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
-        <Flex justifyContent="space-between" alignItems="center" mb={6}>
-          <Heading
-            fontSize="2xl"
-            fontWeight="semibold"
-            display="flex"
-            alignItems="center"
-            columnGap={2}
-          >
-            <HiOutlineCube />
-            Paket
-          </Heading>
-          <Flex alignItems="center" columnGap={4}>
-            <InputGroup size="sm">
-              <InputLeftElement pointerEvents="none">
-                <HiMagnifyingGlass />
-              </InputLeftElement>
-              <Input
-                colorScheme="teal"
-                placeholder="Cari paket"
-                defaultValue={search}
-                onChange={(e) => run(e.currentTarget.value)}
-              />
-            </InputGroup>
-            <Tooltip label="Tambah paket">
-              <Link href="/admin/parcels/add">
-                <IconButton
-                  aria-label="Tambah paket"
-                  icon={<HiMiniPlusSmall />}
-                  size="sm"
+    <DeleteParcelProvider>
+      <Flex columnGap={4}>
+        <Box flex={1} bg="white" rounded="xl" px={4} py={6} h="fit-content">
+          <Flex justifyContent="space-between" alignItems="center" mb={6}>
+            <Heading
+              fontSize="2xl"
+              fontWeight="semibold"
+              display="flex"
+              alignItems="center"
+              columnGap={2}
+            >
+              <HiOutlineCube />
+              Paket
+            </Heading>
+            <Flex alignItems="center" columnGap={4}>
+              <InputGroup size="sm">
+                <InputLeftElement pointerEvents="none">
+                  <HiMagnifyingGlass />
+                </InputLeftElement>
+                <Input
                   colorScheme="teal"
+                  placeholder="Cari paket"
+                  defaultValue={search}
+                  onChange={(e) => run(e.currentTarget.value)}
                 />
-              </Link>
-            </Tooltip>
+              </InputGroup>
+              <Tooltip label="Tambah paket">
+                <Link href="/admin/parcels/add">
+                  <IconButton
+                    aria-label="Tambah paket"
+                    icon={<HiMiniPlusSmall />}
+                    size="sm"
+                    colorScheme="teal"
+                  />
+                </Link>
+              </Tooltip>
+            </Flex>
           </Flex>
-        </Flex>
-        <Box>
-          <ParcelTable />
+          <Box>
+            <ParcelTable />
+          </Box>
         </Box>
-      </Box>
-      <ParcelFilter />
-    </Flex>
+        <ParcelFilter />
+      </Flex>
+      <DeleteParcelAlertDialog />
+    </DeleteParcelProvider>
   );
 };
 

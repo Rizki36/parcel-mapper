@@ -3,30 +3,13 @@ import prisma from "@prismaorm/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
 
-const getSchema = z.object({
-  id: z.string(),
-});
-
 export async function GET(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const valid = getSchema.safeParse(params);
-
-  if (!valid.success) {
-    return ResponseBuilder.build({
-      status: 400,
-      error: {
-        id: "bad-request",
-        message: "Id is required",
-        detail: valid.error.flatten(),
-      },
-    });
-  }
-
   const parcel = await prisma.parcel.findFirst({
     where: {
-      id: valid.data.id,
+      id: params.id,
     },
   });
 
@@ -42,19 +25,6 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const valid = getSchema.safeParse(params);
-
-  if (!valid.success) {
-    return ResponseBuilder.build({
-      status: 400,
-      error: {
-        id: "bad-request",
-        message: "Id is required",
-        detail: valid.error.flatten(),
-      },
-    });
-  }
-
   const body = await req.json();
 
   const validBody = z
@@ -82,7 +52,7 @@ export async function PATCH(
   //   remove fields that have undefined values
   const parcel = await prisma.parcel.update({
     where: {
-      id: valid.data.id,
+      id: params.id,
     },
     data: {
       ...(validBody.data.latitude && { latitude: validBody.data.latitude }),
@@ -101,5 +71,21 @@ export async function PATCH(
     data: {
       doc: parcel,
     },
+  });
+}
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await prisma.parcel.delete({
+    where: {
+      id: params.id,
+    },
+  });
+
+  return ResponseBuilder.build({
+    status: 200,
+    data: null,
   });
 }

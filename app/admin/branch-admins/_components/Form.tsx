@@ -18,6 +18,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
 import usePostBranchAdminMutation from "@/_hooks/mutations/usePostBranchAdminMutation";
+import usePatchBranchAdminMutation from "@/_hooks/mutations/usePatchBranchAdminMutation";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -29,34 +30,50 @@ const formSchema = z.object({
     .nullable(),
 });
 
-const Form = () => {
+type FormValues = z.infer<typeof formSchema>;
+
+const Form = ({
+  id,
+  mode,
+  initialValues,
+}: {
+  id?: string;
+  mode: "add" | "edit";
+  initialValues: FormValues;
+}) => {
   const router = useRouter();
   const toast = useToast();
 
   const { branchOptions } = useSelectBranchOptions();
 
-  const { control, handleSubmit } = useForm<{
-    name: string;
-    branch: {
-      label: string;
-      value: string;
-    } | null;
-  }>({
-    defaultValues: {
-      name: "",
-      branch: null,
-    },
+  const { control, handleSubmit } = useForm<FormValues>({
+    defaultValues: initialValues,
     resolver: zodResolver(formSchema),
   });
 
-  const { mutateAsync } = usePostBranchAdminMutation();
+  const { mutateAsync: createBranchAdmin, status: creatingStatus } =
+    usePostBranchAdminMutation();
+  const { mutateAsync: updateBranchAdmin, status: updatingStatus } =
+    usePatchBranchAdminMutation();
+
+  const loading = creatingStatus === "pending" || updatingStatus === "pending";
 
   const onSubmit = async (data: any) => {
     try {
-      await mutateAsync({
-        branchId: data.branch?.value,
-        name: data.name,
-      });
+      if (mode === "add") {
+        await createBranchAdmin({
+          branchId: data.branch?.value,
+          name: data.name,
+        });
+      } else {
+        if (!id) return;
+
+        await updateBranchAdmin({
+          id: id,
+          branchId: data.branch?.value,
+          name: data.name,
+        });
+      }
 
       toast({
         colorScheme: "teal",
@@ -131,7 +148,12 @@ const Form = () => {
         </Grid>
 
         <Flex justifyContent="center" mt="30px">
-          <Button type="submit" colorScheme="teal" size="sm">
+          <Button
+            isLoading={loading}
+            type="submit"
+            colorScheme="teal"
+            size="sm"
+          >
             Simpan
           </Button>
         </Flex>

@@ -1,6 +1,6 @@
 import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
 import React from "react";
-import Form from "./_components/Form";
+import Form from "../_components/Form";
 
 const AddBranchAdminPage = () => {
   return (
@@ -11,7 +11,13 @@ const AddBranchAdminPage = () => {
         </CardHeader>
 
         <CardBody>
-          <Form />
+          <Form
+            mode="add"
+            initialValues={{
+              name: "",
+              branch: null,
+            }}
+          />
         </CardBody>
       </Card>
     </div>

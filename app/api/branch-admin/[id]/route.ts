@@ -1,29 +1,7 @@
 import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
-import { BranchAdmin } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
-
-export type GetOneBranchAdminData = BranchAdmin;
-
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const branchAdmin: GetOneBranchAdminData | null =
-    await prisma.branchAdmin.findFirst({
-      where: {
-        id: params.id,
-      },
-    });
-
-  return ResponseBuilder.build({
-    status: 200,
-    data: {
-      doc: branchAdmin,
-    },
-  });
-}
 
 export async function PATCH(
   req: NextRequest,

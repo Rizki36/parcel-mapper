@@ -10,6 +10,7 @@ type UseBranchAdminsQueryProps = {
   search?: string;
   with?: "branch"[];
   branchId?: string;
+  id?: string;
 };
 
 type GetBranchAdminsResponse = BuildPaginatedResponse<
@@ -25,6 +26,7 @@ const useBranchAdminsQuery = (props: UseBranchAdminsQueryProps) => {
     search: props.search,
     with: props.with,
     branchId: props.branchId,
+    id: props.id,
   };
 
   const dataQuery = useQuery({

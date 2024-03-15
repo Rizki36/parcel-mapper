@@ -17,8 +17,13 @@ export async function GET(req: Request) {
   const search = searchParams.get("search") ?? "";
   const withQuery = searchParams.getAll("with");
   const branchId = searchParams.get("branchId");
+  const id = searchParams.get("id");
 
   let whereInput: Prisma.BranchAdminWhereInput = {};
+
+  if (id) {
+    whereInput.id = id;
+  }
 
   if (branchId) {
     whereInput.branchId = branchId;

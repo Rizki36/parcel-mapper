@@ -1,7 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { FC } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+"use client";
 import {
   Button,
   Flex,
@@ -13,56 +10,52 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
-import usePatchCourierMutation from "@/_hooks/mutations/usePatchCourierMutation";
-import { GetOneCourierData } from "@/api/courier/[id]/route";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "chakra-react-select";
-import useSelectBranchOptions from "../../../../_hooks/useSelectBranchOptions";
-
-type FormValues = {
-  name: string;
-  branch: {
-    value: string;
-    label: string;
-  } | null;
-};
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
+import usePostBranchAdminMutation from "@/_hooks/mutations/usePostBranchAdminMutation";
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z.string().min(3),
   branch: z
     .object({
-      value: z.string(),
       label: z.string(),
+      value: z.string(),
     })
     .nullable(),
 });
 
-const Form: FC<{
-  courier: GetOneCourierData | undefined;
-}> = ({ courier }) => {
-  const { branchOptions } = useSelectBranchOptions();
-
+const Form = () => {
+  const router = useRouter();
   const toast = useToast();
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { branchOptions } = useSelectBranchOptions();
+
+  const { control, handleSubmit } = useForm<{
+    name: string;
+    branch: {
+      label: string;
+      value: string;
+    } | null;
+  }>({
     defaultValues: {
-      name: courier?.name || "",
-      branch: courier?.branch
-        ? {
-            value: courier.branch.id,
-            label: `${courier.branch.name} - (${courier.branch.branchCode})`,
-          }
-        : null,
+      name: "",
+      branch: null,
     },
     resolver: zodResolver(formSchema),
   });
-  const { mutateAsync, status } = usePatchCourierMutation();
 
-  const onSubmit = async (data: FormValues) => {
+  const { mutateAsync } = usePostBranchAdminMutation();
+
+  const onSubmit = async (data: any) => {
     try {
       await mutateAsync({
-        id: courier?.id || "",
+        branchId: data.branch?.value,
         name: data.name,
-        branchId: data?.branch?.value || null,
       });
 
       toast({
@@ -72,7 +65,10 @@ const Form: FC<{
         isClosable: true,
         position: "top",
       });
+
+      router.push("/admin/branch-admins");
     } catch (error) {
+      console.error(error);
       toast({
         title: "Gagal menyimpan data",
         status: "error",
@@ -92,11 +88,11 @@ const Form: FC<{
               control={control}
               render={({ field, fieldState }) => (
                 <FormControl isInvalid={!!fieldState.error}>
-                  <FormLabel fontSize="13px">Nama Kurir</FormLabel>
+                  <FormLabel fontSize="13px">Nama Admin Cabang</FormLabel>
                   <Input
                     size="sm"
                     colorScheme="teal"
-                    placeholder="Masukkan nama kurir"
+                    placeholder="Masukkan nama admin cabang"
                     {...field}
                   />
                   {fieldState.error ? (
@@ -108,7 +104,6 @@ const Form: FC<{
               )}
             />
           </GridItem>
-
           <GridItem colSpan={1}>
             <Controller
               name="branch"
@@ -136,12 +131,7 @@ const Form: FC<{
         </Grid>
 
         <Flex justifyContent="center" mt="30px">
-          <Button
-            type="submit"
-            colorScheme="teal"
-            size="sm"
-            isLoading={status === "pending"}
-          >
+          <Button type="submit" colorScheme="teal" size="sm">
             Simpan
           </Button>
         </Flex>

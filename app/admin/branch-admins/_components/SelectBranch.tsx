@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "chakra-react-select";
 import useCustomRouter from "@/_hooks/useCustomRouter";
 import useSelectBranchData from "@/_hooks/useSelectBranchData";
-import useSelectBranchOptions from "@/admin/couriers/_hooks/useSelectBranchOptions";
+import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
 import useBranchAdminsPageSearchParams from "../_hooks/useBranchAdminsPageSearchParams";
 
 const SelectBranch = () => {

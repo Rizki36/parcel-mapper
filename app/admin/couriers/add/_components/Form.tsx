@@ -15,9 +15,9 @@ import { Select } from "chakra-react-select";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import useSelectBranchOptions from "../../_hooks/useSelectBranchOptions";
-import usePostCourierMutation from "../../../../_hooks/mutations/usePostCourierMutation";
 import { useRouter } from "next/navigation";
+import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
+import usePostCourierMutation from "@/_hooks/mutations/usePostCourierMutation";
 
 const formSchema = z.object({
   courierName: z.string().min(3),
@@ -52,7 +52,6 @@ const Form = () => {
   const { mutateAsync } = usePostCourierMutation();
 
   const onSubmit = async (data: any) => {
-    console.log("data", data);
     try {
       await mutateAsync({
         branchId: data.branch?.value,

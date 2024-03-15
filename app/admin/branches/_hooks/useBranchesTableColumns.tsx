@@ -11,8 +11,12 @@ const useBranchesTableColumns = () => {
   const { setState } = useDeleteBranchStore((state) => state);
 
   const columns = [
+    columnHelper.accessor("branchCode", {
+      header: "Kode Cabang",
+      cell: (info) => info.getValue(),
+    }),
     columnHelper.accessor("name", {
-      header: "Nama Penerima",
+      header: "Nama Cabang",
       cell: (info) => info.getValue(),
     }),
     columnHelper.display({

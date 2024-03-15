@@ -18,3 +18,10 @@ export const ParcelKeyGenerator = {
   list: () => [ParcelKeyGenerator.all, "list"],
   one: (id: string) => [ParcelKeyGenerator.all, id],
 };
+
+export const BranchAdminKeyGenerator = {
+  all: "branch-admin-key",
+
+  list: () => [BranchAdminKeyGenerator.all, "list"],
+  one: (id: string) => [BranchAdminKeyGenerator.all, id],
+};

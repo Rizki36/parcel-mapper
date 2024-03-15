@@ -20,9 +20,9 @@ model User {
   role         String
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  Courier      Courier[]
-  BranchAdmin  BranchAdmin[]
-  CentralAdmin CentralAdmin[]
+  courier      Courier[]
+  branchAdmin  BranchAdmin[]
+  centralAdmin CentralAdmin[]
 }
 
 model Branch {
@@ -34,8 +34,8 @@ model Branch {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   area        Area[]
-  Courier     Courier[]
-  BranchAdmin BranchAdmin[]
+  courier     Courier[]
+  branchAdmin BranchAdmin[]
 }
 
 model Area {
@@ -43,7 +43,7 @@ model Area {
   longitude Float
   latitude  Float
   branchId  String?
-  Branch    Branch? @relation(fields: [branchId], references: [id])
+  branch    Branch? @relation(fields: [branchId], references: [id])
 }
 
 model Courier {
@@ -55,17 +55,18 @@ model Courier {
   branch    Branch?  @relation(fields: [branchId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Parcel    Parcel[]
+  parcel    Parcel[]
 }
 
 model BranchAdmin {
   id        String   @id @default(uuid())
-  userId    String
-  branchId  String
+  name      String
+  userId    String?
+  branchId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  branch    Branch   @relation(fields: [branchId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+  branch    Branch?  @relation(fields: [branchId], references: [id])
 }
 
 model CentralAdmin {

@@ -145,6 +145,7 @@ exports.Prisma.CourierScalarFieldEnum = {
 
 exports.Prisma.BranchAdminScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   userId: 'userId',
   branchId: 'branchId',
   createdAt: 'createdAt',

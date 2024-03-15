@@ -7,6 +7,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineMap,
   HiOutlineTruck,
+  HiOutlineUserGroup,
 } from "react-icons/hi2";
 import { SidebarMenu, SidebarMenuProps } from "./Sidebar.type";
 
@@ -25,6 +26,11 @@ const menu: SidebarMenu[] = [
     href: "/admin/branches",
     text: "Cabang",
     icon: <HiOutlineHomeModern />,
+  },
+  {
+    href: "/admin/branch-admins",
+    text: "Admin Cabang",
+    icon: <HiOutlineUserGroup />,
   },
   {
     href: "/admin/mapping",

@@ -22,6 +22,7 @@ import useBranchAdminsPageSearchParams from "./_hooks/useBranchAdminsPageSearchP
 import dynamic from "next/dynamic";
 import { DeleteBranchAdminProvider } from "./_providers/DeleteBranchAdminStore";
 import DeleteBranchAdminAlertDialog from "./_components/DeleteAlertDialog";
+import SelectBranch from "./_components/SelectBranch";
 
 const BranchAdminsTable = dynamic(() => import("./_components/Table"), {});
 
@@ -55,6 +56,9 @@ const BranchAdminsPage = () => {
               Admin Cabang
             </Heading>
             <Flex alignItems="center" columnGap={4}>
+              <Box minW="250px">
+                <SelectBranch />
+              </Box>
               <InputGroup size="sm">
                 <InputLeftElement pointerEvents="none">
                   <HiMagnifyingGlass />

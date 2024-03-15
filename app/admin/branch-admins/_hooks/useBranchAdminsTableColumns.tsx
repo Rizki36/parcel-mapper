@@ -21,7 +21,10 @@ const useBranchAdminsTableColumns = () => {
     }),
     columnHelper.accessor("branch.name", {
       header: "Nama Cabang",
-      cell: (info) => info.getValue(),
+      cell: (info) =>
+        info.row.original.branch
+          ? `${info.getValue()} (${info.row.original.branch?.branchCode})`
+          : "",
     }),
     columnHelper.display({
       id: "actions",

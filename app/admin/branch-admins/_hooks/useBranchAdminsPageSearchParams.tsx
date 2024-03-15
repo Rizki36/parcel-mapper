@@ -5,6 +5,7 @@ const useBranchAdminsPageSearchParams = () => {
 
   return {
     search: searchParams.get("search") || "",
+    branchId: searchParams.get("branchId") || "",
   };
 };
 

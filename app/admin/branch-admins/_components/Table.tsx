@@ -6,10 +6,11 @@ import useBranchAdminsPageSearchParams from "../_hooks/useBranchAdminsPageSearch
 import useBranchAdminsTable from "../_hooks/useBranchAdminsTable";
 
 const BranchAdminsTable = () => {
-  const { search } = useBranchAdminsPageSearchParams();
+  const { search, branchId } = useBranchAdminsPageSearchParams();
 
   const { table, isLoading } = useBranchAdminsTable({
     search,
+    branchId,
   });
 
   return (

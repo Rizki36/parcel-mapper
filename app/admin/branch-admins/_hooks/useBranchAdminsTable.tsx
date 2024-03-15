@@ -7,7 +7,10 @@ import React from "react";
 import useBranchAdminsTableColumns from "./useBranchAdminsTableColumns";
 import useBranchAdminsQuery from "@/_hooks/queries/useBranchAdminsQuery";
 
-const useBranchAdminsTable = (props: { search: string }) => {
+const useBranchAdminsTable = (props: {
+  search: string;
+  branchId: string | undefined;
+}) => {
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
       pageIndex: 0,
@@ -21,6 +24,7 @@ const useBranchAdminsTable = (props: { search: string }) => {
     pageSize,
     search: props.search || undefined,
     with: ["branch"],
+    branchId: props.branchId,
   });
   const branchesData = dataQuery.data?.data;
 

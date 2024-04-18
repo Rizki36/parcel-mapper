@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  AccordionIcon,
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 const Filter = () => {
   return (
-    <Box bg="white" rounded="xl" px={5} py={6} minH="700px">
+    <Box bg="white" rounded="xl" px={5} py={6} minH="500px">
       <Box
         pb={4}
         mb={2}
@@ -19,41 +12,10 @@ const Filter = () => {
         borderBottomStyle="solid"
         borderBottomColor="gray.100"
       >
-        Filter
+        Pengaturan
       </Box>
-      <Accordion defaultIndex={[]} allowMultiple>
-        <StatusFilter />
-        <BranchFilter />
-      </Accordion>
+      <div></div>
     </Box>
-  );
-};
-
-const StatusFilter = () => {
-  return (
-    <AccordionItem border={0}>
-      <AccordionButton>
-        <Box as="span" flex="1" textAlign="left">
-          Status Paket
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-      <AccordionPanel></AccordionPanel>
-    </AccordionItem>
-  );
-};
-
-const BranchFilter = () => {
-  return (
-    <AccordionItem border={0}>
-      <AccordionButton>
-        <Box as="span" flex="1" textAlign="left">
-          Cabang
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-      <AccordionPanel></AccordionPanel>
-    </AccordionItem>
   );
 };
 

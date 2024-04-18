@@ -6,6 +6,7 @@ import { z } from "zod";
 const signupSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  role: z.enum(["admin", "courier"]),
 });
 
 export async function POST(req: Request) {
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const { email, password } = valid.data;
+  const { email, password, role } = valid.data;
 
   const user = await prisma.user.findUnique({
     where: {
@@ -46,7 +47,7 @@ export async function POST(req: Request) {
 
   const newUser = await prisma.user.create({
     data: {
-      role: "USER",
+      role: role === "admin" ? "BRANCH_ADMIN" : "COURIER",
       email,
       password: encryptedPassword,
     },

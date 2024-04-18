@@ -1,11 +1,22 @@
 import { verifyJwtToken } from "@/login/libs";
 import { NextRequest, NextResponse } from "next/server";
 
-export const protectedRoutes = ["/admin"];
-export const authRoutes = ["/login"];
+const adminRoutes = ["/admin"];
+const courierRoutes = ["/courier"];
+const authRoutes = ["/login"];
 
-const isAuthPages = (url: string) =>
-  authRoutes.some((page) => page.startsWith(url));
+const isAuthPages = (url: string) => {
+  const prefix = url.split("/")[1];
+  return authRoutes.some((page) => page.startsWith(`/${prefix}`));
+};
+const isAdminPages = (url: string) => {
+  const prefix = url.split("/")[1];
+  return adminRoutes.some((page) => page.startsWith(`/${prefix}`));
+};
+const isCourierPages = (url: string) => {
+  const prefix = url.split("/")[1];
+  return courierRoutes.some((page) => page.startsWith(`/${prefix}`));
+};
 
 export default async function middleware(request: NextRequest) {
   const { url, nextUrl, cookies } = request;
@@ -13,6 +24,8 @@ export default async function middleware(request: NextRequest) {
   const hasVerifiedToken = token && (await verifyJwtToken(token));
 
   const authPage = isAuthPages(nextUrl.pathname);
+  const adminPage = isAdminPages(nextUrl.pathname);
+  const courierPage = isCourierPages(nextUrl.pathname);
 
   if (authPage) {
     if (!hasVerifiedToken) {
@@ -35,10 +48,28 @@ export default async function middleware(request: NextRequest) {
     return response;
   }
 
+  if (adminPage) {
+    // courier accessing admin page
+    if (hasVerifiedToken.role === "courier") {
+      return NextResponse.redirect(new URL(`/courier`, url));
+    }
+  }
+
+  if (courierPage) {
+    // admin accessing courier page
+    if (["admin", "super-admin"].includes(hasVerifiedToken.role)) {
+      return NextResponse.redirect(new URL(`/admin`, url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 // Routes Middleware should not run on
 export const config = {
-  matcher: ["/admin/:path*", "/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: [
+    "/admin/:path*",
+    "/courier/:path*",
+    "/((?!api|_next/static|_next/image|.*\\.png$).*)",
+  ],
 };

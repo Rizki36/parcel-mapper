@@ -2,7 +2,7 @@ import { JWTPayload as _JWTPayload, jwtVerify } from "jose";
 
 export type JWTPayload = _JWTPayload & {
   email: string;
-  role: "admin" | "super-admin";
+  role: "admin" | "super-admin" | "courier";
 };
 
 export function getJwtSecretKey() {

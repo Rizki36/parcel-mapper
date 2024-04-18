@@ -4,7 +4,7 @@ export type SidebarMenu = {
   href: string;
   text: string;
   icon: React.ReactNode;
-  allowedRoles?: ("admin" | "super-admin")[];
+  allowedRoles?: ("admin" | "super-admin" | "courier")[];
 };
 
 export type SidebarMenuProps = {

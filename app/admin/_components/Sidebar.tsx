@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import React, { FC } from "react";
 import {
@@ -12,6 +12,7 @@ import {
 import { SidebarMenu, SidebarMenuProps } from "./Sidebar.type";
 import useLogout from "@/login/hooks/useLogout";
 import { useAuth } from "@/login/hooks/useAuth";
+import Link from "next/link";
 
 const menu: SidebarMenu[] = [
   {
@@ -52,42 +53,40 @@ const MenuItem: FC<SidebarMenuProps> = ({ href, children, icon }) => {
 
   return (
     <Box as="li" listStyleType="none">
-      <Link
-        py={2.5}
-        px={2}
-        rounded={4}
-        display="flex"
-        alignItems="center"
-        columnGap={2}
-        bg={active ? "teal.400" : "transparent"}
-        color={active ? "white" : "inherit"}
-        _hover={{
-          bg: "teal.400",
-          color: "white",
-        }}
-        mt={2}
-        href={href}
-      >
-        {icon}
-        {children}
+      <Link href={href}>
+        <Box
+          py={2.5}
+          px={2}
+          rounded={4}
+          display="flex"
+          alignItems="center"
+          columnGap={2}
+          bg={active ? "teal.400" : "transparent"}
+          color={active ? "white" : "inherit"}
+          _hover={{
+            bg: "teal.400",
+            color: "white",
+          }}
+          mt={2}
+        >
+          {icon}
+          {children}
+        </Box>
       </Link>
     </Box>
   );
 };
 
 const Sidebar = () => {
-  const auth = useAuth();
+  const { data: auth, loading } = useAuth();
   const { logout } = useLogout();
 
+  if (loading) {
+    return <Container> </Container>;
+  }
+
   return (
-    <Flex
-      as="aside"
-      h="screen"
-      borderRight={1}
-      borderRightStyle="solid"
-      borderRightColor="gray.100"
-      direction="column"
-    >
+    <Container>
       <Text fontSize="2xl" fontWeight="bold" my={7} textAlign="center">
         Admin {auth?.role === "super-admin" ? "Pusat" : "Cabang"}
       </Text>
@@ -120,6 +119,21 @@ const Sidebar = () => {
           Keluar
         </Button>
       </Flex>
+    </Container>
+  );
+};
+
+const Container = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Flex
+      as="aside"
+      h="screen"
+      borderRight={1}
+      borderRightStyle="solid"
+      borderRightColor="gray.100"
+      direction="column"
+    >
+      {children}
     </Flex>
   );
 };

@@ -1,6 +1,5 @@
 import axiosInstance from "@/_libs/axios";
 import { useMutation } from "@tanstack/react-query";
-import Cookies from "js-cookie";
 
 const useLogin = () => {
   const { mutateAsync, status } = useMutation({
@@ -13,9 +12,7 @@ const useLogin = () => {
 
   const login = async (payload: { email: string; password: string }) => {
     const user = await mutateAsync(payload);
-    if (user) {
-      Cookies.set("currentUser", JSON.stringify(user));
-    }
+
     return user;
   };
 

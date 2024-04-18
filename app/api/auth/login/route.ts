@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const data =
     validBody.data.email === process.env.SUPER_ADMIN_EMAIL
       ? await loginSuperAdmin(validBody.data)
-      : await loginAdmin(validBody.data);
+      : await loginAdminOrCourier(validBody.data);
 
   if (data instanceof NextResponse) {
     return data;
@@ -42,10 +42,10 @@ export async function POST(req: NextRequest) {
     .setExpirationTime("7d")
     .sign(getJwtSecretKey());
 
-  const response = NextResponse.json(
-    { success: true },
-    { status: 200, headers: { "content-type": "application/json" } }
-  );
+  const response = NextResponse.json(data, {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
 
   response.cookies.set({
     name: "token",
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
   return response;
 }
 
-const loginAdmin = async ({
+const loginAdminOrCourier = async ({
   email,
   password,
 }: {
@@ -66,7 +66,6 @@ const loginAdmin = async ({
   const user = await prisma.user.findFirst({
     where: {
       email,
-      password,
     },
   });
 
@@ -91,7 +90,7 @@ const loginAdmin = async ({
       },
     });
   }
-  return { email, role: "admin" };
+  return { email, role: user.role === "COURIER" ? "courier" : "admin" };
 };
 
 const loginSuperAdmin = ({

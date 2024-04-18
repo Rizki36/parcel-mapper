@@ -1,18 +1,22 @@
 "use client";
-import React from "react";
 import cookies from "js-cookie";
-import { JWTPayload, verifyJwtToken } from "../libs";
+import { verifyJwtToken } from "../libs";
+import { useQuery } from "@tanstack/react-query";
 
 export function useAuth() {
-  const [auth, setAuth] = React.useState<JWTPayload | null>(null);
-
-  const getVerifiedtoken = async () => {
+  const getVerifiedToken = async () => {
     const token = cookies.get("token") ?? null;
     const verifiedToken = await verifyJwtToken(token ?? "");
-    setAuth(verifiedToken);
+    return verifiedToken ?? null;
   };
-  React.useEffect(() => {
-    getVerifiedtoken();
-  }, []);
-  return auth;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["auth"],
+    queryFn: getVerifiedToken,
+  });
+
+  return {
+    data,
+    loading: isLoading,
+  };
 }

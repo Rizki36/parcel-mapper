@@ -46,7 +46,7 @@ const LoginPage = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await login({
+      const data = await login({
         email: values.email,
         password: values.password,
       });
@@ -58,7 +58,9 @@ const LoginPage = () => {
         isClosable: true,
         position: "top",
       });
-      router.push("/admin");
+
+      if (["admin", "super-admin"].includes(data.role)) router.push("/admin");
+      else router.push("/courier");
     } catch (error) {
       console.error(error);
       toast({

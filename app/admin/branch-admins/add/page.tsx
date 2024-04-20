@@ -13,7 +13,6 @@ const AddBranchAdminPage = () => {
 
         <CardBody>
           <Form
-            mode="add"
             initialValues={{
               name: "",
               branch: null,

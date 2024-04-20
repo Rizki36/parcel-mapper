@@ -1,12 +1,15 @@
 import axiosInstance from "@/_libs/axios";
 import { CourierKeyGenerator } from "@/_utils/keyGenerator";
 import { BuildResponse } from "@/_utils/responseBuilder";
-import { GetOneCourierData } from "@/api/courier/[id]/route";
+import {
+  GetOneCourierData,
+  QueryWithGetOneCourierData,
+} from "@/api/courier/[id]/route";
 import { useQuery } from "@tanstack/react-query";
 
 type UseCourierQueryProps = {
   id: string;
-  with?: "branch"[];
+  with?: QueryWithGetOneCourierData[];
 };
 
 type GetOneCourierResponse = BuildResponse<{

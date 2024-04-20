@@ -89,7 +89,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const newUser = await prisma.parcel.create({
+  const parcel = await prisma.parcel.create({
     data: {
       recipientName: valid.data.recipientName,
       recipientAddress: valid.data.recipientAddress,
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
   return ResponseBuilder.build({
     status: 200,
     data: {
-      doc: newUser,
+      doc: parcel,
     },
   });
 }

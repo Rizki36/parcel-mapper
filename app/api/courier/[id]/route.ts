@@ -1,13 +1,15 @@
 import ResponseBuilder from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
-import { Branch, Courier, Prisma } from "@prismaorm/generated/client";
+import { Branch, Courier, Prisma, User } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
+import qs from "qs";
 
-const withSchema = z.enum(["branch"]);
+export const withSchema = z.enum(["branch", "user"]);
+export type QueryWithGetOneCourierData = z.infer<typeof withSchema>;
 
 const querySchema = z.object({
-  with: withSchema.optional(),
+  with: z.array(withSchema).optional().or(withSchema),
 });
 
 const updateSchema = z.object({
@@ -18,15 +20,16 @@ export type UpdateCourierBody = z.infer<typeof updateSchema>;
 
 export type GetOneCourierData = Courier & {
   branch?: Branch | null; // with branch
+  user?: User | null; // with user
 };
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { searchParams } = new URL(req.url);
-  const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
-
+  // validate query
+  const searchParams = qs.parse(req.url.split("?")[1]);
+  const validQuery = querySchema.safeParse(searchParams);
   if (!validQuery.success) {
     return ResponseBuilder.build({
       status: 400,
@@ -38,9 +41,13 @@ export async function GET(
     });
   }
 
+  // with relations
+  const withQuery = Array.isArray(validQuery.data.with)
+    ? validQuery.data.with
+    : [validQuery.data.with];
   let withRelations: Prisma.CourierInclude = {};
-
-  if (validQuery.data.with === "branch") withRelations.branch = true;
+  if (withQuery.includes("branch")) withRelations.branch = true;
+  if (withQuery.includes("user")) withRelations.user = true;
 
   const courier: GetOneCourierData | null = await prisma.courier.findFirst({
     where: {

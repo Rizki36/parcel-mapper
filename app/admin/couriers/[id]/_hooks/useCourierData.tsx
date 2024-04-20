@@ -5,7 +5,7 @@ const useCourierData = () => {
   const { id } = useCourierPageQuery();
   const { data, isLoading: loadingCourier } = useCourierQuery({
     id,
-    with: ["branch"],
+    with: ["branch", "user"],
   });
 
   const courier = data?.data?.doc;

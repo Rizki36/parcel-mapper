@@ -20,7 +20,6 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
 import usePostBranchAdminMutation from "@/_hooks/mutations/usePostBranchAdminMutation";
-import usePatchBranchAdminMutation from "@/_hooks/mutations/usePatchBranchAdminMutation";
 import { FaSync } from "react-icons/fa";
 import { generateRandomPassword } from "@/_utils";
 
@@ -36,30 +35,13 @@ const createFormSchema = z.object({
   password: z.string().min(6),
 });
 
-const updateFormSchema = z.object({
-  name: z.string().min(3),
-  branch: z
-    .object({
-      label: z.string(),
-      value: z.string(),
-    })
-    .nullable(),
-  email: z.string().email(),
-});
-
 type CreateFormValues = z.infer<typeof createFormSchema>;
-type UpdateFormValues = z.infer<typeof updateFormSchema>;
 
-type Mode = "add" | "edit";
-
-const Form = <T extends Mode>({
-  id,
-  mode,
+const Form = ({
   initialValues,
 }: {
   id?: string;
-  mode: T;
-  initialValues: T extends "add" ? CreateFormValues : UpdateFormValues;
+  initialValues: CreateFormValues;
 }) => {
   const router = useRouter();
   const toast = useToast();
@@ -68,36 +50,21 @@ const Form = <T extends Mode>({
 
   const { control, handleSubmit } = useForm({
     defaultValues: initialValues,
-    resolver: zodResolver(mode === "add" ? createFormSchema : updateFormSchema),
+    resolver: zodResolver(createFormSchema),
   });
 
-  const { mutateAsync: createBranchAdmin, status: creatingStatus } =
+  const { mutateAsync: createBranchAdmin, isPending } =
     usePostBranchAdminMutation();
-  const { mutateAsync: updateBranchAdmin, status: updatingStatus } =
-    usePatchBranchAdminMutation();
-
-  const loading = creatingStatus === "pending" || updatingStatus === "pending";
 
   const onSubmit = async (data: any) => {
     try {
-      if (mode === "add") {
-        const _data = data as CreateFormValues;
-        await createBranchAdmin({
-          branchId: _data.branch?.value ?? "",
-          name: _data.name,
-          email: _data.email,
-          password: _data.password ?? "",
-        });
-      } else {
-        if (!id) return;
-        const _data = data as UpdateFormValues;
-
-        await updateBranchAdmin({
-          id: id,
-          branchId: _data.branch?.value,
-          name: _data.name,
-        });
-      }
+      const _data = data as CreateFormValues;
+      await createBranchAdmin({
+        branchId: _data.branch?.value ?? "",
+        name: _data.name,
+        email: _data.email,
+        password: _data.password ?? "",
+      });
 
       toast({
         colorScheme: "teal",
@@ -191,48 +158,47 @@ const Form = <T extends Mode>({
               )}
             />
           </GridItem>
-          {mode === "add" && (
-            <GridItem colSpan={mode === "add" ? 1 : 2}>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <FormControl isInvalid={!!fieldState.error}>
-                    <FormLabel fontSize="13px">Password</FormLabel>
-                    <InputGroup size="sm">
-                      <Input
-                        colorScheme="teal"
-                        placeholder="Masukkan password"
-                        {...field}
-                      />
-                      <InputRightElement width="3.5rem">
-                        <Button
-                          h="1.5rem"
-                          size="sm"
-                          onClick={() => {
-                            const randomPassword = generateRandomPassword();
-                            field.onChange(randomPassword);
-                          }}
-                        >
-                          <FaSync />
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                    {fieldState.error ? (
-                      <FormErrorMessage>
-                        {fieldState.error.message}
-                      </FormErrorMessage>
-                    ) : null}
-                  </FormControl>
-                )}
-              />
-            </GridItem>
-          )}
+
+          <GridItem colSpan={1}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <FormControl isInvalid={!!fieldState.error}>
+                  <FormLabel fontSize="13px">Password</FormLabel>
+                  <InputGroup size="sm">
+                    <Input
+                      colorScheme="teal"
+                      placeholder="Masukkan password"
+                      {...field}
+                    />
+                    <InputRightElement width="3.5rem">
+                      <Button
+                        h="1.5rem"
+                        size="sm"
+                        onClick={() => {
+                          const randomPassword = generateRandomPassword();
+                          field.onChange(randomPassword);
+                        }}
+                      >
+                        <FaSync />
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  {fieldState.error ? (
+                    <FormErrorMessage>
+                      {fieldState.error.message}
+                    </FormErrorMessage>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </GridItem>
         </Grid>
 
         <Flex justifyContent="center" mt="30px">
           <Button
-            isLoading={loading}
+            isLoading={isPending}
             type="submit"
             colorScheme="teal"
             size="sm"

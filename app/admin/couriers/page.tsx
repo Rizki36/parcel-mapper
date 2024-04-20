@@ -25,7 +25,7 @@ import { DeleteCourierProvider } from "./_providers/DeleteCourierProvider";
 import DeleteCourierAlertDialog from "./_components/DeleteAlertDialog";
 
 const CourierTable = dynamic(() => import("./_components/Table"), {});
-const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
+// const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
 
 const CouriersPage = () => {
   const { search } = useCouriersPageQuery();
@@ -89,7 +89,7 @@ const CouriersPage = () => {
           </Box>
         </Box>
         {/* filter */}
-        <ParcelFilter />
+        {/* <ParcelFilter /> */}
       </Flex>
       <DeleteCourierAlertDialog />
     </DeleteCourierProvider>

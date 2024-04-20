@@ -103,10 +103,30 @@ export async function DELETE(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  await prisma.courier.delete({
-    where: {
-      id: params.id,
-    },
+  prisma.$transaction(async (tx) => {
+    const courier = await tx.courier.findFirst({
+      where: {
+        id: params.id,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    // delete user if exists
+    if (courier?.userId) {
+      await tx.user.delete({
+        where: {
+          id: courier?.userId,
+        },
+      });
+    }
+
+    await tx.courier.delete({
+      where: {
+        id: params.id,
+      },
+    });
   });
 
   return ResponseBuilder.build({

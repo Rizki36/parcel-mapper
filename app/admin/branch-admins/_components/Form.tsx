@@ -8,6 +8,8 @@ import {
   Grid,
   GridItem,
   Input,
+  InputGroup,
+  InputRightElement,
   useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,8 +21,10 @@ import { useRouter } from "next/navigation";
 import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
 import usePostBranchAdminMutation from "@/_hooks/mutations/usePostBranchAdminMutation";
 import usePatchBranchAdminMutation from "@/_hooks/mutations/usePatchBranchAdminMutation";
+import { FaSync } from "react-icons/fa";
+import { generateRandomPassword } from "@/_utils";
 
-const formSchema = z.object({
+const createFormSchema = z.object({
   name: z.string().min(3),
   branch: z
     .object({
@@ -28,27 +32,43 @@ const formSchema = z.object({
       value: z.string(),
     })
     .nullable(),
+  email: z.string().email(),
+  password: z.string().min(6),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+const updateFormSchema = z.object({
+  name: z.string().min(3),
+  branch: z
+    .object({
+      label: z.string(),
+      value: z.string(),
+    })
+    .nullable(),
+  email: z.string().email(),
+});
 
-const Form = ({
+type CreateFormValues = z.infer<typeof createFormSchema>;
+type UpdateFormValues = z.infer<typeof updateFormSchema>;
+
+type Mode = "add" | "edit";
+
+const Form = <T extends Mode>({
   id,
   mode,
   initialValues,
 }: {
   id?: string;
-  mode: "add" | "edit";
-  initialValues: FormValues;
+  mode: T;
+  initialValues: T extends "add" ? CreateFormValues : UpdateFormValues;
 }) => {
   const router = useRouter();
   const toast = useToast();
 
   const { branchOptions } = useSelectBranchOptions();
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm({
     defaultValues: initialValues,
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(mode === "add" ? createFormSchema : updateFormSchema),
   });
 
   const { mutateAsync: createBranchAdmin, status: creatingStatus } =
@@ -61,17 +81,21 @@ const Form = ({
   const onSubmit = async (data: any) => {
     try {
       if (mode === "add") {
+        const _data = data as CreateFormValues;
         await createBranchAdmin({
-          branchId: data.branch?.value,
-          name: data.name,
+          branchId: _data.branch?.value ?? "",
+          name: _data.name,
+          email: _data.email,
+          password: _data.password ?? "",
         });
       } else {
         if (!id) return;
+        const _data = data as UpdateFormValues;
 
         await updateBranchAdmin({
           id: id,
-          branchId: data.branch?.value,
-          name: data.name,
+          branchId: _data.branch?.value,
+          name: _data.name,
         });
       }
 
@@ -145,6 +169,65 @@ const Form = ({
               )}
             />
           </GridItem>
+          <GridItem colSpan={1}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <FormControl isInvalid={!!fieldState.error}>
+                  <FormLabel fontSize="13px">Email</FormLabel>
+                  <Input
+                    size="sm"
+                    colorScheme="teal"
+                    placeholder="Masukkan email"
+                    {...field}
+                  />
+                  {fieldState.error ? (
+                    <FormErrorMessage>
+                      {fieldState.error.message}
+                    </FormErrorMessage>
+                  ) : null}
+                </FormControl>
+              )}
+            />
+          </GridItem>
+          {mode === "add" && (
+            <GridItem colSpan={mode === "add" ? 1 : 2}>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <FormControl isInvalid={!!fieldState.error}>
+                    <FormLabel fontSize="13px">Password</FormLabel>
+                    <InputGroup size="sm">
+                      <Input
+                        colorScheme="teal"
+                        placeholder="Masukkan password"
+                        {...field}
+                      />
+                      <InputRightElement width="3.5rem">
+                        <Button
+                          h="1.5rem"
+                          size="sm"
+                          onClick={() => {
+                            const randomPassword = generateRandomPassword();
+                            field.onChange(randomPassword);
+                          }}
+                        >
+                          <FaSync />
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    {fieldState.error ? (
+                      <FormErrorMessage>
+                        {fieldState.error.message}
+                      </FormErrorMessage>
+                    ) : null}
+                  </FormControl>
+                )}
+              />
+            </GridItem>
+          )}
         </Grid>
 
         <Flex justifyContent="center" mt="30px">

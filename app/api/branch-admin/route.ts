@@ -2,10 +2,13 @@ import ResponseBuilder from "../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
 import { Prisma } from "@prismaorm/generated/client";
 import { z } from "zod";
+import bycrypt from "bcrypt";
 
 const createSchema = z.object({
   name: z.string(),
   branchId: z.string(),
+  email: z.string().email(),
+  password: z.string().min(6),
 });
 
 export type CrateBranchBody = z.infer<typeof createSchema>;
@@ -48,6 +51,10 @@ export async function GET(req: Request) {
     include.branch = true;
   }
 
+  if (withQuery.includes("user")) {
+    include.user = true;
+  }
+
   const totalDocs = await prisma.branchAdmin.count({
     where: whereInput,
   });
@@ -88,20 +95,32 @@ export async function POST(req: Request) {
     });
   }
 
-  const newBranchAdmin = await prisma.branchAdmin.create({
-    data: {
-      name: valid.data.name,
-      branchId: valid.data.branchId,
-    },
-    select: {
-      id: true,
-    },
+  const { branchAdmin } = await prisma.$transaction(async (tx) => {
+    const encryptedPassword = bycrypt.hashSync(valid.data.password, 10);
+
+    const user = await tx.user.create({
+      data: {
+        email: valid.data.email,
+        password: encryptedPassword,
+        role: "BRANCH_ADMIN",
+      },
+    });
+
+    const branchAdmin = await tx.branchAdmin.create({
+      data: {
+        name: valid.data.name,
+        branchId: valid.data.branchId,
+        userId: user.id,
+      },
+    });
+
+    return { user, branchAdmin };
   });
 
   return ResponseBuilder.build({
     status: 200,
     data: {
-      doc: newBranchAdmin,
+      doc: branchAdmin,
     },
   });
 }

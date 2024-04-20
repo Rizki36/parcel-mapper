@@ -17,3 +17,6 @@ export const permute = (arr: string[]): string[][] => {
 
   return perms;
 };
+
+export const generateRandomPassword = () =>
+  Math.random().toString(36).slice(-10);

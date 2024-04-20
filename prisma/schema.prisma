@@ -54,7 +54,7 @@ model Area {
 model Courier {
   id        String   @id @default(uuid())
   name      String
-  userId    String?
+  userId    String?  @unique
   branchId  String?
   user      User?    @relation(fields: [userId], references: [id])
   branch    Branch?  @relation(fields: [branchId], references: [id])
@@ -66,7 +66,7 @@ model Courier {
 model BranchAdmin {
   id        String   @id @default(uuid())
   name      String
-  userId    String?
+  userId    String?  @unique
   branchId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -76,7 +76,7 @@ model BranchAdmin {
 
 model CentralAdmin {
   id        String   @id @default(uuid())
-  userId    String
+  userId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])

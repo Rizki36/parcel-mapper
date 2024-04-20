@@ -37,6 +37,7 @@ const BranchAdminDetailPage = () => {
                       value: branchAdmin?.branch?.id,
                     }
                   : null,
+                email: branchAdmin?.user?.email ?? "",
               }}
             />
           ) : null}

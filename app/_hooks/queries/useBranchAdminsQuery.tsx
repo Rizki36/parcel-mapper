@@ -1,14 +1,14 @@
 import { BranchAdminKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
 import { BuildPaginatedResponse } from "../../_utils/responseBuilder";
-import { Branch, BranchAdmin } from "@prismaorm/generated/client";
+import { Branch, BranchAdmin, User } from "@prismaorm/generated/client";
 import { useQuery } from "@tanstack/react-query";
 
 type UseBranchAdminsQueryProps = {
   pageSize: number;
   pageIndex: number;
   search?: string;
-  with?: "branch"[];
+  with?: ("branch" | "user")[];
   branchId?: string;
   id?: string;
 };
@@ -16,6 +16,7 @@ type UseBranchAdminsQueryProps = {
 type GetBranchAdminsResponse = BuildPaginatedResponse<
   BranchAdmin & {
     branch?: Branch;
+    user?: User;
   }
 >;
 

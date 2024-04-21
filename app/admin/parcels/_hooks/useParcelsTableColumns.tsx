@@ -1,12 +1,12 @@
 import { PARCEL_STATUS_LABEL } from "../../../_constants";
 import { HiEye, HiTrash } from "react-icons/hi2";
 import Link from "next/link";
-import { Parcel } from "@prismaorm/generated/client";
 import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useDeleteParcelStore } from "../_providers/DeleteParcelProvider";
+import { GetParcelsResponseDoc } from "@/api/parcel/route";
 
-const columnHelper = createColumnHelper<Parcel>();
+const columnHelper = createColumnHelper<GetParcelsResponseDoc>();
 
 const useParcelsTableColumns = () => {
   const { setState } = useDeleteParcelStore((state) => state);
@@ -15,6 +15,14 @@ const useParcelsTableColumns = () => {
     columnHelper.accessor("recipientName", {
       header: "Nama Penerima",
       cell: (info) => info.getValue(),
+    }),
+    columnHelper.display({
+      id: "branch",
+      header: "Cabang tujuan",
+      cell: (props) => {
+        const branch = props.row.original.branch;
+        return branch ? `${branch?.name} - (${branch?.branchCode})` : "";
+      },
     }),
     columnHelper.accessor("status", {
       header: "Status",

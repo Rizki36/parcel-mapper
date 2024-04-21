@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteParcelProvider } from "./_providers/DeleteParcelProvider";
 import DeleteParcelAlertDialog from "./_components/DeleteAlertDialog";
+import SelectBranch from "./_components/SelectBranch";
 
 const ParcelTable = dynamic(() => import("./_components/Table"), {});
 const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
@@ -56,6 +57,9 @@ const ParcelsPage = () => {
               Paket
             </Heading>
             <Flex alignItems="center" columnGap={4}>
+              <Box minW="250px">
+                <SelectBranch />
+              </Box>
               <InputGroup size="sm">
                 <InputLeftElement pointerEvents="none">
                   <HiMagnifyingGlass />

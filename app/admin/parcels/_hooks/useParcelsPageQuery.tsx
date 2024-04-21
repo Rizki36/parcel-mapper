@@ -6,6 +6,7 @@ const useParcelsPageQuery = () => {
   return {
     status: searchParams.getAll("status") || [],
     search: searchParams.get("search") || "",
+    branchId: searchParams.get("branchId") || "",
   };
 };
 

@@ -41,6 +41,7 @@ model Branch {
   area        Area[]
   courier     Courier[]
   branchAdmin BranchAdmin[]
+  Parcel      Parcel[]
 }
 
 model Area {
@@ -90,9 +91,11 @@ model Parcel {
   longitude        Float?
   latitude         Float?
   courierId        String?
+  branchId         String?
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   courier          Courier?     @relation(fields: [courierId], references: [id])
+  branch           Branch?      @relation(fields: [branchId], references: [id])
 }
 
 enum ParcelStatus {

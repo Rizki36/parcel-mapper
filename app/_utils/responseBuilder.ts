@@ -19,10 +19,14 @@ export type BuildPaginatedParams<T> = {
   pageIndex: number;
 };
 
-export type BuildResponse<T> = Omit<BuildParams<T>, "status">;
-export type BuildPaginatedResponse<T> = BuildResponse<
-  Omit<BuildPaginatedParams<T>, "status">
->;
+export type BuildResponse<T> = BuildParams<T>;
+export type BuildPaginatedResponse<T> = BuildParams<{
+  docs: T[];
+  totalPages: number;
+  totalDocs: number;
+  pageSize: number;
+  pageIndex: number;
+}>;
 
 class ResponseBuilder {
   public static build<T = any>(params: BuildParams<T>) {

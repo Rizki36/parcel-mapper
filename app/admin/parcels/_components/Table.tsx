@@ -6,11 +6,13 @@ import Pagination from "../../../_components/Pagination";
 import useParcelsPageQuery from "../_hooks/useParcelsPageQuery";
 
 const ParcelTable = () => {
-  const { search, status: statuses } = useParcelsPageQuery();
+  const { search, status: statuses, branchId } = useParcelsPageQuery();
 
   const { table, isLoading } = useParcelsTable({
     search,
     statuses,
+    branchId,
+    with: ["branch"],
   });
 
   return (

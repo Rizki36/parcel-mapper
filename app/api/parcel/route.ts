@@ -1,7 +1,15 @@
-import ResponseBuilder from "../../_utils/responseBuilder";
+import ResponseBuilder, {
+  BuildPaginatedResponse,
+} from "../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
-import { ParcelStatus, Prisma } from "@prismaorm/generated/client";
+import {
+  Branch,
+  Parcel,
+  ParcelStatus,
+  Prisma,
+} from "@prismaorm/generated/client";
 import { z } from "zod";
+import qs from "qs";
 
 const createSchema = z.object({
   recipientName: z.string(),
@@ -12,43 +20,89 @@ const createSchema = z.object({
   courierId: z.string().nullable().optional(),
 });
 
+const withSchema = z.enum(["branch"]);
+export type QueryWithGetParcelsData = z.infer<typeof withSchema>;
+
+export type GetParcelsResponseDoc = Parcel & {
+  branch?: Branch;
+};
+
+export type GetParcelsResponse = BuildPaginatedResponse<GetParcelsResponseDoc>;
+
+const querySchema = z.object({
+  pageSize: z.coerce.number().optional(),
+  pageIndex: z.coerce.number().optional(),
+  search: z.string().optional(),
+  courierId: z.string().optional(),
+  branchId: z.string().optional(),
+  statuses: z
+    .array(z.nativeEnum(ParcelStatus))
+    .or(z.nativeEnum(ParcelStatus))
+    .optional(),
+  with: z.array(withSchema).or(withSchema).optional(),
+});
+
 export type CreateBody = z.infer<typeof createSchema>;
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const pageSize = Number(searchParams.get("pageSize") ?? "10");
-  const pageIndex = Number(searchParams.get("pageIndex") ?? "0");
-  const search = searchParams.get("search") ?? "";
-  const courierId = searchParams.get("courierId") ?? "";
-  const statuses = searchParams.getAll("statuses") ?? [];
+  // validate query
+  const searchParams = qs.parse(req.url.split("?")[1]);
+  const validQuery = querySchema.safeParse(searchParams);
+  if (!validQuery.success) {
+    return ResponseBuilder.build({
+      status: 400,
+      error: {
+        id: "bad-request",
+        message: "Invalid query",
+        detail: validQuery.error.flatten(),
+      },
+    });
+  }
 
-  let whereInput: Prisma.ParcelWhereInput = {};
+  const pageSize = validQuery.data.pageSize ?? 10;
+  const pageIndex = validQuery.data.pageIndex ?? 0;
+  const search = validQuery.data.search;
+  const courierId = validQuery.data.courierId;
+  const branchId = validQuery.data.branchId;
+  const statuses = Array.isArray(validQuery.data.statuses)
+    ? validQuery.data.statuses
+    : validQuery.data.statuses
+    ? [validQuery.data.statuses]
+    : [];
+  const withQuery = Array.isArray(validQuery.data.with)
+    ? validQuery.data.with
+    : [validQuery.data.with];
 
+  // where query
+  const whereInput: Prisma.ParcelWhereInput = {};
   if (courierId) {
-    whereInput = {
-      courierId,
-    };
+    whereInput.courierId = courierId;
+  }
+  if (branchId) {
+    whereInput.branchId = branchId;
   }
   if (search) {
-    whereInput = {
-      OR: [
-        {
-          recipientName: {
-            contains: search,
-            mode: "insensitive",
-          },
+    whereInput.OR = [
+      {
+        recipientName: {
+          contains: search,
+          mode: "insensitive",
         },
-      ],
-    };
+      },
+    ];
   }
   if (statuses.length) {
-    whereInput = {
-      ...whereInput,
-      status: {
-        in: statuses as ParcelStatus[],
-      },
+    whereInput.status = {
+      in: statuses,
     };
   }
+
+  // relations query
+  const withRelations: Prisma.ParcelInclude = {};
+  if (withQuery.includes("branch")) {
+    withRelations.branch = true;
+  }
+  console.log(withRelations);
 
   const totalDocs = await prisma.parcel.count({
     where: whereInput,
@@ -59,6 +113,7 @@ export async function GET(req: Request) {
     skip: pageSize * Number(pageIndex),
     take: pageSize,
     where: whereInput,
+    include: withRelations,
   };
 
   const parcels = await prisma.parcel.findMany(findManyProps);

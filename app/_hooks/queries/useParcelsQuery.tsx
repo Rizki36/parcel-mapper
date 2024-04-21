@@ -1,8 +1,10 @@
 import { ParcelKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
-import { BuildPaginatedResponse } from "../../_utils/responseBuilder";
-import { Parcel } from "@prismaorm/generated/client";
 import { useQuery } from "@tanstack/react-query";
+import {
+  GetParcelsResponse,
+  QueryWithGetParcelsData,
+} from "@/api/parcel/route";
 
 const useParcelsQuery = (props: {
   pageSize: number;
@@ -10,6 +12,8 @@ const useParcelsQuery = (props: {
   search?: string;
   statuses?: string[];
   courierId?: string;
+  branchId?: string;
+  with?: QueryWithGetParcelsData[];
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
@@ -17,17 +21,16 @@ const useParcelsQuery = (props: {
     search: props.search,
     statuses: props.statuses,
     courierId: props.courierId,
+    branchId: props.branchId,
+    with: props.with,
   };
 
   const dataQuery = useQuery({
     queryKey: [...ParcelKeyGenerator.list(), fetchDataOptions],
     queryFn: async () => {
-      const res = await axiosInstance.get<BuildPaginatedResponse<Parcel>>(
-        "/api/parcel",
-        {
-          params: fetchDataOptions,
-        }
-      );
+      const res = await axiosInstance.get<GetParcelsResponse>("/api/parcel", {
+        params: fetchDataOptions,
+      });
 
       return res.data;
     },

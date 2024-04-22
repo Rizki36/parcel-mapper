@@ -13,6 +13,7 @@ import { SidebarMenu, SidebarMenuProps } from "./Sidebar.type";
 import useLogout from "@/login/hooks/useLogout";
 import { useAuth } from "@/login/hooks/useAuth";
 import Link from "next/link";
+import useBranchQuery from "@/_hooks/queries/useBranchQuery";
 
 const menu: SidebarMenu[] = [
   {
@@ -79,17 +80,28 @@ const MenuItem: FC<SidebarMenuProps> = ({ href, children, icon }) => {
 
 const Sidebar = () => {
   const { data: auth, loading } = useAuth();
+  const { data: branch, isLoading: loadingBranch } = useBranchQuery({
+    id: auth?.branchId || "",
+    enabled: !!auth?.branchId,
+  });
   const { logout } = useLogout();
 
-  if (loading) {
+  if (loading || (loadingBranch && auth?.role === "admin")) {
     return <Container> </Container>;
   }
 
   return (
     <Container>
-      <Text fontSize="2xl" fontWeight="bold" my={7} textAlign="center">
-        Admin {auth?.role === "super-admin" ? "Pusat" : "Cabang"}
-      </Text>
+      <Flex direction="column" justify="center" my={7}>
+        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+          Admin {auth?.role === "super-admin" ? "Pusat" : "Cabang"}
+        </Text>
+        {branch?.data?.doc?.name && (
+          <Text fontSize="small" fontWeight="bold" textAlign="center">
+            {branch?.data?.doc?.name}
+          </Text>
+        )}
+      </Flex>
       <Box flex={1}>
         <Box
           as="ul"

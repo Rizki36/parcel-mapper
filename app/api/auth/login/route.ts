@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@prismaorm/client";
 import bycrypt from "bcrypt";
 import { SignJWT } from "jose";
-import { getJwtSecretKey } from "@/login/libs";
+import { JWTPayload, getJwtSecretKey } from "@/login/libs";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -62,10 +62,24 @@ const loginAdminOrCourier = async ({
 }: {
   email: string;
   password: string;
-}) => {
+}): Promise<JWTPayload | NextResponse> => {
   const user = await prisma.user.findFirst({
     where: {
       email,
+    },
+    select: {
+      password: true,
+      role: true,
+      courier: {
+        select: {
+          branchId: true,
+        },
+      },
+      branchAdmin: {
+        select: {
+          branchId: true,
+        },
+      },
     },
   });
 
@@ -90,7 +104,17 @@ const loginAdminOrCourier = async ({
       },
     });
   }
-  return { email, role: user.role === "COURIER" ? "courier" : "admin" };
+
+  const branchId =
+    user.role === "COURIER"
+      ? user.courier?.branchId
+      : user.branchAdmin?.branchId;
+
+  return {
+    email,
+    branchId: branchId ?? null,
+    role: user.role === "COURIER" ? "courier" : "admin",
+  };
 };
 
 const loginSuperAdmin = ({
@@ -99,7 +123,7 @@ const loginSuperAdmin = ({
 }: {
   email: string;
   password: string;
-}) => {
+}): JWTPayload | NextResponse => {
   if (process.env.SUPER_ADMIN_PASSWORD !== password) {
     return ResponseBuilder.build({
       status: 401,
@@ -110,5 +134,5 @@ const loginSuperAdmin = ({
     });
   }
 
-  return { email, role: "super-admin" };
+  return { email, branchId: null, role: "super-admin" };
 };

@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 type UseBranchQueryProps = {
   id: string;
   with?: "area"[];
+  enabled?: boolean;
 };
 
 type GetOneBranchResponse = BuildResponse<{
@@ -32,7 +33,7 @@ const useBranchQuery = (props: UseBranchQueryProps) => {
 
       return res.data;
     },
-    enabled: !!props.id,
+    enabled: typeof props.enabled === "boolean" ? props.enabled : !!props.id,
   });
 
   return dataQuery;

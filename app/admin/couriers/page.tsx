@@ -23,6 +23,7 @@ import dynamic from "next/dynamic";
 import SelectBranch from "./_components/SelectBranch";
 import { DeleteCourierProvider } from "./_providers/DeleteCourierProvider";
 import DeleteCourierAlertDialog from "./_components/DeleteAlertDialog";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const CourierTable = dynamic(() => import("./_components/Table"), {});
 // const ParcelFilter = dynamic(() => import("./_components/Filter"), {});
@@ -31,6 +32,8 @@ const CouriersPage = () => {
   const { search } = useCouriersPageQuery();
 
   const { pushReplaceFilter, pushRemoveFilter } = useCustomRouter();
+
+  const { data } = useAuth();
 
   const { run } = useDebounceFn(
     (value) => {
@@ -58,9 +61,11 @@ const CouriersPage = () => {
               Kurir
             </Heading>
             <Flex alignItems="center" columnGap={4}>
-              <Box minW="250px">
-                <SelectBranch />
-              </Box>
+              {data?.role === "super-admin" && (
+                <Box minW="250px">
+                  <SelectBranch />
+                </Box>
+              )}
               <InputGroup size="sm">
                 <InputLeftElement pointerEvents="none">
                   <HiMagnifyingGlass />

@@ -7,9 +7,11 @@ import React from "react";
 import useCouriersQuery from "../../../_hooks/queries/useCouriersQuery";
 import useCouriersPageQuery from "./useCouriersPageQuery";
 import useCouriersTableColumns from "./useCouriersTableColumns";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const useCouriersTable = () => {
-  const { search, branchId } = useCouriersPageQuery();
+  const { data } = useAuth();
+  const { search, branchId: queryBranchId } = useCouriersPageQuery();
   const { columns } = useCouriersTableColumns();
 
   const [{ pageIndex, pageSize }, setPagination] =
@@ -18,12 +20,15 @@ const useCouriersTable = () => {
       pageSize: 10,
     });
 
+  const branchId =
+    data?.role === "super-admin" ? queryBranchId : data?.branchId;
+
   const dataQuery = useCouriersQuery({
     pageIndex,
     pageSize,
     search,
     with: ["branch"],
-    branchId,
+    branchId: branchId ? branchId : undefined,
   });
   const couriersData = dataQuery.data?.data;
 

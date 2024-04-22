@@ -18,16 +18,19 @@ enum Role {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  name         String?
-  email        String         @unique
-  password     String
-  role         Role           @default(COURIER)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  courier      Courier[]
-  branchAdmin  BranchAdmin[]
-  centralAdmin CentralAdmin[]
+  id             String        @id @default(uuid())
+  name           String?
+  email          String        @unique
+  password       String
+  role           Role          @default(COURIER)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  courier        Courier?      @relation(fields: [courierId], references: [id])
+  branchAdmin    BranchAdmin?  @relation(fields: [branchAdminId], references: [id])
+  centralAdmin   CentralAdmin? @relation(fields: [centralAdminId], references: [id])
+  courierId      String?       @unique
+  branchAdminId  String?       @unique
+  centralAdminId String?       @unique
 }
 
 model Branch {
@@ -57,7 +60,7 @@ model Courier {
   name      String
   userId    String?  @unique
   branchId  String?
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User?
   branch    Branch?  @relation(fields: [branchId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,16 +74,16 @@ model BranchAdmin {
   branchId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User?
   branch    Branch?  @relation(fields: [branchId], references: [id])
 }
 
 model CentralAdmin {
   id        String   @id @default(uuid())
-  userId    String   @unique
+  userId    String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  user      User?
 }
 
 model Parcel {

@@ -4,16 +4,26 @@ import useParcelsTable from "../_hooks/useParcelsTable";
 import Table from "../../../_components/Table";
 import Pagination from "../../../_components/Pagination";
 import useParcelsPageQuery from "../_hooks/useParcelsPageQuery";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const ParcelTable = () => {
-  const { search, status: statuses, branchId } = useParcelsPageQuery();
+  const { data } = useAuth();
+  const {
+    search,
+    status: statuses,
+    branchId: queryBranchId,
+  } = useParcelsPageQuery();
+
+  const branchId = data?.role === "admin" ? data?.branchId : queryBranchId;
 
   const { table, isLoading } = useParcelsTable({
     search,
     statuses,
-    branchId,
+    branchId: branchId ? branchId : undefined,
     with: ["branch"],
   });
+
+  console.log(data);
 
   return (
     <div>

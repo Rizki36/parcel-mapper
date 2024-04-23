@@ -23,6 +23,13 @@ const createSchema = z.object({
 const withSchema = z.enum(["branch"]);
 export type QueryWithGetParcelsData = z.infer<typeof withSchema>;
 
+export const queryStatusesGetParcels = z
+  .array(z.nativeEnum(ParcelStatus))
+  .or(z.nativeEnum(ParcelStatus))
+  .optional();
+
+export type QueryStatusesGetParcels = z.infer<typeof queryStatusesGetParcels>;
+
 export type GetParcelsResponseDoc = Parcel & {
   branch?: Branch;
 };
@@ -35,10 +42,7 @@ const querySchema = z.object({
   search: z.string().optional(),
   courierId: z.string().optional(),
   branchId: z.string().optional(),
-  statuses: z
-    .array(z.nativeEnum(ParcelStatus))
-    .or(z.nativeEnum(ParcelStatus))
-    .optional(),
+  statuses: queryStatusesGetParcels,
   with: z.array(withSchema).or(withSchema).optional(),
 });
 

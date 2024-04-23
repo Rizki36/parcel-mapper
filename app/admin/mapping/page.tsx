@@ -4,8 +4,12 @@ import { HiOutlineMap } from "react-icons/hi2";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import Map from "./_components/Map";
 import Filter from "./_components/Filter";
+import SelectBranch from "./_components/SelectBranch";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const MappingPage = () => {
+  const { data } = useAuth();
+
   return (
     <Flex columnGap={4}>
       <Flex flex={1} gap={4} direction="column">
@@ -21,6 +25,11 @@ const MappingPage = () => {
               <HiOutlineMap />
               Pemetaan
             </Heading>
+            {data?.role === "super-admin" && (
+              <Box minW="250px">
+                <SelectBranch />
+              </Box>
+            )}
           </Flex>
           <Box>
             <Map />

@@ -3,6 +3,7 @@ import axiosInstance from "../../_libs/axios";
 import { useQuery } from "@tanstack/react-query";
 import {
   GetParcelsResponse,
+  QueryStatusesGetParcels,
   QueryWithGetParcelsData,
 } from "@/api/parcel/route";
 
@@ -10,10 +11,11 @@ const useParcelsQuery = (props: {
   pageSize: number;
   pageIndex: number;
   search?: string;
-  statuses?: string[];
+  statuses?: QueryStatusesGetParcels;
   courierId?: string;
   branchId?: string;
   with?: QueryWithGetParcelsData[];
+  enable?: boolean;
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
@@ -34,6 +36,7 @@ const useParcelsQuery = (props: {
 
       return res.data;
     },
+    enabled: props.enable,
   });
 
   return dataQuery;

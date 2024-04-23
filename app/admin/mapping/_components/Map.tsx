@@ -1,54 +1,23 @@
 import React, { useCallback, useMemo, useState } from "react";
 import ReactMapGL, {
-  Layer,
-  LayerProps,
   MapLayerMouseEvent,
-  MapboxGeoJSONFeature,
   Marker,
   NavigationControl,
   Popup,
-  Source,
 } from "react-map-gl";
 import { Box, Flex, Link } from "@chakra-ui/react";
 import { ENV } from "@/_constants";
-import useMappingQuery from "../../../_hooks/queries/useMappingQuery";
 import { Branch, Parcel } from "@prismaorm/generated/client";
-import { HiOutlineHomeModern, HiOutlineLink } from "react-icons/hi2";
-import { IoLocation } from "react-icons/io5";
-import { generateBranchAreaGeoJson } from "../_utils";
-
-const dataLayer: LayerProps = {
-  id: "data",
-  type: "fill",
-  paint: {
-    "fill-opacity": 0,
-  },
-};
-
-const lineLayer: LayerProps = {
-  type: "line",
-  paint: {
-    "line-color": "#d41c1c",
-    "line-width": 2,
-    "line-opacity": 1,
-    "line-dasharray": [2, 2],
-  },
-};
-
-const hoverLayer: LayerProps = {
-  type: "fill",
-  paint: {
-    "fill-color": "#555555",
-    "fill-opacity": 0.5,
-  },
-};
+import { HiOutlineLink } from "react-icons/hi2";
+import useParcelsData from "../_hooks/useParcelsData";
+import useBranchData from "../_hooks/useBranchData";
 
 const Map = () => {
-  useState<MapboxGeoJSONFeature | null>(null);
   const [parcelInfo, setParcelInfo] = useState<Parcel | null>(null);
   const [branchInfo, setBranchInfo] = useState<Branch | null>(null);
 
-  const { data } = useMappingQuery();
+  const { parcels: parcelsData } = useParcelsData();
+  const { branch: branchData } = useBranchData();
 
   const onClick = useCallback((event: MapLayerMouseEvent) => {
     console.log(event.lngLat);
@@ -64,11 +33,11 @@ const Map = () => {
   const parcels = useMemo(() => {
     // filter
     const _parcels =
-      data?.data?.parcels?.filter((item) => {
+      parcelsData?.filter((item) => {
         return item.latitude && item.longitude;
       }) || [];
 
-    return _parcels?.map((item) => (
+    return _parcels?.map((item, index) => (
       <Marker
         key={item.id}
         longitude={item.longitude as number}
@@ -79,57 +48,20 @@ const Map = () => {
           setParcelInfo(item);
         }}
       >
-        <Box color="red">
-          <IoLocation
-            style={{
-              width: "20px",
-              height: "20px",
-            }}
-          />
-        </Box>
-      </Marker>
-    ));
-    // map
-  }, [data?.data?.parcels]);
-
-  const branchAreasGeojson = useMemo(() => {
-    const output = generateBranchAreaGeoJson(data?.data?.branches || []);
-    return output;
-  }, [data?.data?.branches]);
-
-  const branches = useMemo(() => {
-    // filter
-    const _branches =
-      data?.data?.branches?.filter((item) => {
-        return item.latitude && item.longitude;
-      }) || [];
-
-    return _branches?.map((item) => (
-      <Marker
-        key={item.id}
-        longitude={item.longitude as number}
-        latitude={item.latitude as number}
-        anchor="bottom"
-        onClick={(e) => {
-          e.originalEvent.stopPropagation();
-          setBranchInfo(item);
-        }}
-      >
         <Flex
           alignItems="center"
           justifyContent="center"
-          bg="red"
-          w={5}
-          h={5}
-          borderRadius="100%"
+          w="18px"
+          h="18px"
+          rounded="100%"
+          bgColor="red"
           color="white"
         >
-          <HiOutlineHomeModern />
+          {index + 1}
         </Flex>
       </Marker>
     ));
-    // map
-  }, [data?.data?.branches]);
+  }, [parcelsData]);
 
   return (
     <>
@@ -148,16 +80,29 @@ const Map = () => {
           onMouseMove={onHover}
           interactiveLayerIds={["data"]}
         >
-          <Source type="geojson" data={branchAreasGeojson}>
-            <Layer {...dataLayer} />
-            <Layer {...lineLayer} />
-            <Layer
-              {...hoverLayer}
-              filter={["in", "id", branchInfo?.id ?? ""]}
-            />
-          </Source>
           {parcels}
-          {branches}
+          {!!branchData?.longitude && !!branchData.latitude ? (
+            <Marker
+              longitude={branchData.longitude!}
+              latitude={branchData.latitude!}
+              anchor="bottom"
+              onClick={(e) => {
+                e.originalEvent.stopPropagation();
+                setBranchInfo(branchData);
+              }}
+            >
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                w="18px"
+                h="18px"
+                bgColor="red"
+                color="white"
+              >
+                0
+              </Flex>
+            </Marker>
+          ) : null}
 
           {parcelInfo && (
             <Popup

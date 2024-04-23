@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 
-const Filter = () => {
+const Aside = () => {
   return (
     <Box bg="white" rounded="xl" px={5} py={6} minH="500px">
       <Box
@@ -19,4 +19,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default Aside;

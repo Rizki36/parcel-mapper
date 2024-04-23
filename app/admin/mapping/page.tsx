@@ -3,7 +3,7 @@ import React from "react";
 import { HiOutlineMap } from "react-icons/hi2";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import Map from "./_components/Map";
-import Filter from "./_components/Filter";
+import Aside from "./_components/Aside";
 import SelectBranch from "./_components/SelectBranch";
 import { useAuth } from "@/login/hooks/useAuth";
 
@@ -51,16 +51,7 @@ const MappingPage = () => {
         </Box>
       </Flex>
       <Box as="aside" w="300px">
-        {/* <Box bg="white" rounded="xl" px={5} py={6} mb={4}>
-          <Flex fontSize="lg" fontWeight="bold" columnGap={1}>
-            80 Paket
-            <Link href="/admin/mapping/parcels" px={2} py={1}>
-              <HiOutlineLink />
-            </Link>
-          </Flex>
-          Belum dipetakan
-        </Box> */}
-        <Filter />
+        <Aside />
       </Box>
     </Flex>
   );

@@ -19,7 +19,10 @@ const useParcelsData = () => {
     with: ["branch"],
     statuses: ["PENDING"],
     branchId: branchId ?? "",
-    enable: !!branchId,
+    options: {
+      enabled: !!branchId,
+      refetchOnWindowFocus: false,
+    },
   });
 
   const parcels = parcelsData?.data?.docs ?? [];

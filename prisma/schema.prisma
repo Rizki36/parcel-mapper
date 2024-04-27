@@ -37,8 +37,8 @@ model Branch {
   id          String        @id @default(uuid())
   name        String
   branchCode  String
-  longitude   Float?
-  latitude    Float?
+  longitude   Float
+  latitude    Float
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   area        Area[]
@@ -91,8 +91,8 @@ model Parcel {
   recipientName    String
   recipientAddress String?
   status           ParcelStatus @default(PENDING)
-  longitude        Float?
-  latitude         Float?
+  longitude        Float
+  latitude         Float
   courierId        String?
   branchId         String?
   createdAt        DateTime     @default(now())

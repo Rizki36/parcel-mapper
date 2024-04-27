@@ -6,6 +6,8 @@ import Map from "./_components/Map";
 import Aside from "./_components/Aside";
 import SelectBranch from "./_components/SelectBranch";
 import { useAuth } from "@/login/hooks/useAuth";
+import { MappingStoreProvider } from "./_providers/MappingProviders";
+import ParcelList from "./_components/ParcelList";
 
 const MappingPage = () => {
   const { data } = useAuth();
@@ -52,9 +54,18 @@ const MappingPage = () => {
       </Flex>
       <Box as="aside" w="300px">
         <Aside />
+        <ParcelList />
       </Box>
     </Flex>
   );
 };
 
-export default MappingPage;
+const Wrapper = () => {
+  return (
+    <MappingStoreProvider>
+      <MappingPage />
+    </MappingStoreProvider>
+  );
+};
+
+export default Wrapper;

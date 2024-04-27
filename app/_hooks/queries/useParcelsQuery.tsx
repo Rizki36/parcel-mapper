@@ -1,6 +1,6 @@
 import { ParcelKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   GetParcelsResponse,
   QueryStatusesGetParcels,
@@ -15,7 +15,7 @@ const useParcelsQuery = (props: {
   courierId?: string;
   branchId?: string;
   with?: QueryWithGetParcelsData[];
-  enable?: boolean;
+  options?: Omit<UseQueryOptions<GetParcelsResponse>, "queryKey" | "queryFn">;
 }) => {
   const fetchDataOptions = {
     pageIndex: props.pageIndex,
@@ -36,7 +36,7 @@ const useParcelsQuery = (props: {
 
       return res.data;
     },
-    enabled: props.enable,
+    ...props.options,
   });
 
   return dataQuery;

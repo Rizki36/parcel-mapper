@@ -28,6 +28,8 @@ import { useDeliveryStore } from "../../_providers/DeliveryProviders";
 import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import useStepWithValidation from "../../_hooks/useStepWithValidation";
 import { RouteItems } from "../RouteItems";
+import AntColony from "@/_utils/aco";
+import { generateFlattenRoute, mapIndexToId } from "@/_utils";
 
 const formSchema = z.object({
   alpha: z.number().min(0.1),
@@ -298,8 +300,29 @@ const ConfigurationsModal = ({
 const Step2 = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { route, setRoute } = useDeliveryStore((state) => state);
+  const { config, distances, route, nodes, setRoute } = useDeliveryStore(
+    (state) => state
+  );
   const { setStep } = useStepWithValidation();
+
+  const handleGetRoute = () => {
+    const aco = new AntColony(
+      distances,
+      config.ants,
+      config.ants,
+      config.iterations,
+      1 - config.rho,
+      config.alpha,
+      config.beta
+    );
+
+    const result = aco.run();
+    if (!result) return;
+    const routeIndexes = generateFlattenRoute(result[0]);
+    const routeIds = mapIndexToId(routeIndexes, nodes);
+    const route = routeIds.map((id) => ({ id, visited: false }));
+    setRoute(route);
+  };
 
   return (
     <>
@@ -326,34 +349,7 @@ const Step2 = () => {
             type="button"
             colorScheme={route.length ? undefined : "teal"}
             size="sm"
-            onClick={() =>
-              setRoute([
-                {
-                  id: 1,
-                  visited: true,
-                },
-                {
-                  id: 2,
-                  visited: false,
-                },
-                {
-                  id: 3,
-                  visited: false,
-                },
-                {
-                  id: 4,
-                  visited: false,
-                },
-                {
-                  id: 5,
-                  visited: false,
-                },
-                {
-                  id: 1,
-                  visited: false,
-                },
-              ])
-            }
+            onClick={handleGetRoute}
           >
             {route.length ? "Perbarui Rute" : "Dapatkan Rute"}
           </Button>

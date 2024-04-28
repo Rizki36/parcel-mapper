@@ -46,7 +46,7 @@ export const RouteItems = () => {
             }}
           >
             <Flex flex={1}>
-              {item?.type === "branch" ? "Cabang" : `Paket ${index + 1}`}
+              {item?.type === "branch" ? "Cabang" : `Paket ${index}`}
             </Flex>
             <Flex>{routeItem.visited ? <HiOutlineCheckCircle /> : null}</Flex>
           </Flex>

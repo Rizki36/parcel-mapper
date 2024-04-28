@@ -1,6 +1,6 @@
 "use client";
 import { ENV } from "@/_constants";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import ReactMapGL, { Layer, MapRef, Marker, Source } from "react-map-gl";
 import Drawer from "./_components/Drawer";
@@ -8,8 +8,9 @@ import {
   DeliveryStoreProvider,
   useDeliveryStore,
 } from "./_providers/DeliveryProviders";
-import { IoLocation } from "react-icons/io5";
 import GeoJSON from "geojson";
+import { generateGroupedRoute, indexToAlphabet } from "@/_utils";
+import RouteProfile from "./_components/RouteProfile";
 
 const DeliveryPage = () => {
   return (
@@ -21,11 +22,9 @@ const DeliveryPage = () => {
 
 const Content = () => {
   const mapRef = useRef<MapRef>(null);
-  const { directions, nodes, setNodes } = useDeliveryStore((state) => state);
-
-  const availableNodes = useMemo(() => {
-    return nodes?.filter((item) => item.lat && item.lng) || [];
-  }, [nodes]);
+  const { step, directions, route, nodes, setNodes } = useDeliveryStore(
+    (state) => state
+  );
 
   useEffect(() => {
     setNodes([
@@ -83,71 +82,104 @@ const Content = () => {
   }, []);
 
   const nodesMarker = useMemo(() => {
-    return availableNodes?.map((item) => (
-      <Marker
-        key={item.id}
-        longitude={item.lng as number}
-        latitude={item.lat as number}
-        anchor="bottom"
-        onClick={(e) => {
-          e.originalEvent.stopPropagation();
-        }}
-      >
-        <Box color="red">
-          <IoLocation
-            style={{
-              width: "20px",
-              height: "20px",
+    return nodes?.map((item, index) => {
+      const routeIndex = route.findIndex(
+        (routeItem) => routeItem.id === item.id
+      );
+      const currentRoute = route[routeIndex];
+
+      const getText = () => {
+        if (step === 1) return indexToAlphabet(index);
+
+        return routeIndex > -1 ? routeIndex : indexToAlphabet(index);
+      };
+
+      return (
+        <Marker
+          key={item.id}
+          longitude={item.lng as number}
+          latitude={item.lat as number}
+          anchor="bottom"
+          onClick={(e) => {
+            e.originalEvent.stopPropagation();
+          }}
+        >
+          {index === 0 ? (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              color="white"
+              w="20px"
+              h="20px"
+              bg="red"
+            ></Flex>
+          ) : (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              color="white"
+              w="20px"
+              h="20px"
+              rounded="100%"
+              bg={currentRoute?.visited ? "green" : "red"}
+            >
+              {getText()}
+            </Flex>
+          )}
+        </Marker>
+      );
+    });
+  }, [nodes, route, step]);
+
+  const directionLine = useMemo(() => {
+    if (!route.length) return;
+
+    const ids = route.map((item) => item.id);
+    const indexes = ids.map((id) => nodes.findIndex((node) => node.id === id));
+
+    const groupedRoute = generateGroupedRoute(indexes);
+    const directionsKeys = groupedRoute.map((item) => {
+      const key =
+        item[0] < item[1] ? `${item[0]}-${item[1]}` : `${item[1]}-${item[0]}`;
+      return key;
+    });
+    const dirs = directionsKeys.map((key) => directions[key]);
+
+    const sources = dirs.map((item, index) => {
+      const geojson: GeoJSON.FeatureCollection = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "LineString",
+              coordinates: item.routes[0].geometry.coordinates,
+            },
+            properties: {},
+          },
+        ],
+      };
+
+      return (
+        <Source key={index} type="geojson" data={geojson}>
+          <Layer
+            type="line"
+            layout={{
+              "line-join": "round",
+              "line-cap": "round",
+            }}
+            paint={{
+              "line-color": "#c4e6ff",
+              "line-width": 3,
+              "line-opacity": 1,
             }}
           />
-        </Box>
-      </Marker>
-    ));
-    // map
-  }, [availableNodes]);
+        </Source>
+      );
+    });
 
-  // useEffect(() => {
-  //   if (!mapRef.current || !availableNodes.length) return;
-
-  //   const feature = featureCollection(
-  //     availableNodes.map((item) =>
-  //       point([item.lng, item.lat], {
-  //         id: item.id,
-  //       })
-  //     )
-  //   );
-
-  //   const [minLng, minLat, maxLng, maxLat] = bbox(feature);
-
-  //   mapRef.current?.fitBounds(
-  //     [
-  //       [minLng, minLat],
-  //       [maxLng, maxLat],
-  //     ],
-  //     { duration: 1000, zoom: 14 }
-  //   );
-  // }, [availableNodes, mapRef]);
-
-  const directionData = useMemo(() => {
-    const temp = Object.values(directions);
-    if (!temp.length) return;
-
-    const geojson: GeoJSON.FeatureCollection = {
-      type: "FeatureCollection",
-      features: temp.map((item) => {
-        return {
-          type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: item.routes[0].geometry.coordinates,
-          },
-          properties: {},
-        };
-      }),
-    };
-
-    return geojson;
-  }, [directions]);
+    return sources;
+  }, [directions, route, nodes]);
 
   return (
     <Box position="relative">
@@ -163,20 +195,8 @@ const Content = () => {
         style={{ height: "100dvh", maxHeight: "100dvh" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
-        <Source id="routeSource" type="geojson" data={directionData}>
-          <Layer
-            type="line"
-            layout={{
-              "line-join": "round",
-              "line-cap": "round",
-            }}
-            paint={{
-              "line-color": "blue",
-              "line-width": 3,
-              "line-opacity": 0.4,
-            }}
-          ></Layer>
-        </Source>
+        <RouteProfile />
+        {directionLine}
         {nodesMarker}
       </ReactMapGL>
       <Drawer />

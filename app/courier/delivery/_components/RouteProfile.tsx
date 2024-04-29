@@ -1,5 +1,5 @@
 import { FaCar, FaMotorcycle } from "react-icons/fa";
-import { useDeliveryStore } from "../../_providers/DeliveryProviders";
+import { useDeliveryStore } from "../_providers/DeliveryProviders";
 import { Flex, IconButton } from "@chakra-ui/react";
 
 const RouteProfile = () => {
@@ -15,6 +15,7 @@ const RouteProfile = () => {
 
   return (
     <Flex
+      zIndex={1000}
       position="fixed"
       direction="column"
       gap="10px"

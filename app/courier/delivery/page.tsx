@@ -1,6 +1,6 @@
 "use client";
 import { ENV } from "@/_constants";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import ReactMapGL, { Layer, MapRef, Marker, Source } from "react-map-gl";
 import Drawer from "./_components/Drawer";
@@ -11,6 +11,8 @@ import {
 import GeoJSON from "geojson";
 import { generateGroupedRoute, indexToAlphabet } from "@/_utils";
 import RouteProfile from "./_components/RouteProfile";
+import { FaAngleLeft } from "react-icons/fa";
+import Link from "next/link";
 
 const DeliveryPage = () => {
   return (
@@ -183,6 +185,12 @@ const Content = () => {
 
   return (
     <Box position="relative">
+      <Button zIndex={1000} position="absolute" top="20px" left="20px">
+        <Link href="/courier">
+          <FaAngleLeft />
+        </Link>
+      </Button>
+      <RouteProfile />
       <ReactMapGL
         ref={mapRef}
         reuseMaps
@@ -195,7 +203,6 @@ const Content = () => {
         style={{ height: "100dvh", maxHeight: "100dvh" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
-        <RouteProfile />
         {directionLine}
         {nodesMarker}
       </ReactMapGL>

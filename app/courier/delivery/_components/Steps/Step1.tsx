@@ -106,7 +106,7 @@ const Step1 = () => {
                                   : `Paket ${columnIndex}`}
                               </Td>
                               <Td>
-                                {typeof column === "number"
+                                {Number.isFinite(column)
                                   ? Math.round(meterToKm(column) * 100) / 100
                                   : 0}{" "}
                                 Km

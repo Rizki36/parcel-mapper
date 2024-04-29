@@ -1,7 +1,6 @@
 import axiosInstance from "@/_libs/axios";
 import { BranchKeyGenerator } from "@/_utils/keyGenerator";
-import { BuildResponse } from "@/_utils/responseBuilder";
-import { GetOneBranchData } from "@/api/branch/[id]/route";
+import { GetOneBranchResponse } from "@/api/branch/[id]/route";
 import { useQuery } from "@tanstack/react-query";
 
 type UseBranchQueryProps = {
@@ -9,10 +8,6 @@ type UseBranchQueryProps = {
   with?: "area"[];
   enabled?: boolean;
 };
-
-type GetOneBranchResponse = BuildResponse<{
-  doc: GetOneBranchData;
-}>;
 
 const useBranchQuery = (props: UseBranchQueryProps) => {
   const fetchDataOptions = {

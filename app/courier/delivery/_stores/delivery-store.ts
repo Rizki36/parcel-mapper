@@ -2,16 +2,21 @@ import { createStore } from "zustand/vanilla";
 import { DirectionData } from "../_hooks";
 import { RouteProfile } from "../_hooks/useRequestDirections";
 
+type NodeBranch = {
+  type: "branch";
+};
+type NodeCustomer = {
+  type: "customer";
+  recipientName: string;
+  recipientNumber: string;
+  recipientAddress: string;
+};
+
 export type Node = {
   id: number;
   lat: number;
   lng: number;
-  type: "branch" | "customer";
-  recipientName: string;
-  recipientNumber: string;
-  recipientAddress: string;
-  visited: boolean;
-};
+} & (NodeBranch | NodeCustomer);
 
 export type RouteItem = {
   id: number;

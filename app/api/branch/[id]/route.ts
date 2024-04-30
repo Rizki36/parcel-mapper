@@ -1,4 +1,6 @@
-import ResponseBuilder from "../../../_utils/responseBuilder";
+import ResponseBuilder, {
+  BuildResponse,
+} from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
 import { Area, Branch, Prisma } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
@@ -13,6 +15,10 @@ const querySchema = z.object({
 export type GetOneBranchData = Branch & {
   area?: Area[]; // with area
 };
+
+export type GetOneBranchResponse = BuildResponse<{
+  doc: GetOneBranchData;
+}>;
 
 export async function GET(
   req: NextRequest,

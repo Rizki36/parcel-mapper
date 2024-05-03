@@ -93,9 +93,11 @@ const Sidebar = () => {
   return (
     <Container>
       <Flex direction="column" justify="center" my={7}>
-        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-          Admin {auth?.role === "super-admin" ? "Pusat" : "Cabang"}
-        </Text>
+        <Link href="/admin">
+          <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+            Admin {auth?.role === "super-admin" ? "Pusat" : "Cabang"}
+          </Text>
+        </Link>
         {branch?.data?.doc?.name && (
           <Text fontSize="small" fontWeight="bold" textAlign="center">
             {branch?.data?.doc?.name}

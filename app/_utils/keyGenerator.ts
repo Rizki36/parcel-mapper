@@ -25,3 +25,9 @@ export const BranchAdminKeyGenerator = {
   list: () => [BranchAdminKeyGenerator.all, "list"],
   one: (id: string) => [BranchAdminKeyGenerator.all, id],
 };
+
+export const HomePageKeyGenerator = {
+  all: "home-key",
+
+  stat: () => [HomePageKeyGenerator.all, "stat"],
+};

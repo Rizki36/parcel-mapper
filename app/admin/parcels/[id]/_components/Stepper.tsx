@@ -20,7 +20,7 @@ const statuses: {
   status: ParcelStatus;
 }[] = [
   {
-    title: "Menunggu",
+    title: "Pending",
     status: "PENDING",
   },
   {
@@ -34,7 +34,7 @@ const statuses: {
 ];
 
 const steps = [
-  { title: "Menunggu", description: "Contact Info" },
+  { title: "Pending", description: "Contact Info" },
   { title: "Dikirim", description: "Date & Time" },
   { title: "Terkirim", description: "Select Rooms" },
 ];

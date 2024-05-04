@@ -1,5 +1,5 @@
 "use client";
-import useHomePageStatQuery from "@/_hooks/queries/useHomePageStatQuery";
+import useAdminHomePageStatQuery from "@/_hooks/queries/useAdminHomePageStatQuery";
 import { useAuth } from "@/login/hooks/useAuth";
 import {
   Box,
@@ -15,7 +15,7 @@ import React from "react";
 
 const AdminHomePage = () => {
   const { data: authData } = useAuth();
-  const { data: statData } = useHomePageStatQuery({
+  const { data: statData } = useAdminHomePageStatQuery({
     branchId: authData?.branchId || undefined,
   });
 

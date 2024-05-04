@@ -3,6 +3,7 @@ import { JWTPayload as _JWTPayload, jwtVerify } from "jose";
 export type JWTPayload = _JWTPayload & {
   email: string;
   branchId: string | null;
+  courierId: string | null;
   role: "admin" | "super-admin" | "courier";
 };
 

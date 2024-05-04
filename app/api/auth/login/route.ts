@@ -72,6 +72,7 @@ const loginAdminOrCourier = async ({
       role: true,
       courier: {
         select: {
+          id: true,
           branchId: true,
         },
       },
@@ -110,9 +111,12 @@ const loginAdminOrCourier = async ({
       ? user.courier?.branchId
       : user.branchAdmin?.branchId;
 
+  const courierId = user.role === "COURIER" ? user.courier?.id : null;
+
   return {
     email,
     branchId: branchId ?? null,
+    courierId: courierId ?? null,
     role: user.role === "COURIER" ? "courier" : "admin",
   };
 };
@@ -134,5 +138,5 @@ const loginSuperAdmin = ({
     });
   }
 
-  return { email, branchId: null, role: "super-admin" };
+  return { email, branchId: null, courierId: null, role: "super-admin" };
 };

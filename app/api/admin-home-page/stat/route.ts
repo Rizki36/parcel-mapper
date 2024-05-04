@@ -8,14 +8,14 @@ const querySchema = z.object({
   branchId: z.string().optional(),
 });
 
-export type HomePageStatData = {
+export type AdminHomePageStatData = {
   courierCount: number;
   branchCount: number;
   parcelCount: number;
 };
 
-export type GetHomePageStatResponse = BuildResponse<{
-  doc: HomePageStatData;
+export type GetAdminHomePageStatResponse = BuildResponse<{
+  doc: AdminHomePageStatData;
 }>;
 
 export async function GET(req: NextRequest) {
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  const doc: HomePageStatData = {
+  const doc: AdminHomePageStatData = {
     courierCount: couriers,
     branchCount: branches,
     parcelCount: parcels,

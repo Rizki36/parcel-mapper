@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Parcel } from "@prismaorm/generated/client";
+import { Courier, Parcel } from "@prismaorm/generated/client";
 import React, { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,32 +14,60 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
+import useSelectCourierOptions from "@/_hooks/useSelectCourierOptions";
 
 const formSchema = z.object({
   recipientName: z.string(),
   recipientAddress: z.string(),
+  courier: z
+    .object({
+      value: z.string(),
+      label: z.string(),
+    })
+    .nullable(),
+  status: z
+    .object({
+      value: z.enum(["ON_THE_WAY", "DELIVERED"]),
+      label: z.string(),
+    })
+    .optional(),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 const Form: FC<{
-  parcel: Parcel | undefined;
+  parcel:
+    | (Parcel & {
+        courier?: Courier;
+      })
+    | undefined;
 }> = ({ parcel }) => {
   const toast = useToast();
+  const { courierOptions } = useSelectCourierOptions();
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm<FormData>({
     defaultValues: {
       recipientName: parcel?.recipientName || "",
       recipientAddress: parcel?.recipientAddress || "",
+      courier: parcel
+        ? {
+            label: parcel?.courier?.name,
+            value: parcel?.courier?.id,
+          }
+        : null,
     },
     resolver: zodResolver(formSchema),
   });
   const { mutateAsync } = usePatchParcelMutation();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     try {
       await mutateAsync({
         id: parcel?.id || "",
         recipientName: data.recipientName,
         recipientAddress: data.recipientAddress,
+        courierId: data?.courier?.value,
       });
 
       toast({
@@ -90,6 +118,26 @@ const Form: FC<{
                 size="sm"
                 colorScheme="teal"
                 placeholder="Masukkan alamat penerima"
+                {...field}
+              />
+              {fieldState.error ? (
+                <FormErrorMessage>{fieldState.error.message}</FormErrorMessage>
+              ) : null}
+            </FormControl>
+          )}
+        />
+        <Controller
+          name="courier"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormControl isInvalid={!!fieldState.error}>
+              <FormLabel fontSize="13px">Kurir pengirim</FormLabel>
+              <Select
+                colorScheme="teal"
+                size="sm"
+                placeholder="Pilih kurir"
+                isClearable
+                options={courierOptions}
                 {...field}
               />
               {fieldState.error ? (

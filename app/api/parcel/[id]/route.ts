@@ -1,16 +1,50 @@
-import ResponseBuilder from "../../../_utils/responseBuilder";
+import ResponseBuilder, {
+  BuildResponse,
+} from "../../../_utils/responseBuilder";
 import prisma from "@prismaorm/client";
+import { Courier, Parcel, Prisma } from "@prismaorm/generated/client";
 import { type NextRequest } from "next/server";
 import { z } from "zod";
 
+export type GetOneParcelResponse = BuildResponse<{
+  doc: Parcel & {
+    courier?: Courier;
+  };
+}>;
+
+const withSchema = z.enum(["courier"]);
+
+const querySchema = z.object({
+  with: withSchema.optional(),
+});
+
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const { searchParams } = new URL(req.url);
+  const validQuery = querySchema.safeParse(Object.fromEntries(searchParams));
+
+  if (!validQuery.success) {
+    return ResponseBuilder.build({
+      status: 400,
+      error: {
+        id: "bad-request",
+        message: "Invalid query",
+        detail: validQuery.error.flatten(),
+      },
+    });
+  }
+
+  let withRelations: Prisma.ParcelInclude = {};
+
+  if (validQuery.data.with === "courier") withRelations.courier = true;
+
   const parcel = await prisma.parcel.findFirst({
     where: {
       id: params.id,
     },
+    include: withRelations,
   });
 
   return ResponseBuilder.build({
@@ -29,12 +63,13 @@ export async function PATCH(
 
   const validBody = z
     .object({
-      status: z.enum(["PENDING", "DELIVERED", "CANCELLED"]).optional(),
+      status: z.enum(["DELIVERED", "CANCELLED"]).optional(),
       recipientName: z.string().optional(),
       recipientAddress: z.string().optional(),
       longitude: z.number().optional(),
       latitude: z.number().optional(),
       courierId: z.string().optional(),
+      branchId: z.string().optional(),
     })
     .safeParse(body);
 
@@ -62,6 +97,12 @@ export async function PATCH(
       }),
       ...(validBody.data.recipientAddress && {
         recipientAddress: validBody.data.recipientAddress,
+      }),
+      ...(validBody.data.courierId && {
+        courierId: validBody.data.courierId,
+      }),
+      ...(validBody.data.branchId && {
+        branchId: validBody.data.branchId,
       }),
     },
   });

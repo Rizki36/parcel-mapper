@@ -14,10 +14,11 @@ import qs from "qs";
 const createSchema = z.object({
   recipientName: z.string(),
   recipientAddress: z.string(),
-  status: z.nativeEnum(ParcelStatus).nullable().optional(),
-  longitude: z.number().nullable(),
-  latitude: z.number().nullable(),
-  courierId: z.string().nullable().optional(),
+  status: z.nativeEnum(ParcelStatus),
+  longitude: z.number(),
+  latitude: z.number(),
+  courierId: z.string(),
+  branchId: z.string(),
 });
 
 const withSchema = z.enum(["branch"]);
@@ -106,7 +107,6 @@ export async function GET(req: Request) {
   if (withQuery.includes("branch")) {
     withRelations.branch = true;
   }
-  console.log(withRelations);
 
   const totalDocs = await prisma.parcel.count({
     where: whereInput,
@@ -118,6 +118,9 @@ export async function GET(req: Request) {
     take: pageSize,
     where: whereInput,
     include: withRelations,
+    orderBy: {
+      createdAt: "desc",
+    },
   };
 
   const parcels = await prisma.parcel.findMany(findManyProps);
@@ -152,10 +155,11 @@ export async function POST(req: Request) {
     data: {
       recipientName: valid.data.recipientName,
       recipientAddress: valid.data.recipientAddress,
-      status: valid.data.status ?? "PENDING",
+      status: valid.data.status ?? "ON_THE_WAY",
       longitude: valid.data.longitude,
       latitude: valid.data.latitude,
       courierId: valid.data.courierId,
+      branchId: valid.data.branchId,
     },
     select: {
       id: true,

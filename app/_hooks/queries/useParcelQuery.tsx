@@ -1,25 +1,24 @@
 import { ParcelKeyGenerator } from "@/_utils/keyGenerator";
 import axiosInstance from "../../_libs/axios";
-import { BuildResponse } from "../../_utils/responseBuilder";
-import { Parcel } from "@prismaorm/generated/client";
 import { useQuery } from "@tanstack/react-query";
+import { GetOneParcelResponse } from "@/api/parcel/[id]/route";
 
 type UseParcelQueryProps = {
   id: string;
+  with?: "courier"[];
 };
 
-type GetOneParcelResponse = BuildResponse<{
-  doc: Parcel;
-}>;
-
 const useParcelQuery = (props: UseParcelQueryProps) => {
-  const fetchDataOptions = { id: props.id };
+  const fetchDataOptions = { id: props.id, with: props.with };
 
   const dataQuery = useQuery({
     queryKey: [...ParcelKeyGenerator.one(props.id), fetchDataOptions],
     queryFn: async () => {
       const res = await axiosInstance.get<GetOneParcelResponse>(
-        `/api/parcel/${props.id}`
+        `/api/parcel/${props.id}`,
+        {
+          params: fetchDataOptions,
+        }
       );
 
       return res.data;

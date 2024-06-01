@@ -13,6 +13,7 @@ const ParcelDetail = () => {
   }>();
   const { data, isLoading: loadingParcel } = useParcelQuery({
     id,
+    with: ["courier"],
   });
   const parcel = data?.data?.doc;
 

@@ -9,7 +9,6 @@ import {
   Flex,
   Heading,
   SimpleGrid,
-  Text,
 } from "@chakra-ui/react";
 import useCourierHomePageStatQuery from "@/_hooks/queries/useCourierHomePageStatQuery";
 import { useAuth } from "@/login/hooks/useAuth";
@@ -45,13 +44,6 @@ const CourierPage = () => {
   return (
     <StyleWrapper pt={6}>
       <Flex direction="column" mb={6}>
-        <Text fontWeight="bold" fontSize="larger">
-          Halo
-        </Text>
-        <Text fontWeight="bold" fontSize="larger">
-          Sutarno
-        </Text>
-
         <Card size="md" mt={16}>
           <CardBody>
             <Heading size="lg" textAlign="center" py={6}>

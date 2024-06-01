@@ -106,23 +106,21 @@ export async function POST(req: Request) {
   const { courier } = await prisma.$transaction(async (tx) => {
     const encryptedPassword = bycrypt.hashSync(valid.data.password, 10);
 
-    const user = await tx.user.create({
-      data: {
-        email: valid.data.email,
-        password: encryptedPassword,
-        role: "COURIER",
-      },
-    });
-
     const courier = await tx.courier.create({
       data: {
         name: valid.data.name,
         branchId: valid.data.branchId,
-        userId: user.id,
+        user: {
+          create: {
+            email: valid.data.email,
+            password: encryptedPassword,
+            role: "COURIER",
+          },
+        },
       },
     });
 
-    return { user, courier };
+    return { courier };
   });
 
   return ResponseBuilder.build({

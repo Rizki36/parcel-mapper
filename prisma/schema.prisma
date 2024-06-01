@@ -90,7 +90,7 @@ model Parcel {
   id               String       @id @default(uuid())
   recipientName    String
   recipientAddress String?
-  status           ParcelStatus @default(PENDING)
+  status           ParcelStatus @default(ON_THE_WAY)
   longitude        Float
   latitude         Float
   courierId        String?
@@ -102,7 +102,6 @@ model Parcel {
 }
 
 enum ParcelStatus {
-  PENDING
   ON_THE_WAY
   DELIVERED
 }

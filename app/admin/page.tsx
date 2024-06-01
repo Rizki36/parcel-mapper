@@ -62,7 +62,7 @@ const AdminHomePage = () => {
               </Card>
             </Link>
           )}
-          <Link href="/admin/parcels?status=ON_THE_WAY&status=PENDING">
+          <Link href="/admin/parcels?status=ON_THE_WAY&status=ON_THE_WAY">
             <Card size="md">
               <CardHeader>
                 <Heading size="md">Paket Belum Terkirim</Heading>

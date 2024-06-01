@@ -6,7 +6,6 @@ export const ENV = {
 };
 
 export const PARCEL_STATUS_LABEL: Record<ParcelStatus, string> = {
-  PENDING: "Pending",
   ON_THE_WAY: "Sedang Dikirim",
   DELIVERED: "Terkirim",
 };

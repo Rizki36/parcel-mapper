@@ -17,7 +17,7 @@ const useParcelsData = () => {
     pageSize: 100,
     pageIndex: 0,
     with: ["branch"],
-    statuses: ["PENDING"],
+    statuses: ["ON_THE_WAY"],
     branchId: branchId ?? "",
     options: {
       enabled: !!branchId,

@@ -5,7 +5,6 @@ import React, { FC } from "react";
 import {
   HiOutlineCube,
   HiOutlineHomeModern,
-  HiOutlineMap,
   HiOutlineTruck,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
@@ -40,12 +39,12 @@ const menu: SidebarMenu[] = [
     icon: <HiOutlineUserGroup />,
     allowedRoles: ["super-admin"],
   },
-  {
-    href: "/admin/mapping",
-    text: "Pemetaan",
-    icon: <HiOutlineMap />,
-    allowedRoles: ["admin", "super-admin"],
-  },
+  // {
+  //   href: "/admin/mapping",
+  //   text: "Pemetaan",
+  //   icon: <HiOutlineMap />,
+  //   allowedRoles: ["admin", "super-admin"],
+  // },
 ];
 
 const MenuItem: FC<SidebarMenuProps> = ({ href, children, icon }) => {

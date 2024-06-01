@@ -16,16 +16,30 @@ import {
 import { MarkerLocation } from "../page";
 import usePostParcelMutation from "../../../../_hooks/mutations/usePostParcelMutation";
 import { useRouter } from "next/navigation";
+import { Select } from "chakra-react-select";
+import useSelectCourierOptions from "@/_hooks/useSelectCourierOptions";
+import useSelectBranchOptions from "@/_hooks/useSelectBranchOptions";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const formSchema = z.object({
   recipientName: z.string(),
   recipientAddress: z.string(),
+  courier: z
+    .object({
+      value: z.string(),
+      label: z.string(),
+    })
+    .nullable(),
+  branch: z
+    .object({
+      value: z.string(),
+      label: z.string(),
+    })
+    .nullable()
+    .optional(),
 });
 
-type FormData = {
-  recipientName: string;
-  recipientAddress: string;
-};
+type FormData = z.infer<typeof formSchema>;
 
 const Form: FC<{
   location: MarkerLocation;
@@ -33,6 +47,10 @@ const Form: FC<{
   const router = useRouter();
   const toast = useToast();
 
+  const { data: authData } = useAuth();
+
+  const { branchOptions } = useSelectBranchOptions();
+  const { courierOptions } = useSelectCourierOptions();
   const { mutateAsync, isPending: creatingParcel } = usePostParcelMutation();
 
   const { control, handleSubmit } = useForm<FormData>({
@@ -46,10 +64,16 @@ const Form: FC<{
   const onSubmit = async (data: FormData) => {
     try {
       await mutateAsync({
-        latitude: location.latitude ?? null,
-        longitude: location.latitude ?? null,
+        latitude: location.latitude!,
+        longitude: location.latitude!,
         recipientAddress: data.recipientAddress,
         recipientName: data.recipientName,
+        courierId: data?.courier?.value!,
+        branchId:
+          authData?.role === "super-admin"
+            ? data?.branch?.value!
+            : authData?.branchId!,
+        status: "ON_THE_WAY",
       });
 
       toast({
@@ -93,6 +117,51 @@ const Form: FC<{
           )}
         />
         <Controller
+          name="courier"
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormControl isInvalid={!!fieldState.error}>
+              <FormLabel fontSize="13px">Kurir pengirim</FormLabel>
+              <Select
+                colorScheme="teal"
+                size="sm"
+                placeholder="Pilih kurir"
+                isClearable
+                options={courierOptions}
+                {...field}
+              />
+              {fieldState.error ? (
+                <FormErrorMessage>{fieldState.error.message}</FormErrorMessage>
+              ) : null}
+            </FormControl>
+          )}
+        />
+        {authData?.role === "super-admin" ? (
+          <Controller
+            name="branch"
+            control={control}
+            render={({ field, fieldState }) => (
+              <FormControl isInvalid={!!fieldState.error}>
+                <FormLabel fontSize="13px">Cabang tujuan</FormLabel>
+                <Select
+                  colorScheme="teal"
+                  size="sm"
+                  placeholder="Pilih cabang tujuan"
+                  isClearable
+                  options={branchOptions}
+                  isDisabled={authData?.role === "admin"}
+                  {...field}
+                />
+                {fieldState.error ? (
+                  <FormErrorMessage>
+                    {fieldState.error.message}
+                  </FormErrorMessage>
+                ) : null}
+              </FormControl>
+            )}
+          />
+        ) : null}
+        <Controller
           name="recipientAddress"
           control={control}
           render={({ field, fieldState }) => (
@@ -110,6 +179,7 @@ const Form: FC<{
             </FormControl>
           )}
         />
+
         <Flex justifyContent="center">
           <Button
             type="submit"

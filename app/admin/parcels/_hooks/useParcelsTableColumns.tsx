@@ -5,10 +5,12 @@ import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useDeleteParcelStore } from "../_providers/DeleteParcelProvider";
 import { GetParcelsResponseDoc } from "@/api/parcel/route";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const columnHelper = createColumnHelper<GetParcelsResponseDoc>();
 
 const useParcelsTableColumns = () => {
+  const { data: authData } = useAuth();
   const { setState } = useDeleteParcelStore((state) => state);
 
   const columns = [
@@ -16,14 +18,18 @@ const useParcelsTableColumns = () => {
       header: "Nama Penerima",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.display({
-      id: "branch",
-      header: "Cabang tujuan",
-      cell: (props) => {
-        const branch = props.row.original.branch;
-        return branch ? `${branch?.name} - (${branch?.branchCode})` : "";
-      },
-    }),
+    ...(authData?.role === "super-admin"
+      ? [
+          columnHelper.display({
+            id: "branch",
+            header: "Cabang tujuan",
+            cell: (props) => {
+              const branch = props.row.original.branch;
+              return branch ? `${branch?.name} - (${branch?.branchCode})` : "";
+            },
+          }),
+        ]
+      : []),
     columnHelper.accessor("status", {
       header: "Status",
       cell: (info) => PARCEL_STATUS_LABEL[info.getValue()],

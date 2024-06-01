@@ -25,7 +25,7 @@ const useNodesQuery = () => {
           branchId: data?.branchId,
           pageIndex: 0,
           pageSize: 100,
-          statuses: ["ON_THE_WAY", "PENDING"] as QueryStatusesGetParcels[],
+          statuses: ["ON_THE_WAY"] as QueryStatusesGetParcels[],
           courierId: data?.courierId,
         },
       }

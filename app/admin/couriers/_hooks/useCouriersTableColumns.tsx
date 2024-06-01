@@ -4,6 +4,7 @@ import { Branch, Courier } from "@prismaorm/generated/client";
 import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useDeleteCourierStore } from "../_providers/DeleteCourierProvider";
+import { useAuth } from "@/login/hooks/useAuth";
 
 const columnHelper = createColumnHelper<
   Courier & {
@@ -12,6 +13,7 @@ const columnHelper = createColumnHelper<
 >();
 
 const useCouriersTableColumns = () => {
+  const { data: authData } = useAuth();
   const { setState } = useDeleteCourierStore((state) => state);
 
   const columns = [
@@ -19,31 +21,35 @@ const useCouriersTableColumns = () => {
       header: "Nama Kurir",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.display({
-      id: "branch",
-      header: "Cabang",
-      cell: (props) => {
-        const data = props.row.original;
-        return (
-          <>
-            {data.branch ? (
-              <>
-                {data.branch?.name} - (
-                <Link
-                  href={`/admin/branches/${data.branch.id}`}
-                  target="_blank"
-                >
-                  {data.branch?.branchCode}
-                </Link>
-                )
-              </>
-            ) : (
-              "-"
-            )}
-          </>
-        );
-      },
-    }),
+    ...(authData?.role === "super-admin"
+      ? [
+          columnHelper.display({
+            id: "branch",
+            header: "Cabang",
+            cell: (props) => {
+              const data = props.row.original;
+              return (
+                <>
+                  {data.branch ? (
+                    <>
+                      {data.branch?.name} - (
+                      <Link
+                        href={`/admin/branches/${data.branch.id}`}
+                        target="_blank"
+                      >
+                        {data.branch?.branchCode}
+                      </Link>
+                      )
+                    </>
+                  ) : (
+                    "-"
+                  )}
+                </>
+              );
+            },
+          }),
+        ]
+      : []),
     columnHelper.display({
       id: "actions",
       header: "Actions",
@@ -58,7 +64,7 @@ const useCouriersTableColumns = () => {
                   variant="outline"
                   size="xs"
                   aria-label="Detail kurir"
-                  icon={<HiEye style="" />}
+                  icon={<HiEye />}
                 ></IconButton>
               </Link>
             </Tooltip>

@@ -65,7 +65,7 @@ const Form: FC<{
     try {
       await mutateAsync({
         latitude: location.latitude!,
-        longitude: location.latitude!,
+        longitude: location.longitude!,
         recipientAddress: data.recipientAddress,
         recipientName: data.recipientName,
         courierId: data?.courier?.value!,

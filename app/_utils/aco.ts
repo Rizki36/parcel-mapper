@@ -11,7 +11,6 @@ class AntColony {
   private pheromone: Pheromone;
   private all_inds: number[];
   private n_ants: number;
-  private n_best: number;
   private n_iterations: number;
   private decay: number;
   private alpha: number;
@@ -20,19 +19,20 @@ class AntColony {
   constructor(
     distances: Distances,
     n_ants: number,
-    n_best: number,
     n_iterations: number,
     decay: number,
     alpha: number,
     beta: number
   ) {
-    this.distances = distances;
+    // TODO: fix this
+    this.distances = distances.map((row) =>
+      row.map((d) => (d === 0 ? Number.MIN_SAFE_INTEGER : d))
+    );
     this.pheromone = Array.from({ length: distances.length }, () =>
       Array.from({ length: distances.length }, () => 1 / distances.length)
     );
     this.all_inds = Array.from({ length: distances.length }, (_, i) => i);
     this.n_ants = n_ants;
-    this.n_best = n_best;
     this.n_iterations = n_iterations;
     this.decay = decay;
     this.alpha = alpha;
@@ -58,7 +58,7 @@ class AntColony {
       // mengupdate pheromone berdasarkan jalur yang diambil oleh semut
       // pheromone yang diupdate hanya sebanyak n_best
       // (jalur terpendek yang diambil oleh semut)
-      this.spread_pheronome(all_paths, this.n_best);
+      this.spread_pheronome(all_paths);
 
       // mendapatkan jalur terpendek pada iterasi ini
       shortest_path = all_paths.sort((a, b) => a[1] - b[1])[0];
@@ -78,13 +78,12 @@ class AntColony {
     return all_time_shortest_path;
   }
 
-  spread_pheronome(all_paths: PathAndTotalDistance[], n_best: number) {
+  spread_pheronome(all_paths: PathAndTotalDistance[]) {
     // mengurutkan jalur-jalur yang diambil oleh semut berdasarkan jarak
     const sorted_paths = all_paths.sort((a, b) => a[1] - b[1]);
 
     // mengupdate pheromone berdasarkan jalur yang diambil oleh semut
-    // pheromone yang diupdate hanya sebanyak n_best (jalur terpendek yang diambil oleh semut)
-    sorted_paths.slice(0, n_best).forEach(([path, _]) => {
+    sorted_paths.forEach(([path, _]) => {
       path.forEach(([from, to]) => {
         this.pheromone[from][to] += 1.0 / this.distances[from][to];
       });

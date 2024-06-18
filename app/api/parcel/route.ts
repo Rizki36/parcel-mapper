@@ -45,6 +45,7 @@ const querySchema = z.object({
   branchId: z.string().optional(),
   statuses: queryStatusesGetParcels,
   with: z.array(withSchema).or(withSchema).optional(),
+  sort: z.enum(["-createdAt", "createdAt"]).optional(),
 });
 
 export type CreateBody = z.infer<typeof createSchema>;
@@ -119,7 +120,9 @@ export async function GET(req: Request) {
     where: whereInput,
     include: withRelations,
     orderBy: {
-      createdAt: "desc",
+      ...(!validQuery.data.sort && { createdAt: "desc" }),
+      ...(validQuery.data.sort === "-createdAt" && { createdAt: "desc" }),
+      ...(validQuery.data.sort === "createdAt" && { createdAt: "asc" }),
     },
   };
 

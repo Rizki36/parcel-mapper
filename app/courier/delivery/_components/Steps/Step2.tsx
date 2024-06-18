@@ -29,7 +29,8 @@ import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import useStepWithValidation from "../../_hooks/useStepWithValidation";
 import { RouteItems } from "../RouteItems";
 import AntColony from "@/_utils/aco";
-import { generateFlattenRoute, mapIndexToId } from "@/_utils";
+import { generateFlattenRoute, getTotalDistance, mapIndexToId } from "@/_utils";
+import { meterToKm } from "@/admin/mapping/_utils";
 
 const formSchema = z.object({
   alpha: z.number().min(0.1),
@@ -305,10 +306,11 @@ const Step2 = () => {
   );
   const { setStep } = useStepWithValidation();
 
+  const totalDistance = getTotalDistance(route, distances);
+
   const handleGetRoute = () => {
     const aco = new AntColony(
       distances,
-      config.ants,
       config.ants,
       config.iterations,
       1 - config.rho,
@@ -363,6 +365,14 @@ const Step2 = () => {
               Lanjut
             </Button>
           )}
+        </Flex>
+
+        <Flex mt={6} justifyContent="center">
+          Total Jarak:{" "}
+          {Number.isFinite(totalDistance)
+            ? Math.round(meterToKm(totalDistance) * 100) / 100
+            : 0}
+          Km
         </Flex>
 
         <RouteItems />

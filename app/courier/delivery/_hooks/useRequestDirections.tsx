@@ -1,6 +1,7 @@
 import axios from "axios";
 import { DirectionData } from ".";
 import { Node } from "../_stores/delivery-store";
+import { useState } from "react";
 
 export type RouteProfile = "driving" | "cycling";
 
@@ -26,6 +27,7 @@ const requestDirection = ({
 };
 
 const useRequestDirections = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const request = async (nodes: Node[], routeProfile: RouteProfile) => {
     const temp: Record<
       string,
@@ -65,7 +67,12 @@ const useRequestDirections = () => {
       );
     }
 
-    const responses = await Promise.all(requests);
+    setIsLoading(true);
+    const responses = await Promise.all(requests).catch((error) => {
+      console.error(error);
+      return [];
+    });
+    setIsLoading(false);
 
     return responses.reduce((acc, response) => {
       const key = response.config.headers["x-request-key"];
@@ -77,7 +84,7 @@ const useRequestDirections = () => {
     }, {} as Record<string, DirectionData>);
   };
 
-  return { request };
+  return { request, isLoading };
 };
 
 export default useRequestDirections;

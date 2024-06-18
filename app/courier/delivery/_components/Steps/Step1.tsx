@@ -26,11 +26,12 @@ import {
 import { indexToAlphabet } from "@/_utils";
 
 const Step1 = () => {
-  const { request } = useRequestDirections();
+  const { request, isLoading } = useRequestDirections();
   const { setStep } = useStepWithValidation();
 
-  const { routeProfile, distances, setDistances, nodes, setDirections } =
-    useDeliveryStore((state) => state);
+  const { routeProfile, distances, setDistances, nodes } = useDeliveryStore(
+    (state) => state
+  );
 
   return (
     <Flex
@@ -42,13 +43,17 @@ const Step1 = () => {
     >
       <Flex columnGap="4px">
         <Button
+          isLoading={isLoading}
           flex={1}
           colorScheme={distances.length ? undefined : "teal"}
           size="sm"
           onClick={async () => {
             try {
               const response = await request(nodes, routeProfile);
-              setDirections(response);
+              // const response = JSON.parse(
+              //   localStorage.getItem("directions") || "{}"
+              // );
+              localStorage.setItem("directions", JSON.stringify(response));
               setDistances(generateDistancesFromDirections(nodes, response));
             } catch (error) {
               console.log(error);
@@ -103,7 +108,7 @@ const Step1 = () => {
                               <Td>
                                 {columnIndex === 0
                                   ? "Cabang"
-                                  : `Paket ${columnIndex}`}
+                                  : `Paket ${indexToAlphabet(columnIndex)}`}
                               </Td>
                               <Td>
                                 {Number.isFinite(column)

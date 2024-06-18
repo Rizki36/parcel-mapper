@@ -1,4 +1,4 @@
-import { Node } from "@/courier/delivery/_stores/delivery-store";
+import { Node, RouteItem } from "@/courier/delivery/_stores/delivery-store";
 
 export const permute = (arr: string[]): string[][] => {
   if (arr.length === 1) {
@@ -56,4 +56,12 @@ export const mapIndexToId = (indexes: number[], nodes: Node[]) => {
 
 export const indexToAlphabet = (index: number) => {
   return (index + 9).toString(36).toUpperCase();
+};
+
+export const getTotalDistance = (route: RouteItem[], distances: number[][]) => {
+  if (!route.length) return 0;
+  const groupedRoute = generateGroupedRoute(route.map((item) => item.id));
+  return groupedRoute.reduce((acc, [from, to]) => {
+    return acc + distances[from][to];
+  }, 0);
 };

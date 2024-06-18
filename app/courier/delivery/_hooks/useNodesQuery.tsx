@@ -27,6 +27,7 @@ const useNodesQuery = () => {
           pageSize: 100,
           statuses: ["ON_THE_WAY"] as QueryStatusesGetParcels[],
           courierId: data?.courierId,
+          sort: "createdAt",
         },
       }
     );

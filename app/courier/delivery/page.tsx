@@ -1,8 +1,8 @@
 "use client";
 import { ENV } from "@/_constants";
 import { Box, Button, Flex } from "@chakra-ui/react";
-import React, { useEffect, useMemo, useRef } from "react";
-import ReactMapGL, { Layer, MapRef, Marker, Source } from "react-map-gl";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import ReactMapGL, { Layer, MapRef, Marker, Popup, Source } from "react-map-gl";
 import Drawer from "./_components/Drawer";
 import {
   DeliveryStoreProvider,
@@ -14,6 +14,7 @@ import RouteProfile from "./_components/RouteProfile";
 import { FaAngleLeft } from "react-icons/fa";
 import Link from "next/link";
 import useNodesQuery from "./_hooks/useNodesQuery";
+import { Node } from "./_stores/delivery-store";
 
 const DeliveryPage = () => {
   return (
@@ -25,10 +26,9 @@ const DeliveryPage = () => {
 
 const Content = () => {
   const mapRef = useRef<MapRef>(null);
-  const { step, directions, route, nodes, setNodes } = useDeliveryStore(
-    (state) => state
-  );
+  const { step, route, nodes, setNodes } = useDeliveryStore((state) => state);
   const { data: nodesData } = useNodesQuery();
+  const [parcelInfo, setParcelInfo] = useState<Node | null>(null);
 
   useEffect(() => {
     if (nodes.length) return;
@@ -56,6 +56,7 @@ const Content = () => {
           anchor="bottom"
           onClick={(e) => {
             e.originalEvent.stopPropagation();
+            setParcelInfo(item);
           }}
         >
           {index === 0 ? (
@@ -97,6 +98,7 @@ const Content = () => {
         item[0] < item[1] ? `${item[0]}-${item[1]}` : `${item[1]}-${item[0]}`;
       return key;
     });
+    const directions = JSON.parse(localStorage.getItem("directions") || "{}");
     const dirs = directionsKeys.map((key) => directions[key]);
 
     const sources = dirs.map((item, index) => {
@@ -123,7 +125,7 @@ const Content = () => {
               "line-cap": "round",
             }}
             paint={{
-              "line-color": "#c4e6ff",
+              "line-color": "#1e00ff",
               "line-width": 3,
               "line-opacity": 1,
             }}
@@ -133,7 +135,7 @@ const Content = () => {
     });
 
     return sources;
-  }, [directions, route, nodes]);
+  }, [route, nodes]);
 
   return (
     <Box position="relative">
@@ -157,6 +159,34 @@ const Content = () => {
       >
         {directionLine}
         {nodesMarker}
+
+        {parcelInfo && (
+          <Popup
+            anchor="top"
+            longitude={Number(parcelInfo.lng)}
+            latitude={Number(parcelInfo.lat)}
+            onClose={() => setParcelInfo(null)}
+          >
+            <Flex w="150px" direction="column" columnGap="12px">
+              <Box>
+                <Box fontWeight="bold">Nama Penerima</Box>
+                <Box>
+                  {parcelInfo?.type === "customer"
+                    ? parcelInfo?.recipientName
+                    : ""}
+                </Box>
+              </Box>
+              {/* <Box>
+                <Box fontWeight="bold">Alamat Penerima</Box>
+                <Box>
+                  {parcelInfo?.type === "customer"
+                    ? parcelInfo?.recipientAddress
+                    : ""}
+                </Box>
+              </Box> */}
+            </Flex>
+          </Popup>
+        )}
       </ReactMapGL>
       <Drawer />
     </Box>
